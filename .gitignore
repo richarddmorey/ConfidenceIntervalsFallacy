@@ -107,3 +107,11 @@ sympy-plots-for-*.tex/
 
 # xindy
 *.xdy
+
+supplement.tex
+
+fundamentalError.tex
+
+supplement-concordance.tex
+
+fundamentalError-concordance.tex
