@@ -30,9 +30,9 @@
 %\linespread{1.05}         % Palatino needs more leading (space between lines)
 
 \bibliography{lab}
-\AtEveryBibitem{\clearfield{url}} 
+%\AtEveryBibitem{\clearfield{url}} 
 
-\abstract{Interval estimates -- estimates of parameters that include an allowance for sampling uncertainty -- have long been touted as a key component of statistical analyses. There are several kinds of interval estimates, but the most popular are confidence intervals (CIs): intervals that contain the true parameter value in some known proportion of repeated samples, on average. The width of confidence intervals is thought to index the precision of an estimate; the parameter values contained within a CI are thought to be more plausible than those outside the interval; and the confidence coefficient of the interval (typically 95\%) is thought to index the plausibility that the true parameter is included in the interval. We show in a number of examples that CIs do not necessarily have any of these properties, and generally lead to incoherent inferences. For this reason, we recommend against the use of the method of CIs for inference.}
+\abstract{Interval estimates -- estimates of parameters that include an allowance for sampling uncertainty -- have long been touted as a key component of statistical analyses. There are several kinds of interval estimates, but the most popular are confidence intervals (CIs): intervals that contain the true parameter value in some known proportion of repeated samples, on average. The width of confidence intervals is thought to index the precision of an estimate; the parameter values contained within a CI are thought to be more plausible than those outside the interval; and the confidence coefficient of the interval (e.g. 95\%) is thought to index the plausibility that the true parameter is included in the interval. We show in a number of examples that CIs do not necessarily have any of these properties, and can lead to unjustified or arbitrary inferences. For this reason, we caution against the sole use of confidence interval theory to justify interval estimates.}
 
 
 \rightheader{Fundamental Confidence Fallacy}
@@ -40,11 +40,11 @@
 
 \leftheader{Morey et al.}
 
-\fourauthors{Richard D. Morey and Rink Hoekstra}{Jeffrey N. Rouder}{Michael D. Lee}{Eric-Jan Wagenmakers}
+\fiveauthors{Richard D. Morey}{Rink Hoekstra}{Jeffrey N. Rouder}{Michael D. Lee}{Eric-Jan Wagenmakers}
 
 \title{The Fallacy of Placing Confidence in Confidence Intervals}
 
-\fouraffiliations{University of Groningen}{University of Missouri}{University of California-Irvine}{University of Amsterdam}
+\fiveaffiliations{Cardiff University}{University of Groningen}{University of Missouri}{University of California-Irvine}{University of Amsterdam}
 
 
 %\theoremstyle{plain}
@@ -55,7 +55,7 @@
 
 %\theoremstyle{definition}
 \newtheorem{definition}{Definition}
-\newtheorem{myth}{Myth}
+\newtheorem{myth}{Fallacy}
 \newtheorem{conjecture}{Conjecture}
 %\newtheorem*{example}{Example}
 \newtheorem{algorithm}{Algorithm}
@@ -69,7 +69,7 @@
 \renewcommand{\epigraphflush}{center}
 \renewcommand{\sourceflush}{flushleft}
 
-\authornote{\input{wc.tex} words. Address correspondence to Richard D. Morey (richarddmorey@gmail.com). We thank Mijke Rhemtulla for helpful discussion during the drafting of the manuscript.}
+\authornote{Address correspondence to Richard D. Morey (richarddmorey@gmail.com). We thank Mijke Rhemtulla for helpful discussion during the drafting of the manuscript. Supplementary material, all code, and the source for this document are available at \url{https://github.com/richarddmorey/ConfidenceIntervalsFallacy}. Draft date: \today.}
 
 
 \begin{document}
@@ -92,86 +92,101 @@ library(grImport)
 submarinePic = readPicture('vectorFigs/submarine.xml')
 @
 
-% Add in third CI for submarine example. Note that ALL THREE can't be 50% CIs simultaneously. This would be incoherent. Also note that CIs don't offer the ability to state confidence in a given interval. Put these together, and ask "OK, if they can't all be 50% credible intervals together, what IS the credibility in these CIs? There's no answer to this question.
+The development of statistics over the past century has seen the proliferation of methods designed to allow inferences from data. Methods vary widely in their philosophical foundations, the questions they are supposed to address, and their frequency of use in practice. One popular and widely-promoted class of methods comprises interval estimates. There are a variety of approaches to interval estimation, differing in their philosophical foundation and computation, but informally are all supposed to be estimates of a parameter that account for measurement or sampling uncertainty by yielding a range of values for the parameter instead of a single value.
 
-The development of statistics over the past century has seen the proliferation of methods designed to make inferences from data. Methods vary widely in their philosophical foundations, the questions they are supposed to address, and their frequency of use in practice. One popular and widely-promoted class of methods are interval estimates, which include frequentist confidence intervals, Bayesian credible intervals and highest posterior density (HPD) intervals, fiducial intervals, and likelihood intervals. These procedures differ in their philosophical foundation and computation, but informally are all designed to be estimates of a parameter that account for measurement or sampling uncertainty by yielding a range of values for the parameter instead of a single value.
+Of the many kinds of interval estimates, the most popular is the confidence interval (CI). Confidence intervals are introduced in almost all introductory statistics texts; they are recommended or required by the methodological guidelines of many prominent journals \citep[e.g.,][]{PsychonomicsGuidelines:2012,Wilkinson:etal:1999}; and they form the foundation of methodological reformers' proposed programs \citep{Cumming:2014,Loftus:1996}. In the current atmosphere of methodological reform, a firm understanding of what sorts of inferences confidence interval theory does, and does not, allow is critical to decisions about how science is done in the future.
 
-Of the many kinds of interval estimates, the most popular is the confidence interval (CI). Confidence intervals are introduced in almost all introductory statistics texts; they are recommended or required by the methodological guidelines of many prominent journals \citep[e.g.,][]{PsychonomicsGuidelines:2012,Wilkinson:etal:1999}; and they form the foundation of proposed methodological reformers' programs \citep{Cumming:2014,Loftus:1996}. However, there is a tremendous amount of confusion in among researchers, methodologists, and textbook authors about what exactly a confidence interval is and how it may be interpreted. We believe that the confusion about what CIs are drives their promotion; if researchers understood what CIs actually are, and what inferences that can or cannot support, they would not be promoted as commonly as they are. Our goal is to alleviate confusion about CIs and to call into question whether they can be used for sound inference.
+In this paper, we argue that the advocacy of CIs is based on a folk understanding of CI theory, rather than a statistical understanding. We outline three fallacies of CIs, and place these in the philosophical and historical context of CI theory proper. Through an easily-accessible example adapted from the statistical literature, we show how CI theory differs from the folk theory of CIs. Finally, we show the fallacies of confidence in the context of a CI advocated and commonly-used for ANOVA and regression analysis, and discuss the implications of the mismatch between CI theory and the folk theory of CIs.
 
-We begin by precisely defining confidence intervals. We then outline three common myths about confidence interval that have been perpetuated by proponents of confidence intervals. Using several examples, we show how it is not necessary that confidence intervals have any of the properties commonly ascribed to them; that is, confidence intervals, as general inference tools, have been misrepresented. Finally, we discuss methods that -- under certain assumptions -- do have the properties that researchers desire.
+Our main point is this: confidence intervals may not be used as suggested by modern proponents because this usage is not justified by confidence interval theory. If used in the way CI proponents suggest, some CIs will provide severely misleading inferences for the given data; other CIs will not. Because such considerations are outside of CI theory, developers of CIs do not test them, and it is therefore often not known whether a given CI yields a reasonable inference or not. For this reason, we believe that appeal to CI theory is redundant in the best cases, when inferences can be justified outside CI theory, and unwise in the worst cases, when they cannot.
 
-\section{Confidence Intervals}
-In a classic paper, \citet{Neyman:1937} laid the formal foundation for confidence intervals. Before defining confidence intervals, we describe the practical problem that Neyman saw confidence intervals as solving. Suppose a researcher is interested in estimating a parameter, which we may call $\theta$. This parameter could be a population mean, an effect size, a variance, or any other quantity of interest. Neyman suggests that researchers perform the following three steps:
-\begin{enumerate}[a.]
-\item Perform an experiment, collecting the relevant data.
-\item Compute two numbers -- the smaller of which we can call $L$, the greater of which $U$ -- forming an interval $(L,U)$ according to an algorithm.
-\item State that $L<\theta<U$ -- that is, that $\theta$ is in the interval.
-\end{enumerate}
-This recommendation is justified by choosing an algorithm for step (b) such that in the long run, the researcher's claim in step (c) will be correct, on average, $X\%$ of the time. A confidence interval is any interval computed using such a procedure. 
+\section{The folk theory of confidence intervals}
+If there is one thing that everyone who writes about confidence intervals agrees on, it is the basic definition: A confidence interval for a parameter --- which we call $\theta$, but might be a mean, median, variance, probability, or any number of other quantities --- is an interval generated by a procedure that, on repeated sampling, has a fixed probability of containing the parameter. If the probability that the process generates an interval including $\theta$ is .5, it is a 50\% CI; likewise, the probability is .95 for a 95\% CI.
 
 \begin{definition}[Confidence interval]
-A $X\%$ confidence interval for a parameter $\theta$ is an interval $(L,U)$ generated by an algorithm that in repeated sampling has an $X\%$ probability of containing the true value of $\theta$ \citep{Neyman:1937}.
+A $X\%$ confidence interval for a parameter $\theta$ is an interval $(L,U)$ generated by a procedure that in repeated sampling has an $X\%$ probability of containing the true value of $\theta$ \citep{Neyman:1937}.
 \end{definition}
 
-Although skepticism about the usefulness of confidence intervals began as soon as Neyman laid out the theory \citep[e.g., the discussion of][]{Neyman:1934}\footnote{For instance, in this discussion Bowley states ``Does [the confidence interval] really lead us towards what we need -- the chance that in the universe which we are sampling the proportion is within these certain limits? I think it does not. I think we are in the position of knowing that either an improbable event has occurred or the proportion in the population is within the limits. To balance these things we must make an estimate and form a judgment as to the likelihood of the proportion in the universe [that is, a prior probability] -- the very thing that is supposed to be eliminated.''}, confidence intervals have grown in popularity to be the most widely used interval estimators. Perhaps the most commonly used CI is the CI for the mean of the normal distribution with unknown variance. 
-\begin{eqnarray}
-\bar{x} &\pm& t^*\frac{s}{\sqrt{N}}\label{eq:tconf}
-\end{eqnarray}
-where $\bar{x}$ and $s$ are the sample mean and standard deviation, $N$ is the sample size, and $t^*$ the quantile from Student's $t_{N-1}$ distribution chosen such that 
-\[
-Pr(|t_{N-1}| < |t^*|) = X\%
-\]
-for an $X\%$ CI. This confidence interval is taught to first-year statistics students all over the world and used in papers throughout the scientific literature. 
+The confidence coefficient of a confidence interval derives from the procedure which generated it. It is therefore helpful to differentiate a {\em procedure} (CP) from a confidence {\em interval}: an X\% confidence procedure is any procedure that generates intervals containing $\theta$ on X\% of repeated samples, and a confidence interval is a specific interval generated by such a process. A confidence procedure is a random process; a confidence interval is a set of two, fixed numbers.
 
-<<echo=FALSE>>=
-M = 200
-N = 2
-mu = 100
-sigma = 15
-alpha = .5
+It seems clear how to interpret a confidence {\em procedure}: it is any procedure that generates intervals that will contain the true value in a fixed proportion of samples. However, when we compute specific interval from the data and must interpret it, we are faced with difficulty. It is not obvious how to move from our knowledge of the properties of the confidence procedure to the interpretation of some observed confidence interval. 
 
-@
+Textbook authors and proponents of confidence intervals bridge the gap seamlessly by claiming that confidence intervals have three desirable properties: first, that the confidence coefficient can be read as a measure of the uncertainty one should have that the interval contains the parameter; second, that the CI width is a measure of estimation precision; and third, that the interval contains the ``likely'' or ``reasonable'' values for the parameter. These all involve reasoning about the parameter from the observed data: that is, they are ``post-data'' inferences.
 
-<<cis1,echo=FALSE,fig.cap=paste(M,' random ',100*(1-alpha),'\\% CIs for a normal mean with unknown variance, based on ',N,' draws from a Normal($',mu,',',sigma,'^2$) distribution. Dark (blue) lines denote CIs that contain the true mean; light (red) lines denote those that do not. CIs are sorted by length.',sep=""),fig.width=10,fig.height=6>>=
+For instance, with respect to 95\% confidence intervals, \citet{Masson:Loftus:2003} state that ``[t]he interpretation of the confidence interval constructed around that specific mean would be that there is a 95\% probability that the interval is one of the 95\% of all possible confidence intervals that includes the population mean. Put more simply, in the absence of any other information, there is a 95\% probability that the obtained confidence interval includes the population mean.'' \citet{Cumming:2014} writes that ``[w]e can be 95\% confident that our interval includes [the parameter] and can think of the lower and upper limits as likely lower and upper bounds for [the parameter].''
 
-par(las=1,cex=1.3)
+This understanding of confidence intervals is not correct. We call this mistake the ``Fundamental Confidence Fallacy'' (FCF) because it seems to flow naturally from the definition of the confidence interval:
 
-y = rnorm(M*N,mu,sigma)
-dim(y) = c(M,N)
-CIs = apply(y,1,function(y,alpha) mean(y)+c(-1,1)*qt(1-alpha/2,length(y)-1)*sd(y)/sqrt(length(y)),alpha=alpha)
-width=abs(CIs[2,]-CIs[1,])
-CIs = CIs[,order(width)]
-width=abs(CIs[2,]-CIs[1,])
-contains = CIs[1,]<mu & CIs[2,]>mu
+\begin{myth}[The Fundamental Confidence Fallacy]
+``If the probability that a random interval contains the true value is $X\%$, then the plausibility or probability that a particular observed interval contains the true value is also $X\%$,'' or ``We have $X\%$ confidence that the observed interval contains the true value.''
+\end{myth}
 
-plot(CIs[1,],1:M/M,xlim=range(CIs),ty='n',ylab="",xlab=expression(theta),yaxt='n')
-segments(CIs[1,],1:M/M,CIs[2,],1:M/M,col=rgb(1-contains,0,contains,contains*2/3+1/3),lwd=2)
-mtext(paste(sum(contains),' CIs contain the true value (',round(100*mean(contains),1),'%)',sep=""),3,.1,adj=1,cex=1.5)
+% Masson and Loftus (2003), in the context of sample means - never specifies normality, implies that these are general properties
+% Cumming (2014): The discussion here refers to a 95% CI for a population mean, \mu, but generally applies to any CI. 
 
+The reasoning behind the Fundamental Confidence Fallacy seems plausible: on a given sample, we could get any one of the possible confidence intervals. If 95\% of the possible confidence intervals contain the true value, without any other information it seems reasonable to say that we have 95\% certainty that we obtained one of the confidence intervals that contain the true value. This interpretation is suggested by the name ``confidence interval'' itself: the word ``confident'', in lay use, is closely related to concepts of plausibility and belief. The name ``confidence interval'' --- rather than, for instance, the more accurate ``coverage procedure'' --- encourages the Fundamental Confidence Fallacy. 
 
-#plot(1:M,cumsum(contains),ty='l')
+We will show in two examples how the reasoning fails. We note here that it has never been an advertised feature of CI theory; the error has been understood since CI theory was born. Neyman said ``Consider now the case when a sample...is already drawn and the [confidence interval] given...Can we say that in this particular case the probability of the true value of [the parameter] falling between [the limits] is equal to [$X\%$]? The answer is obviously in the negative'' \citep[][ p. 349]{Neyman:1937}. According to frequentist philosopher \citet{Mayo:1981} ``[the misunderstanding] seems rooted in a (not uncommon) desire for [] confidence intervals to provide something which they cannot legitimately provide; namely, a measure of the degree of probability, belief, or support that an unknown parameter value lies in a specific interval.'' Recent work has shown that this misunderstanding is pervasive among researchers, who likely learned it from textbooks, instructors, and the confidence interval literature \citep{Hoekstra:etal:2014}.
 
-@
+If confidence intervals cannot be used to assess the certainty with which a parameter is in a particular range, what can they be used for? Proponents of confidence intervals often claim that confidence intervals are useful for assessing the precision with which a parameter can be estimated. This is cited as one of the primary reasons confidence procedures should be used over null hypothesis significance tests \citep[e.g.,][]{Cumming:Finch:2005,Cumming:2014,Fidler:Loftus:2009,Loftus:1993b,Loftus:1996}. For instance, \citet{Cumming:2014} writes that ``[l]ong confidence intervals (CIs) will soon let us know if our experiment is weak and can give only imprecise estimates'' (p. 10). \citet{Young:Lewis:1997} state that ``[i]t is important to know how precisely the point estimate represents the true difference between the groups. The width of the CI gives us information on the precision of the point estimate'' (p. 309). This is the second fallacy of confidence intervals, the ``precision fallacy'':
 
-Figure~\ref{fig:cis1} shows \Sexpr{M} random \Sexpr{100*(1-alpha)}\% confidence intervals, all constructed from draws of sample size $N=\Sexpr{N}$ from the same Normal(\Sexpr{mu},$\Sexpr{sigma}^2$) population.  
-Some of the confidence intervals, denoted by dark lines, include the true mean $\theta=\Sexpr{mu}$; others do not and are denoted with light lines. Of this sample of \Sexpr{M} confidence intervals, \Sexpr{sum(contains)} (\Sexpr{round(100*mean(contains),1)}\%) contain the true value; if we were to continue sampling more CIs, this proportion would approach the confidence coefficient $X=\Sexpr{100*(1-alpha)}\%$. Note that with two observations $t^*=1$ and $s=|x_1-x_2|/\sqrt{2}$, meaning that the 50\% Student's $t$ CI is simply the interval between the two observations. We make use of the simplicity of the 50\% CI with two observations throughout.\footnote{The more typical choice of 95\% confidence is, of course, arbitrary. All of the points we make in this paper extend to 95\% CIs and $N>2$, with the drawback that the arguments would be more mathematically involved and less transparent. Because our goal is to demonstrate that the {\em logic} of using confidence intervals for inference is flawed, we opt to use the simplest case.}
+\begin{myth}[The Precision fallacy]
+``The width of a confidence interval indicates the precision of our knowledge about the parameter. Narrow confidence intervals show precise knowledge, while wide confidence errors show imprecise knowledge.''
+\end{myth}
 
-The definition of a confidence interval seems, on its face, straightforward: a CI is an interval generated by some procedure that creates intervals containing the true value of a parameter in some fixed proportion of repeated samples, on average. Put another way, if one were to always make the dichotomous claim that the true value {\em is} in a specific interval computed from the procedure, one would be correct in that same proportion of repeated samples. ``Confidence'' is thus an average property of a procedure. It is conceptually helpful, therefore, to distinguish between a confidence {\em procedure} (CP) and a confidence {\em interval} (CI). For the purposes of this paper we will use the term confidence procedure to denote the algorithm, and confidence interval to denote specific realizations from the algorithm.
+There is no necessary connection between the precision of an estimate and the size of a confidence interval. To see this most easily, consider that the width of a confidence interval is dependent on the confidence coefficient. Changing from 50\% to a 95\% confidence will make the confidence interval wider; however, nothing about the precision of the estimate has changed. What has changed is the average frequency at which the dichotomous claim ``the parameter is in the interval'' is correct for the underlying confidence procedure. Later, we will provide several examples where the width of a CI and the uncertainty with which a parameter is estimated are are inversely related for a fixed confidence coefficient, or not related at all.
 
-\section{Myths of Confidence}
-Confidence intervals are described broadly as tools for extracting the necessary information about the parameter from the data. However, the relationship between the definition of the confidence interval and anything a researcher would want to know is unclear: we might know the average properties of the procedure, but what implications does this have for inference from a specific interval? Various heuristic explanations are used by textbook authors and proponents of confidence intervals in the literature to help bridge the gap between the theoretical definition of the confidence interval and properties that are important to analysts, such as the plausibility of specific parameter values or the precision of an estimate. In this section, we explain how the various heuristic explanations of confidence intervals are actually myths: they are not true of confidence intervals in general. We present two examples that show how the logic of inference by CI fails.
+We cannot interpret confidence intervals as containing the true value with some probability; we also cannot interpret confidence intervals as indicating the precision of our estimate. There is a third common interpretation of confidence intervals: \citet{Loftus:1996}, for instance, says that the CI gives an ``indication of how seriously the observed pattern of means should be taken as a reflection of the underlying pattern of population means.'' This logic is used when when confidence intervals are used to test theory \citep{Velicer:etal:2008} or to argue for the null (or practically null) hypothesis \citep{Loftus:1996}. This is a another fallacy of confidence interval that we call the ``likelihood fallacy''. 
 
-\subsection{Example 1: The lost submarine}
+\begin{myth}[The Likelihood fallacy]
+``A confidence interval contains the likely values for the parameter. Values inside the confidence interval are more likely than those outside.'' This error exists in several varieties, sometimes involving plausibility, credibility, or reasonableness of beliefs about the parameter.
+\end{myth}
 
-<<bubbles1,echo=FALSE,fig.cap='Submersible rescue attempts. See text.',fig.width=11,fig.height=5>>=
+A confidence procedure may have a fixed {\em average} probability of including the true value, but whether on any given sample it includes the ``reasonable'' values is a different question. As we will show, confidence intervals --- even good confidence intervals, as we will see --- can exclude almost all reasonable values, and can be empty or infinitely narrow, excluding all possible values \citep{Blaker:Spjotvoll:2000,Dufour:1997,Steiger:2004,Steiger:Fouladi:1997,Stock:Wright:2000}. But \citet{Neyman:1941} writes, 
+\begin{quote}
+``it is not suggested that we can `conclude' that [the interval contains $\theta$], nor that we should `believe' that [the interval contains $\theta$]...[we] {\it decide} to behave as if we actually knew that the true value [is in the interval]. This is done as a result of our decision and has nothing to do with `reasoning' or `conclusion'. The reasoning ended when the [CI procedure was derived]. The above process [of using CIs] is also devoid of any `belief ' concerning the value [] of [$\theta$].'' \citep[][pp. 133-134]{Neyman:1941}
+\end{quote}
+It may seem strange to the modern user of CIs, but Neyman is quite clear that CIs do not support any sort of reasonable belief about the parameter. Even from a frequentist testing perspective where one accepts and rejects specific parameter values, \citet{Mayo:Spanos:2006} note that just because a specific value is in an interval does not mean it is warranted to accept it; they call this the ``fallacy of acceptance.'' If a confidence procedure does not allow an assessment of the probability that an interval contains the true value, if it is not a measure of precision, and if it is not a way of assessing the likelihood or plausibility of the values inside the interval, what is it?
+
+\section{The theory of confidence intervals}
+In a classic paper, \citet{Neyman:1937} laid the formal foundation for confidence intervals. It is easy to describe the practical problem that Neyman saw CIs as solving. Suppose a researcher is interested in estimating a parameter, which we may call $\theta$. This parameter could be a population mean, an effect size, a variance, or any other quantity of interest. Neyman suggests that researchers perform the following three steps:
+\begin{enumerate}[a.]
+\item Perform an experiment, collecting the relevant data.
+\item Compute two numbers -- the smaller of which we can call $L$, the greater $U$ -- forming an interval $(L,U)$ according to a specified procedure.
+\item State that $L<\theta<U$ -- that is, that $\theta$ is in the interval.
+\end{enumerate}
+This recommendation is justified by choosing an procedure for step (b) such that in the long run, the researcher's claim in step (c) will be correct, on average, $X\%$ of the time. A confidence interval is any interval computed using such a procedure. 
+
+We first focus on the meaning of the statement that $\theta$ is in the interval, in step (c). As we have seen, according to CI theory, what happens in step (c) is not a belief, a conclusion, or any sort of reasoning from the data. Furthermore, it is not associated with any level of uncertainty about whether $\theta$ is, actually, in the interval. It is merely a dichotomous statement that is meant to have a specified probability of being true, in the long-run. 
+
+Evaluation of confidence procedures is based on what can be called the ``power'' of the procedures, which is the frequency with which false values of a parameter are excluded. Better intervals are shorter on average, excluding false values more often \citep{Lehmann:1959,Neyman:1937,Neyman:1941,Welch:1939}. Although a ``best'' confidence procedure does not always exist, we can always compare one procedure to another to decide whether one is better than the other in this way \citep{Neyman:1952}. Confidence procedures are therefore closely related to hypothesis tests: confidence procedures control the rate of including the true value, and better confidence procedures have more power to exclude false values.
+
+Skepticism about the usefulness of confidence intervals arose as soon as Neyman first articulated the theory \citep{Neyman:1934}.\footnote{Neyman first articulated the theory in another paper before his major theoretical paper in 1937.} In the discussion of \citet{Neyman:1934}, Bowley --- pointing out what we call the fundamental confidence fallacy, expresses skepticism that the confidence interval answers the right question: 
+\begin{quote}
+``I am not at all sure that the `confidence' is not a `confidence trick.' Does it really lead us towards what we need -- the chance that in the universe which we are sampling the proportion is within these certain limits? I think it does not. I think we are in the position of knowing that either an improbable event has occurred or the proportion in the population is within the limits. To balance these things we must make an estimate and form a judgment as to the likelihood of the proportion in the universe [that is, a prior probability] -- the very thing that is supposed to be eliminated.'' (p. 609)
+\end{quote}
+In the same discussion, Fisher critiqued the theory for possibly leading to mutually contradictory inferences: ``The [theory of confidence intervals] was a wide and very handsome one, but it had been erected at considerable expense, and it was perhaps as well to count the cost. The first item to which he [Fisher] would call attention was the loss of uniqueness in the result, and the consequent danger of apparently contradictory inferences.'' \citep[p. 618; see also][]{Fisher:1935a}. Though, as we will see, the critiques are accurate, in a broader sense they missed the mark. Like modern proponents of confidence intervals, the critics failed to understand that Neyman's goal was different from theirs: Neyman had developed a behavioral theory designed to control error rates, not a theory for reasoning from data \citep{Neyman:1941}.
+
+In spite of the critiques, confidence intervals have grown in popularity to be the most widely used interval estimators. The alternatives --- such as Bayesian credible intervals and Fisher's fiducial intervals --- are not commonly used. We suggest that this is largely because people believe that confidence intervals, Bayesian intervals, and fiducial intervals are the same thing. In the next section, we will demonstrate the logic of confidence interval theory by building several confidence intervals and comparing them to one another. We will also show how the three fallacies affect inferences with these intervals.
+
+\section{Example 1: The lost submarine}
+In this section, we present an example taken from the confidence interval literature \citep{Berger:Wolpert:1988,Lehmann:1959,Pratt:1961,Welch:1939} designed to bring into focus the how CI theory works. This example is intentionally simple; unlike many demonstrations of CIs, no simulations are needed, and almost all results can be derived by readers with some training in probability. 
+
+<<bubbles1,echo=FALSE,fig.cap='Submersible rescue attempts. Note that likelihood and CIs are depicted from bottom to top in the order in which they are described in the text. See text for details.',fig.width=10,fig.height=5>>=
+library(grImport)
+#PostScriptTrace('submarine-coloring.eps','submarine.xml')
+submarinePic = readPicture('vectorFigs/submarine.xml')
+
+ci2.width=.5*(1-1/sqrt(2))
+
 layout(matrix(c(1,2,2,2,3,3,3),1,7))
 
 par(mgp=c(3.5,2,0),mar=c(4.5,0,.5,0),cex=1.3)
 
 
-plot(0,0,ty='n',ylim=c(-1,4.3),xlim=c(-1,1),axes=FALSE,xlab="",ylab="")
+plot(0,0,ty='n',ylim=c(-1,5.3),xlim=c(-1,1),axes=FALSE,xlab="",ylab="")
 
-text(0:4*0+1,0:4,c("Bubbles","Conf. Int. 1","Conf. Int. 2","Cred. Int.","Posterior"),adj=1)
+text(0:5*0+1,0:5,c("Bubbles","Likelihood","Samp. Dist.","Nonpara.","UMP","Fid./Bayes"),adj=1)
 
 ####
 
@@ -180,323 +195,619 @@ par(mar=c(4.5,1.5,.5,.5),cex=1.3)
 x.a = c(.1,.15)
 
 
-plot(0,0,ty='n',ylim=c(-1,4.3),xlim=c(-.5,1.5),axes=F,ylab="",xlab="Location")
-abline(h=0:4)
+plot(0,0,ty='n',ylim=c(-1,5.3),xlim=c(-.5,1.5),axes=F,ylab="",xlab="Location")
+abline(h=0:5)
 axis(1,at=1:5/2-1,lab=expression(theta - 10,
-                                       theta - 5,
-                                       theta,
-                                       theta + 5,
-                                       theta + 10
-                                       ))
+                                 theta - 5,
+                                 theta,
+                                 theta + 5,
+                                 theta + 10
+))
 points(x.a,0*x.a,pch=21,col="black",bg="lightblue",cex=1)
 rect(0,-1,1,5,col=rgb(0,0,0,.1),lty=0)
 abline(v=.5,lty=2)
 mtext("A",3,-1,adj=.9,cex=2)
 
-# Conf. Interval
-arrows(x.a[1],1,x.a[2],1,code=3,ang=90,len=.1,lwd=2,col="red")
+# Likelihood
+post.height=.2
+rect(x.a[2]-.5,1 - post.height/2,x.a[1]+.5,1 + post.height/2, col=rgb(0,0,1,.2),lty=0)
 
-# Conf. Interval 2 
-ci2.width=.5*(1-2/sqrt(8))
+# Sampling distribution
 arrows(mean(x.a)-ci2.width,2,mean(x.a)+ci2.width,2,code=3,ang=90,len=.1,lwd=2,col="red")
 
+# Nonparametric
+arrows(x.a[1],3,x.a[2],3,code=3,ang=90,len=.1,lwd=2,col="red")
 
-# Posterior
-post.height=.2
-rect(x.a[2]-.5,4 - post.height/2,x.a[1]+.5,4 + post.height/2, col=rgb(0,0,1,.2),lty=0)
+# UMP
+ump = sort(x.a)
+if(diff(ump) > .5){
+  ump = c(ump[2] - .5, ump[1] + .5) 
+}
+arrows(ump[1],4,ump[2],4,code=3,ang=90,len=.1,lwd=2,col="red")
 
 # Cred. Interval
 post.width = 1 - diff(x.a)
 cred.int = c(x.a[2]-.5 + .25*post.width, x.a[1]+.5 - .25*post.width)
-arrows(cred.int[1],3,cred.int[2],3,code=3,ang=90,len=.1,lwd=2,col="blue")
+arrows(cred.int[1],5,cred.int[2],5,code=3,ang=90,len=.1,lwd=2,col="blue")
 
 picture(submarinePic, 0, -1, 1, -.2)
+
+
 
 #######
 
 x.b = c(.05,.95)
 
 
-plot(0,0,ty='n',ylim=c(-1,4.3),xlim=c(-.5,1.5),axes=F,ylab="",xlab="Location")
-abline(h=0:4)
+plot(0,0,ty='n',ylim=c(-1,5.3),xlim=c(-.5,1.5),axes=F,ylab="",xlab="Location")
+abline(h=0:5)
 axis(1,at=1:5/2-1,lab=expression(theta - 10,
-                                       theta - 5,
-                                       theta,
-                                       theta + 5,
-                                       theta + 10
-                                       ))
+                                 theta - 5,
+                                 theta,
+                                 theta + 5,
+                                 theta + 10
+))
 points(x.b,0*x.b,pch=21,col="black",bg="lightblue",cex=1)
 rect(0,-1,1,5,col=rgb(0,0,0,.1),lty=0)
 abline(v=.5,lty=2)
 mtext("B",3,-1,adj=.9,cex=2)
 
-# Conf. Interval
-arrows(x.b[1],1,x.b[2],1,code=3,ang=90,len=.1,lwd=2,col="red")
+# Likelihood
+post.height=.2
+rect(x.b[2]-.5,1 - post.height/2,x.b[1]+.5,1 + post.height/2, col=rgb(0,0,1,.2),lty=0)
 
-# Conf. Interval 2 
+# Sampling distribution
 arrows(mean(x.b)-ci2.width,2,mean(x.b)+ci2.width,2,code=3,ang=90,len=.1,lwd=2,col="red")
 
+# Nonparametric
+arrows(x.b[1],3,x.b[2],3,code=3,ang=90,len=.1,lwd=2,col="red")
 
-# Posterior
-post.height=.2
-rect(x.b[2]-.5,4 - post.height/2,x.b[1]+.5,4 + post.height/2, col=rgb(0,0,1,.2),lty=0)
+# UMP
+ump = sort(x.b)
+if(diff(ump) > .5){
+  ump = c(ump[2] - .5, ump[1] + .5) 
+}
+arrows(ump[1],4,ump[2],4,code=3,ang=90,len=.1,lwd=2,col="red")
 
 # Cred. Interval
 post.width = 1 - diff(x.b)
 cred.int = c(x.b[2]-.5 + .25*post.width, x.b[1]+.5 - .25*post.width)
-arrows(cred.int[1],3,cred.int[2],3,code=3,ang=90,len=.1,lwd=2,col="blue")
+arrows(cred.int[1],5,cred.int[2],5,code=3,ang=90,len=.1,lwd=2,col="blue")
 
 picture(submarinePic, 0, -1, 1, -.2)
 
-
 @
 
-A 10-meter-long research submersible with several people on board has lost contact with its surface support vessel. The submersible has a rescue hatch exactly halfway along its length, to which the support vessel will drop a rescue line. Because the rescuers only get one rescue attempt, it is crucial that when the line is dropped to the craft in the deep water that the line be as close as possible to this hatch. The researchers on the support vessel do not know where the submersible is, but they do know that it forms distinctive bubbles. These bubbles could form anywhere along the craft's length, independently, with equal probability, and float to the surface where they can be seen by the support vessel.\footnote{This example was adapted from \citet{Welch:1939} and \citet{Berger:Wolpert:1988}.}
+A 10-meter-long research submersible with several people on board has lost contact with its surface support vessel. The submersible has a rescue hatch exactly halfway along its length, to which the support vessel will drop a rescue line. Because the rescuers only get one rescue attempt, it is crucial that when the line is dropped to the craft in the deep water that the line be as close as possible to this hatch. The researchers on the support vessel do not know where the submersible is, but they do know that it forms two distinctive bubbles. These bubbles could form anywhere along the craft's length, independently, with equal probability, and float to the surface where they can be seen by the support vessel.
 
-The situation is shown in Figure~\ref{fig:bubbles1}A. The rescue hatch is the unknown location $\theta$, and the bubbles can rise anywhere from $\theta-5$ meters (the bow of the submersible) to $\theta+5$ meters (the stern of the submersible). The rescuers want to use these bubbles to learn where the hatch is located, so they consult the frequentist statistician on board. The statistician, being an advocate of the use of confidence intervals, tells the rescuers how confidence intervals can be used to estimate the location of the hatch. He notes that the location of these first two bubbles form a 50\% confidence interval for the $\theta$, because there is a 50\% probability that two bubbles will be on opposite sides of the hatch. In more familiar terms, the statistician has chosen the 50\% confidence procedure
-\begin{eqnarray*}
-\bar{x} \pm \frac{|x_1-x_2|}{2},
-\end{eqnarray*}
-where $x_1$ and $x_2$ are the locations of the first and second bubbles, respectively, and $\bar{x}$ is the mean location. The statistician justifies this confidence procedure on the grounds that it is the same as the 50\% Student's $t$ procedure with $N=2$. We denote this procedure Confidence Procedure~1 (CP1).
+The situation is shown in Figure~\ref{fig:bubbles1}A. The rescue hatch is the unknown location $\theta$, and the bubbles can rise from anywhere with uniform probability between $\theta-5$ meters (the bow of the submersible) to $\theta+5$ meters (the stern of the submersible). The rescuers want to use these bubbles --- which we will denote $x_1$ and $x_2$, $x_1$ always denoting the smaller of the two for convenience --- to infer where the hatch is located. 
 
-The rescuers see the first two bubbles, shown as circles in Figure~\ref{fig:bubbles1}A. The two bubbles are very close together, yielding the narrow 50\% confidence interval shown above the bubbles. The statistician excitedly reports to the rescue workers that this narrow CI indicates that the knowledge of the hatch location is quite precise, and that he is 50\% certain that the hatch is in the confidence interval. He advises them to drop the rescue line. 
+The rescuers first note that from observing two bubbles, it is easy to rule out all values except those within five meters of both bubbles because no bubble can occur further than 5 meters from the hatch. If the two bubble locations were $x_1=4$ and $x_2=6$, then the possible locations of the hatch are between 1 and 9, because only these locations are within 5 meters of both bubbles. The function that describes the probability density of the observed bubbles for a particular value of $\theta$ is called the ``likelihood,'' and it indexes the information provided by the data about the parameter. In this case, it is positive only when a value $\theta$ is possible given the observed bubbles (see Figures~\ref{fig:bubbles1} and~\ref{fig:bubblesBayes}).
 
-The statistician's opinion has been guided by the claims made by the advocates of CIs. The relationship between CIs and precision, or power, is often cited as one of the primary reasons they should be used over null hypothesis significance tests \citep[e.g.,][]{Cumming:Finch:2005,Cumming:2014,Fidler:Loftus:2009,Loftus:1993b,Loftus:1996}. For instance, \citet{Cumming:2014} writes that ``[l]ong confidence intervals (CIs) will soon let us know if our experiment is weak and can give only imprecise estimates,'' and \citet{Young:Lewis:1997} state that ``[t]he width of the CI gives us information on the precision of the point estimate.''
+\subsection{Five confidence procedures}
 
-% Young and Lewis is explicitly more general than normally distributed data: "In the past it was commonly taught that the 95% CI spans the values 2 5Ds above and below the observed normally distributed mean. This approach to visualizing the CI is applicable only to continuous data and accurate only for large samples that approximate normal distribution." 
+A group of four statisticians happen to be on board, and the rescuers decide to ask them for help improving their judgments using statistics. The four statisticians suggest four different 50\% confidence procedures. We will outline the four confidence procedures; first, we describe a trivial procedure that no one would ever suggest.
 
-One of the rescue workers, however, is skeptical. She notes that there are a wide range of locations that are possible for the location of the hatch. Because the craft is 10 meters long, no bubble can originate more than 5 meters from hatch. Given two bubbles, the only possible locations for the hatch are within 5 meters of both bubbles. These values are shown as the shaded region in Figure~\ref{fig:bubbles1}A labeled ``posterior''. The bubbles themselves give no reason to prefer any of these locations over another. The skeptical rescue worker says that because the second bubble was so close to the first, collectively the bubbles have actually provided very {\em imprecise} information. She suggests waiting for more bubbles before dropping the line.
+\subsubsection{0. A trivial procedure} A trivial 50\% confidence procedure can be constructed by flipping a fair coin. If the coin shows ``heads'', the interval contains the whole ocean, $(-\infty,\infty)$. If the coin shows ``tails'', the interval contains only the single, {\em exact} point directly under the middle of the rescue boat. This procedure is obviously a 50\% confidence procedure; exactly 50\% of the time --- when the coin shows ``heads'' --- the rescue hatch will be within the interval. We describe this interval merely to show that {\em by itself}, a procedure including the true value X\% of the time means nothing \citep[see also][]{Basu:1981}. We must obviously consider something more than the confidence property, which we discuss subsequently. We call this procedure the ``trivial'' procedure.
 
-The statistician, on the authority of the many advocates of confidence intervals, convinces the rescuers to drop the line inside the 50\% CI. The rescue line misses the hatch by \Sexpr{abs(mean(x.a)-.5)*10} meters. By the time the rescue workers realize they have missed the hatch, there is no more time for another attempt. All crew on board the submersible are lost. 
-
-The statistician has fallen victim to a myth about confidence intervals that we dub the ``precision error'':
-
-\begin{myth}[The Precision Error]
-``The width of a confidence interval indicates the precision of our knowledge about the parameter. Narrow confidence intervals show precise knowledge, while wide confidence errors show imprecise knowledge.''
-\end{myth}
-
-There is no necessary connection between the precision of an estimate and the size of a confidence interval. In the case of the submarine, the narrow confidence interval yielded imprecise imprecise information about the location of the submarine hatch. In fact, as we shall see, the narrowness of an interval from CP1 and the precision are actually {\em inversely} related, as the next situation will make clear.
-
-%\citet{Basu:1981} shows with a simple example that a CI need not yield any information about the parameter at all.  Further, if confidence intervals are built by inversion of significance tests, as they often are, then it can happen that that all, or nearly all, possible values of the parameter are rejected by a significance test. \citet{Stock:Wright:2000} argue that these very short (or empty) confidence intervals can actually indicate bad model fit, not high precision\citep[see also][]{Blaker:Spjotvoll:2000,Dufour:1997}. In these cases confidence intervals can have 0 width, which should give pause to anyone claiming that narrow CIs indicate precision.
-
-Oddly enough, a second boat is in a similar situation to the first half a world away. The researchers on the boat have contact with their submersible, and like the first boat are planning to mount a rescue using the distinctive bubbles. They consult their statistician, who advises them to wait for the first two bubbles and use a 50\% CI from Confidence Procedure 1. While the rescue team waits for the bubbles to appear, the statistician notes that CP1 does not directly make use of the known variance of the bubble locations. She quickly computes an alternative 50\% confidence procedure, which we denote Confidence Procedure 2 (CP2):
-\begin{eqnarray}
-\bar{x}\pm \left(5-\frac{5}{\sqrt{2}}\right)
-\end{eqnarray}
-This confidence procedure makes use of the fact that there is a 50\% probability that $\bar{x}$ falls within $5-5/\sqrt{2}=\Sexpr{5-5/sqrt(2)}$ meters of the hatch. The rescuers alert the statistician that the first two bubbles have been observed, as shown in Figure~\ref{fig:bubbles1}B. The bubbles are almost 10 meters apart. 
-
-The statistician computes the confidence intervals using CP1 and CP2. The interval from CP1 is nearly as wide as it can possibly be. At first, the statistician despairs, thinking that the first two bubbles have led to extremely imprecise information. But then the statistician notes that the width of the interval from CP2 never changes, confusingly suggesting that the width of the CI need not be function of precision in the data. 
-
-Faced with seemingly contradictory information from the two CIs about the precision of the estimate $\bar{x}$, the statistician decides to follow a different line of reasoning. Thinking her CP2 superior due to the fact that it directly used information about the width of the submersible, she reasons about the likely values for the location of the hatch. She believes that by virtue of being contained in her interval, the values inside the confidence interval should all be taken seriously as estimates of the hatch location. This second, widely-mistaken interpretation of intervals -- that specific parameters in the interval are ``likely'' or ``plausible'' -- we dub the likelihood error:
-
-\begin{myth}[The Likelihood Error]
-``A confidence interval contains the likely values for the parameter. Values inside the confidence interval are more likely than those outside.'' This error exists in several varieties, sometimes involving plausibility, credibility, or reasonableness of beliefs about the parameter.
-\end{myth}
-
-\citet{Loftus:1996}, for instance, says that the CI gives an ``indication of how seriously the observed pattern of means should be taken as a reflection of the underlying pattern of population means.'' This logic is used when when confidence intervals are used to test theory \citep{Velicer:etal:2008} or to argue for the null (or practically null) hypothesis \citep{Loftus:1996}. The problem with the logic of the likelihood error is that a confidence interval may contain impossible values, or may exclude values that are just as plausible as ones inside the interval. For instance, the CI for the first submarine failed to contain most of the likely values, leading the statistician to believe his estimate was very precise. 
-
-% Loftus (1996) discusses CIs in the context of ANOVAs, but clearly intends them more generally (explicitly discusses the problem of always having to assume normality, etc)
-
-The second statistician notes that the interval from CP2 is \Sexpr{2*(5-10/sqrt(8))} meters wide. Thinking that all values within this interval are ``likely'', she advises risking waiting for a few more bubbles to narrow the confidence interval. However, a perceptive rescue worker challenges the statistician. He notes that they know very precisely where the hatch must be: halfway between the two bubbles! The bubbles were almost as far apart as they could be, which means they must have come from opposite ends of the craft.  If they came from opposite ends of the craft, then the hatch must be almost exactly in the middle. The only possible locations for the hatch are shown in the top line of Figure~\ref{fig:bubbles1}B, labeled ``posterior.'' In fact, nearly all of the values contained in the 50\% CIs computed from CP1 and CP2 are impossible; the hatch could not possibly be located there. 
-
-The rescue worker advises to ignore the statistician and to drop the rescue line halfway between the bubbles. The argument of the rescue worker convinces the other rescue workers. The rescue line meets the hatch, and all crew members aboard the submersible are saved.
-
-In the rescue attempts of both submarines, the statisticians used the same logic recommended by the advocates of confidence intervals in an effort to determine the location of the submarine hatch. In both cases, the judgment of the statistician was flawed. We now consider how the confidence interval could be so misleading. In the example, the likelihood and precision errors are easily seen; CIs can contain mostly impossible values, and the precision of an estimate available in the data can be inversely related to the narrowness of the CI, or not related at all. The logic of the likelihood and precision interpretations of CIs simply do not follow from the definition of a confidence procedure; some confidence intervals may have these properties, others may not. 
-
-If the precision and likelihood interpretations of confidence intervals are incorrect, what can we say about CIs? The definition of a confidence interval makes clear how to interpret a confidence procedure. However, when we compute a specific interval from the data and must interpret it, we are faced with difficulty. It is not obvious how to move from our knowledge of the properties of the confidence procedure to the interpretation of the confidence interval. 
-
-Textbook authors and proponents of confidence intervals bridge the gap seamlessly by claiming that the properties of confidence procedures can be applied to individual confidence intervals. For instance, \citet{Masson:Loftus:2003} state that ``[t]he interpretation of the confidence interval constructed around that specific mean would be that there is a 95\% probability that the interval is one of the 95\% of all possible confidence intervals that includes the population mean. Put more simply, in the absence of any other information, there is a 95\% probability that the obtained confidence interval includes the population mean.'' \citet{Cumming:2014} writes that ``[w]e can be 95\% confident that our interval includes [the parameter] and can think of the lower and upper limits as likely lower and upper bounds for [the parameter]. 
-
-% Masson and Loftus (2003), in the context of sample means - never specifies normality, implies that these are general properties
-% Cumming (2014): The discussion here refers to a 95% CI for a population mean, \mu, but generally applies to any CI. 
-
-This interpretation, although seemingly natural, is incorrect. We dub this incorrect reasoning the ``Fundamental Confidence Fallacy'' (FCF). The FCF is fundamental because it seems to flow naturally from the definition of the confidence interval:
-
-\begin{myth}[The Fundamental Confidence Fallacy]
-``If the probability that a random interval contains the true value is $X\%$, then the plausibility (or probability) that a particular observed interval contains the true value is also $X\%$.''
-\end{myth}
-
-The reasoning behind the Fundamental Confidence Fallacy seems plausible: on a given sample, we could get any one of the possible confidence intervals. Because 95\% of the possible confidence intervals contain the true value, without any other information it seems reasonable to say that we have 95\% certainty that the true value is in our calculated confidence interval. This interpretation is suggested by the name ``confidence interval'' itself: the word ``confident'', in lay use, is closely related to concepts of plausibility and belief. The name ``confidence interval'' therefore invites the FCF as an interpretation.
-
-The first hint that the FCF is a fallacy is the fact that, as we have seen, for any given problem there could be more than one confidence procedure. If the mere fact that a confidence procedure has a confidence coefficient of X\% implied that any interval computed from that procedure has a X\% probability of containing the true parameter value, then two intervals computed with the same data from two different 50\% confidence procedures will both have a 50\% probability of containing the true value.  
-
-Consider CP1 and CP2; both are centered around $\bar{x}$. If intervals from CP1 and CP2 both have a 50\% probability of containing the true value, then the laws of probability require that all of the 50\% probability be concentrated in the shorter of the two intervals -- otherwise, the longer of the two intervals would have $>50\%$ probability of containing the true value. This seems to imply that if we have two procedures that are always nested within one another, as CP1 and CP2 are, then we can simply take the shorter of the two --- whichever that is --- as our 50\% CI. But since both CP1 and CP2 are 50\% CIs, then the procedure taking the shorter of the two must contain the true value less than 50\% of the time, meaning it cannot be a 50\% confidence procedure. The FCF leads to contradiction. 
-
-We do not need two confidence procedures to see why the FCF is a fallacy. In the second submarine scenario, a statistician using CP1 under the FCF would believe, on the basis that she has computed a 50\% CI, that she is 50\% certain that the true value is between the two bubbles. Considering the fact that bubbles cannot be more than 5 meters from the hatch, if the bubbles are more than 5 meters apart a CI computed from CP1 {\em must} contain the hatch location. All CIs from CP1 that are wider than 5 meters contain $\theta$, with certainty. Under the FCF, the data would yield {\em both} 100\% certainty and 50\% certainty. Likewise, in the first scenario, the bubbles were only \Sexpr{diff(x.a)} meters apart. Of confidence intervals that are \Sexpr{diff(x.a)} meters wide, only \Sexpr{round(100 * 2*diff(x.a)*10 / (20 - 2*diff(x.a)*10),0)}\% contain the true value (see the supplement for an explanation). On the basis of this fact, one could state \Sexpr{round(100 * 2*diff(x.a)*10 / (20 - 2*diff(x.a)*10),0)}\% certainty that the hatch is in the interval, and yet the FCF would lead one to also claim 50\% certainty. The FCF leads to multiple, contradictory inferences from the same data.
-
-The Fundamental Confidence Fallacy seems to follow directly from the definition of a confidence interval. How can one use a confidence procedure that yields 50\% CIs, yet {\em not} be 50\% certain that they contain the true value? We explore the roots of this seeming paradox.
-
-\subsection{Relevant subsets}
-You may have heard the old joke about the statistician who drowned wading across a river. He knew that the river was one meter deep...on average. The joke works (as far as it goes) because anyone can see that the statistician was foolish for considering only the average depth of the river. Surely at some point he could see that the water was dangerously deep and yet he pressed on, presumably reassured by the sophistication of his research into the depth of the river. 
-
-The statistician in the joke failed to use relevant depth of the river {\em at his location} to inform his actions. The Fundamental Confidence Fallacy entails a similar confusion: the confusion of the average properties of a confidence procedure with what is known about a particular confidence interval. Consider the submarine example: if we were to know that the width of the confidence interval from CP1 were \Sexpr{diff(x.b)*10} meters, should we report 50\% confidence in the interval, or 100\% confidence? It is a 50\% CI in the sense that it was generated from a 50\% confidence procedure. If we restrict our attention to intervals of width 9 meters, however, we find that 100\% of these intervals contain the true value.
-
-\citet{Fisher:1959} argued that probability statements like the ones above were critically flawed. In particular, upon observing the data, one can see that the observed data are part of a subset of data space (that is, possible data) for which the CI has a different probability of containing the true value than the average probability. In the submarine example, these subsets can be identified by how far apart the bubbles were. In cases like these, the subset into which the data fall is relevant to judging the probability that the CI contains the true value; hence, these special subsets of the data are called {\em relevant subsets} \citep{Buehler:1959,Buehler:Feddersen:1963,Casella:1992,Robinson:1979}. 
-
-The existence of relevant subsets indicates a failure of properly conditioning on the data: there is the information in data that is not being used. By not using this relevant information, researchers who believe the Fundamental Confidence Fallacy are blinding themselves to important aspects of the data. Someone who wanted to make good use of their data would surely never want to use an interval that admitted relevant subsets, because that would involve ignoring what could be plainly seen in the data. Furthermore, if one believes the Fundamental Confidence Fallacy, the existence of relevant subsets can cause mutually contradictory confidence statements.
-
-Although there is nothing about confidence procedures themselves that prevent relevant subsets -- their goal is a long-run average performance, not to support reasonable, specific inferences -- we can create a procedure that eliminates the relevant subsets in the submersible example. Bayesian intervals called credible intervals take into account all the data through conditioning. If we take the central 50\% of the intervals labeled ``posterior'' in Figure~\ref{fig:bubbles1}, we obtain the following credible interval\footnote{This credible interval is formed by assuming a prior distribution that assigns equal plausibility to all possible values of $\theta$. A derivation is provided in the supplement to this article.}:
-\begin{eqnarray*}
-\bar{x} \pm \left(5 - \frac{|x_1-x_2|}{2}\right)
-\end{eqnarray*}
-The credible intervals for the first and second submarine rescue scenarios are shown in Figure~\ref{fig:bubbles1} along the line labeled ``Cred. Int.'' Notice that the Bayesian credible interval properly tracks the precision given by the data (as shown by the posterior). Incidentally, this Bayesian credance procedure yields another 50\% confidence procedure.
-
-It is clear that to a scientist caring primarily about what the data at hand say about the parameter, the Bayesian interval is preferable. The Bayesian interval does not ignore the information in the data by leaving relevant subsets; it cannot include impossible values; and its narrowness is directly proportional to the precision implied by the data. It is derived from the Bayesian posterior distribution, which is a unique statement about the uncertainty about the parameter, given the data and a prior. In contrast, confidence intervals are not unique; for any given problem, there may be several mutually contradictory confidence procedures. Finally, the Bayesian interval, through its use of a prior, has the interpretation that the advocates of desire: that the plausibility that the true value is within the interval is 50\%. 
-
-We will explore the properties of Bayesian procedures in the Discussion; for now, we present a scenario that will be more familiar to psychological researchers: Normal data with the Student's $t$ confidence interval.
-
-\subsection{Example 2: Student's $t$ interval}
-The submarine example was specifically tailored to show how each of the three broad claims about confidence intervals fail. Many users of CIs, however, will never encounter such a problem. Their data is roughly normal, and so they use Student's $t$ confidence interval almost exclusively. As we will argue in the discussion, this does not make the argument against CIs less powerful: CIs are advocated as a general inferential tool, so they should work generally. If CIs only appear to make good inferences in a small number of circumscribed situations, their logical basis is suspect. Moreover, the propenents of CIs often directly state or indirectly imply that {\em all} CPs have the properties erroneously ascribed to them, by virtue of them being CIs \citep[see, for example,][who states that these properties ``generally appl{[y]} to any CI'']{Cumming:2014}. It turns out, however, that the contradictory conclusions caused by relevant subsets occur even with popular Student's $t$ confidence interval.
-
-Consider a situation in which $N=2$ observations are to be drawn from a normal distribution with unknown mean $\mu$ and standard deviation $\sigma$. As previously discussed, the typical 50\% Student's $t$ confidence procedure for these data is
+\subsubsection{1. A procedure based on the sampling distribution of the mean} The first statistician suggests building a confidence procedure using the sampling distribution of the mean, $\bar{x} = (x_1 + x_2)/2$. The sampling distribution of $\bar{x}$ has a known triangular distribution with $\theta$ as the mean. We can thus use $\bar{x} - \theta$ as a so-called ``pivotal quantity'' \citep[][see the supplement to this manuscript for more details]{Casella:Berger:2002} by noting that there is a 50\% probability that $\theta$ is within this same distance of $\bar{x}$ in repeated samples. There is a 50\% probability that $\bar{x}$ will differ from $\theta$ by less than $5 - 5/\sqrt{2}$, or about 1.46m.  This leads to the confidence procedure
 \[
-\bar{x}\pm\frac{s}{\sqrt{2}}=\bar{x}\pm\frac{|x_1-x_2|}{2},
+\bar{x} \pm (5 - 5/\sqrt{2}),
 \]
-or simply the minimum observation to the maximum observation. The fact that this is a 50\% confidence procedure implies that if we observe the data, compute the CI, and then make the dichotomous claim ``the CI contains the true value,'' -- or, alternatively, ``the CI does not contain the true value'' our claim will be correct 50\% of the time, on average. If relevant subsets exist, then we can find a way to improve our accuracy above 50\% correct by only using information in the data.
+which we call the ``sampling distribution'' procedure.
 
-Although we did not previously point it out, we have already presented the evidence of relevant subsets using Student's $t$ intervals. If we re-examine Figure~\ref{fig:cis1}, it is apparent that the intervals near the bottom of the figure --- the short intervals --- almost never contain the true value. The longer intervals near the top, in contrast, almost always contain the true value. In general, the probability that a Student's $t$ CI contains the true value is an increasing function of the standard error.
-
-In order to exploit this fact, we require a way of separating short intervals from long ones. \citet{Buehler:1959} suggested a simple strategy for improving on the 50\% accuracy of the CI: pick a positive number --- any positive number will do --- and if the sample standard deviation $s$ is larger than this number, claim that the interval contains the true value. If the standard deviation is smaller the selected number, claim that the interval excludes the true value. No matter what the true mean, true standard deviation, and positive number one selects, this strategy will lead to a greater than 50\% success rate for selecting intervals that do or do not contain the true value.
-
-How far can you raise your accuracy above the nominal 50\% correct rate for the confidence interval? The accuracy of the strategy depends on the number you selected to separate the short intervals from the long ones. If the number you selected is near $.67\sigma$, you can win about 3/4 of the time. Your accuracy will drop as your criterion moves further from this optimal value. The proof of this fact is not provided by \citet{Buehler:1959}, but we have provided it in the supplement because it will help understand why the relevant subsets arise. 
-
-Given that your accuracy depends on how well you can guess the true population standard deviation $\sigma$, it might seem that increasing your accuracy above 50\% requires prior information about $\sigma$. It is important to emphasize that the probability that you are correct with Buehler's strategy is {\em always} greater than 50\%, no matter what the criterion. It is true, however, that it is bounded at .5. If you are very, very far off in your guess of $\sigma$, then your accuracy will be negligibly larger than 50\%. This boundedness has led statisticians to call this relevant subset a {\em semirelevant} subset \citep{Buehler:1959,Robinson:1979}, which is typically considered less problematic than fully relevant subsets, where the probability is bounded away from 50\%. This might cause one to suspect that the problem is not as bad as it might first seem; certainly, the problem with Student's $t$ intervals does not seem as dire as it was with the CI in the submarine rescue example.
-
-There are two responses to this defense of the Student's $t$ confidence interval. First, as \citet{Buehler:1959} points out, information about the error in one's measurements -- whatever these measurements might be -- is precisely the kind of information that is known to a competent experimenter, and that would garner rough agreement across experimenters. One does not need very specialized knowledge of $\sigma$ to increase one's accuracy substantially above 50\%. If, for instance, you underestimate $\sigma$ by a factor of 10 -- a very large underestimation that we suspect most experimentalists would be able to beat -- your accuracy will still about 55\%. A statistician may find this semi-relevant subset less interesting, but a scientist concerned with making reasonable, accurate inferences should find it disconcerting.  
-
-The second response to the defense against the Student's $t$ CI's semirelevant subsets is that in fact, the Student's $t$ CI admits fully relevant subsets. We presented the semirelevant subset first for conceptual clarity. Consider the following scheme, suggested by \citet{Pierce:1973}. Suppose we sample $N=2$ observations from a normal population with unknown mean and variance, then compute a 50\% Student's $t$ confidence interval. We then {\em simultaneously} perform a two-sided $t$~test against the null hypothesis that $\mu=0$ (it is irrelevant whether or not we are interested in the hypothesis that $\mu=0$). If the $p$ value for the $t$ test is greater than .25, then the probability that the 50\% confidence interval contains the true value is greater than or equal to 2/3, regardless of the true mean and standard deviation of the population. In a similar but more dramatic fashion to \citeapos{Buehler:1959} example, the procedure selects for large CIs by requiring a large $p$ value.\footnote{If, like the authors of this paper, you find this result unbelievable and counterintuitive, R code is provided in the supplement to show the result by simulation.} 
-
-\citeapos{Pierce:1973} relevant subset shows that even with the Student's $t$ confidence interval, one could claim with 50\% certainty that the true mean is within the CI, and simultaneously know that the data are part of a relevant subset for which CIs contain the true mean with a probability of at least 2/3. Confidence procedures fail because they can provide contradictory advice on how confident we should be that the true value is inside the interval. Indeed, confidence procedures were not designed to offer such advice. Confidence procedures were merely designed to allow the analyst to make certain kinds of dichotomous statements about whether an interval contains the true value, in such a way that the statements are true a fixed proportion of the time {\em on average} \citep{Neyman:1937}. Expecting them to do anything else is expecting too much. 
-
-\section{Inference without Relevant Subsets}
-Relevant subsets threaten the coherence and uniqueness of frequentist inferences with confidence intervals and can be thought of as an example of a more general problem, the reference class problem \citep{Venn:1888}. Frequentist probability is defined as a long-run proportion, or the number of events that occur with a specified property (e.g., CIs that contain the true value) out of some reference class of events. If there are relevant subsets, then there are multiple probability statements we could make \citep{Fisher:1959a}, depending on the reference class we choose. 
-
-The submarine example makes the implications clear. Is our reference class all CIs, in which case 50\% of CIs will contain the true value? Or is our reference class all CIs with a particular width, in which case anywhere from 0\% (for very narrow CIs) to 100\% (for CIs wider than 5 meters)? Either confidence statement is valid, from a frequentist perspective, but they contradict one another.
-
-It seems clear that restricted reference classes are the preferable: when possible, our inferences should be based on the most specific descriptions of the data possible.  One might be tempted to try to solve the problem simply: if our data are part of a known relevant subset, then we should condition our inference on that fact. In \citeapos{Pierce:1973} example above, if $p>.25$, then we should report a confidence of greater than or equal to 2/3. However, this is no solution; an observation may be a member of multiple overlapping relevant subsets, and then the reference class problem rears its ugly head again. 
-
-The desire to base inference only on the data that were observed, and not on the average properties across all possible data sets, suggests a simple solution to the relevant subset problem. There is one reference class that is as specific as possible that makes the relevant subsets problem disappear: the data itself. Bayesian inference, for instance, makes use of Bayes' theorem, which states that
+\subsubsection{2. A nonparametric procedure} The second statistician notes that $\theta$ is both the mean and median bubble location. \citet{Olive:2008} and \citet{Rusu:Dobra:2008} suggested a confidence procedure for the median that in this case is simply the interval between the two observations:
 \[
-p(\bftheta\mid \bfy) = \frac{p(\bfy\mid\bftheta)}{p(\bfy)}p(\bftheta), 
+\bar{x} \pm \frac{x_2 - x_1}{2}.
 \]
-where $\bfy$ is the data and $\bftheta$ is a vector of unknown parameters. The posterior $p(\bftheta\mid\bfy)$ yields a probability distribution that represents the uncertainty about the parameters, given the observed data. The prior, $p(\bftheta)$, represents our uncertainty about the parameters before observing the data. If the prior probability distribution is {\em proper} -- that is, it represents a valid probability distribution -- then there can be no relevant subsets \citep{Casella:1992,Robinson:1979}. The probability statements that arise from Bayesian inference with proper priors must be unique and consistent. Furthermore, the interpretation of probability statements that arise from Bayesian inference are interpretable as statements of plausibility, unlike frequentist probability statements which have no such interpretation.
+It is easy to see that this must be a 50\% confidence procedure; the probability that both observations fall below $\theta$ is 25\%, and likewise for both falling above. There is thus a 50\% chance that the two observations encompass $\theta$. Coincidentally, this is the same as 50\% Student's $t$ procedure for $n=2$. We call this the ``nonparametric'' procedure.
 
-% The following figure is not created. It is too complicated to explain for this paper.
-<<echo=FALSE,eval=FALSE>>=
-M = 200
-N = 2
+\subsubsection{3. The uniformly most-powerful procedure} The third statistician, citing \citet{Welch:1939}, describes a procedure that can be thought of as a slight modification of the nonparametric procedure. Suppose we obtain a particular confidence interval using the nonparametric procedure. If the nonparametric interval is more than 5 meters wide, then it {\em must} contain the hatch, because the only possible values are within 5 meters from both bubbles. Moreover, in this case the interval will contain impossible values, because it will be wider than the likelihood. We can exclude these impossible values by truncating the interval to the likelihood whenever the width of the interval is greater than 5 meters:
+\[
+\bar{x} \pm \left\{\begin{array}{lllr}
+\frac{x_2 - x_1}{2} & \mbox{if} & x_2 - x_1 < 5 & \mbox{(Nonparametric procedure)}\\
+5 - \frac{x_2 - x_2}{2} &\mbox{if} & x_2 - x_1 \geq 5 & \mbox{(Likelihood)}
+\end{array} \right.
+\]
+This will not change the probability that the interval contains the hatch, because it is simply replacing one interval that is sure to contain it with another. \citet{Pratt:1961} noted that this interval can be justified as an inversion of the uniformly most-powerful (UMP) test. We thus call this procedure the ``UMP procedure''.
 
-mu0=8
-n0=1
-sig20=12^2
-nu0=1
-alpha = .5
-@
+\subsubsection{4. An objective Bayesian procedure} The fourth statistician suggests an objective Bayesian procedure. Using this procedure, we simply take the central 50\% of the likelihood as our interval:
+\[
+\bar{x} \pm \frac{1}{2}\left(5 - \frac{x_2 - x_1}{2}\right).
+\]
+From the objective Bayesian viewpoint, this can be justified by assuming a prior distribution that assigns equal probability to each possible hatch location. In Bayesian terms, this procedure generates ``credible intervals'' for this prior. It can also be justified under Fisher's fiducial theory; see \citet{Welch:1939}. 
 
-<<echo=FALSE,eval=FALSE>>=
-jointPost <- Vectorize(function(sig2,mu,y,mu0,n0,sig20,nu0){
-  exp(sum(dnorm(y,mu,sqrt(sig2),log=TRUE))+dnorm(mu,mu0,sqrt(sig2/n0),log=TRUE)+log(dinvgamma(sig2,nu0/2,nu0*sig20/2)
-  ))},"sig2")
+\subsection{Properties of the procedures}
 
-margPost <- Vectorize(function(mu,y,mu0,n0,sig20,nu0){
-  integrate(jointPost,0,Inf,mu=mu,y=y,mu0=mu0,n0=n0,sig20=sig20,nu0=nu0)$value  
-},"mu")
+The four statisticians report their four confidence procedures to the rescue team, who are understandably bewildered by the fact that there appear to be at least four ways to summarize the data about the hatch location from two bubbles. Just after the statisticians present their confidence procedures to the rescuers, two bubbles appear at locations $x_1=\Sexpr{min(x.a)*10}$ and $x_2=\Sexpr{max(x.a)*10}$. The resulting likelihood and the four confidence intervals are shown in Figure~\ref{fig:bubbles1}A.  
 
-margPostAna = Vectorize(function(mu,ybar,s2,N,mu0,n0,nu0,sig20){
-  mu1 = (N * ybar + n0 * mu0)/(N + n0)
-  nu1 = N + nu0
-  S21 = nu0 * sig20 + (N - 1) * s2 + N * n0/(n0 + N) * (ybar - mu0)
-  sig21 = S21/nu1
-  dt((mu - mu1)/sqrt(sig21/(n0 + N)), nu1)/sqrt(sig21/(n0 + N))
-},"mu")
+After using the observed bubbles to compute the four confidence intervals, the rescuers wonder how to interpret them. It is clear, first of all, why the fundamental confidence fallacy is a fallacy. As Fisher pointed out, for any given problem, as for this one, there are many possible confidence procedures. These confidence procedures will lead to different confidence intervals. In the case of our submersible confidence procedures, all confidence intervals are centered around $\bar{x}$, and so the intervals will be nested within one another. If all intervals had a 50\% probability of containing the true value, then all the probability must be contained in the shortest of the intervals. Because each procedure is by itself a 50\% procedure, the procedure which chooses the shortest of 50\% intervals will contain the true value less than 50\% of the time. Hence, believing the FCF results in logical contradiction. 
 
-credInt = function(ybar,s2,N,mu0,n0,nu0,sig20,alpha=.5){
-  
-  n1 = n0 + N
-  mu1 = (N * ybar + n0 * mu0)/n1
-  nu1 = N + nu0
-  S1 = nu0 * sig20 + (N - 1) * s2 + N * n0/n1 * (ybar - mu0)^2
-  sig21 = S1/nu1
-  
-  tstar = qt(1-alpha/2,nu1)
-  
-  mu1 + c(-1,1)*tstar*sqrt(sig21/n1)
-}
+This is not, by itself, a critique of confidence interval theory {\em proper}. Neyman was very clear that this interpretation was not permissible, using similarly nested confidence intervals to demonstrate the fallacy \citep[][pp.  213-215]{Neyman:1941}. It is a warning, however, that the improper interpretation of confidence intervals can lead to mutually contradictory inferences, just as Fisher warned.
 
-@
+Even without nested confidence procedures, one can see that the FCF must be a fallacy. Consider Figure~\ref{fig:bubbles1}B, which shows the resulting likelihood and confidence intervals when $x_1=\Sexpr{min(x.b)*10}$ and $x_2=\Sexpr{max(x.b)*10}$. When the bubbles are far apart, as in this case, the hatch can be localized very precisely: the bubbles are far enough apart that they must have come from the bow and stern of the submersible. The sampling distribution, nonparametric, and UMP confidence intervals all encompass the likelihood, meaning that there is 100\% certainty that these 50\% confidence intervals contain the hatch. Reporting 50\% certainty in an interval that surely contains the parameter would clearly be a mistake.
 
-<<cis2,eval=FALSE,echo=FALSE,fig.cap=paste(M,' random ',100*(1-alpha),'\\% intervals for a normal mean with unknown variance, based on ',N,' draws from a Normal distribution with random mean and variance. Dark (blue) lines denote CIs that contain the true mean; light (red) lines denote those that do not. Intervals are sorted by length relative to the (random) true standard deviation. A: Confidence intervals; B: Credible intervals.',sep=""),fig.width=8,fig.height=4>>=
+This set of confidence procedures also makes clear the precision fallacy. Consider Figure~\ref{fig:precision1}, which shows how the width of each of the intervals produced by the four confidence procedures changes as a function of the width of the likelihood. Because the likelihood represents the possible locations for the hatch, the likelihood's width is a natural measure of the uncertainty in the data. When it is 0, the location of the hatch is known with certainty; when it is wider, there is greater uncertainty.
 
-par(las=1,cex=1.3,mfrow=c(1,2),mar=c(4,.5,1.5,.5))
+<<precision1,echo=FALSE,fig.cap='The relationship between CI width and the uncertainty in the estimation of the hatch location for the four confidence procedures. SD: Sampling distribution procedure; NP: Nonparametric procedure; UMP: UMP procedure; B: Bayes procedure. The diagonal gray line represents the width of the likelihood against itself.',fig.width=7,fig.height=5>>=
 
-sig2 = rinvgamma(M,nu0/2,nu0*sig20/2)
-mu = rnorm(M,mu0,sqrt(sig2/n0))
-y = mapply(rnorm,mean=mu,sd=sqrt(sig2),MoreArgs=list(n=N))
-ybar = apply(y,2,mean)
-s2 = apply(y,2,var)
+source('sub.cis.R')
 
-creds = mapply(credInt,ybar=ybar,s2=s2,MoreArgs=list(N=N,mu0=mu0,n0=n0,sig20=sig20,nu0=nu0,alpha=alpha))
-confs = apply(y,2,sort)
+par(las=1,cex=1.3)
 
-creds2 = t((t(creds) - mu)/sqrt(sig2))
-confs2 = t((t(confs) - mu)/sqrt(sig2))
+bayes.prec = width.sub(bayes.sub, 10)
+samp.prec = width.sub(sampling_dist.sub, 10)
+nonpara.prec = width.sub(nonpara.sub, 10)
+ump.prec = width.sub(ump.sub, 10)
 
-containsCred = creds[1,]<mu & creds[2,]>mu
-containsConf = confs[1,]<mu & confs[2,]>mu
+plot(nonpara.prec$precision, nonpara.prec$width, ty='l', 
+     xlab = "Uncertainty (width of likelihood)", 
+     ylab = "CI width", lty = 2, lwd = 2, col = "red")
+lines(samp.prec$precision, samp.prec$width,lty = 5, lwd = 2, col = "red")
+lines(bayes.prec$precision, bayes.prec$width, lty = 1, lwd = 2, col = "blue")
+lines(ump.prec$precision, ump.prec$width, lty = 4, lwd = 2, col = "red")
+#lines(ump.prec$precision, ump.prec$precision, lty = 3, lwd = 2, col = rgb(0,0,0,.3))
 
-widthCred = creds[2,]-creds[1,]
-ordCred = order(widthCred)
-
-widthConf = confs[2,]-confs[1,]
-ordConf = order(widthConf)
-
-xlims = c(-1,1)*max(abs(range(c(creds2,confs2))))
-
-plot(0,0,ylim=c(0,(M+1)/M),ty='n',ylab="",xlab=expression(paste("Standardized ",theta)),yaxt='n',xlim=xlims)
-segments(confs2[1,ordConf],1:M/M,confs2[2,ordConf],1:M/M,
-         col=rgb(1-containsConf[ordConf],0,containsConf[ordConf],containsConf[ordConf]*2/3+1/3),lwd=2)
-
-mtext("A",3,.1,adj=.95,cex=1.5)
-
-
-plot(0,0,ylim=c(0,(M+1)/M),ty='n',ylab="",xlab=expression(paste("Standardized ",theta)),yaxt='n',xlim=xlims)
-segments(creds2[1,ordCred],1:M/M,creds2[2,ordCred],1:M/M,
-         col=rgb(1-containsCred[ordCred],0,containsCred[ordCred],containsCred[ordCred]*2/3+1/3),lwd=2)
-
-mtext("B",3,.1,adj=.95,cex=1.5)
-
-
-#plot(1:M,cumsum(contains),ty='l')
+text(2, 9, "NP", col="red", cex = 1)
+text(.5, 3.5, "SD", col="red", cex = 1)
+text(.5, 1.5, "UMP", col="red", cex = 1)
+text(8.8, 5, "B", col="blue", cex = 1)
 
 @
 
-Notice, though, that in order to rid ourselves the relevant subsets that make can make reasoning from confidence intervals problematic, we require a prior distribution, $p(\bftheta)$. As we have argued elsewhere \citep{Rouder:etal:submitted}, reasonable inference  requires bringing information to the table.  Only if we bring information to the table, in the form of a reasonable prior distribution, can we take all the information off the table.  The belief that one can make inferences without committing to using prior information strikes us like a gambler who tries to win without paying the ante. The rules of the table, unfortunately, do not allow this. 
+Intervals from the sampling distribution procedure have a fixed width, and so cannot reveal any information about the precision of the estimate. The nonparametric procedure generates intervals whose widths are {\em inversely} related to the width of the likelihood. Even more strangely, intervals from the UMP procedure initially increase in width with the uncertainty in the data, but when the width of the likelihood is greater than 5 meters, the width of the UMP interval is inversely related to the uncertainty in the data, like the nonparametric interval. Only the Bayes procedure tracks the uncertainty in the data. This is not a coincidence; we will discuss why subsequently.
 
-The argument presented here -- that frequentist inference, in this case with CIs -- leads to incoherent inferences, is but one of a number of arguments for moving away from frequentist inferential methods. Elsewhere, we have argued for Bayesian inference as a viable replacement \citep{deVries:Morey:2013,Lee:Wagenmakers:2005,Morey:etal:2014,Rouder:etal:2009a,Rouder:Morey:2011,Rouder:etal:2012,Wagenmakers:2007,Wagenmakers:etal:2008,Wagenmakers:etal:2011}. A full accounting of Bayesian inference is beyond the scope of this article; for the interested reader, in addition to the articles just mentioned we also recommend  \citet{Dienes:2011}, \citet{Lee:2004}, and \citet{Edwards:etal:1963}.
+To see how the likelihood fallacy manifests in this example, consider again Figure~\ref{fig:precision1}. When the uncertainty is high, the likelihood is wide; yet the nonparametric and UMP intervals are extremely narrow, indicating both false precision and excluding almost all likely values. Furthermore, the sampling distribution procedure and the nonparametric procedure can contain impossible values.\footnote{In order to construct a better interval, a frequentist would typically truncate the interval to only the possible values, as was done with in generating the UMP procedure from the nonparametric procedure. This is guaranteed to lead to a better procedure. Our point here is that naively assuming that a procedure has good properties on the basis that it is a confidence procedure is a mistake. However, see \citet{Velicer:etal:2008} for an example of CI proponents including impossible values in confidence intervals, and \citet{Fidler:Thompson:2001} for a defense of this practice.} 
+
+\subsection{Evaluating the confidence procedures}
+The rescuers who have been offered the four intervals above have a choice to make: which confidence procedure to choose? We have shown that several of the confidence procedures have counter-intuitive properties, but thus far, we have not made any firm commitments about which confidence procedures would be preferred to the others. For the sake of our rescue team, who have a decision to make about which interval to use, we now compare the four procedures directly. We begin with the evaluation of the procedures from the perspective of confidence interval theory, then evaluate them according to Bayesian theory.
+
+As previously mentioned, confidence interval theory specifies that better intervals will include false values less often. Figure~\ref{fig:power1} shows the probability that each of the procedures include a value $\theta'$ at a specified distance from the hatch $\theta$. All procedures are 50\% confidence procedures, and so they include the true value $\theta$ 50\% of the time. Importantly, however, the procedures include false values $\theta'\neq\theta$ at different rates.
+
+<<power1,echo=FALSE,fig.cap='The probability that each confidence procedure includes false values $\\theta\'$. T: Trivial procedure; SD: Sampling distribution procedure  NP: Nonparametric procedure; UMP: UMP procedure; B: Bayes procedure. The line for the sampling distribution procedure (dashed line) is between the lines for the Bayes procedure and the UMP procedure.',fig.width=7,fig.height=5>>=
+
+par(las=1)
+
+bayesCIprob = Vectorize(function(q){
+  q = abs(q)
+  if(q < (1/4)){
+    return(
+      1/2 - 8/3*q^2
+    )
+  }else if(q<(3/4)){
+    return(
+      3/4 - 2*q + 4/3*q^2
+    )
+  }else{
+    return(0)
+  }
+},"q")
+
+freqCIprob = Vectorize(function(q){
+  (2*(q + 1/2) * (1-q-1/2))*(abs(q)<1/2)
+},"q")
+
+
+pxbar2 <- Vectorize(function(xbar,theta,scale){
+  if(xbar<(theta-scale)) return(0) 
+  if(xbar>(theta+scale)) return(1)
+  z = (xbar - theta)/scale
+  if(xbar<theta) return((z + 1)^2/2)
+  if(xbar>theta) return(1 - (1 - z)^2/2)
+},"xbar")
+
+
+pC2in <- Vectorize(function(thetaStar,theta,scale){
+  w = scale * (1 - 1 / sqrt(2))
+  pxbar2(thetaStar + w, theta, scale) - pxbar2(thetaStar - w, theta, scale)
+},"thetaStar")
+
+welchCIprob = Vectorize(function(q){
+  q = abs(q)
+  if(q<1/2){
+    1/2 - q
+  }else{
+    return(0)
+  }
+},"q")
+
+
+qq = seq(-3/4,3/4,len=200)
+aa = bayesCIprob(qq)
+bb = freqCIprob(qq)
+cc = pC2in(qq,theta=0,scale=.5) 
+dd = welchCIprob(qq)
+plot(qq,aa,ty='l',ylab="Probability CI contains value",xlab=expression(paste("Alternative ", theta,"'")),col="blue",axes=FALSE,lwd=2)
+lines(qq,bb,col="red",lwd=2,lty=2)
+lines(qq,cc,col="red",lwd=2,lty=5)
+lines(qq,dd,col="red",lwd=2,lty=4)
+abline(h=.5,col="gray",lwd=2,lty=2)
+
+box()
+axis(2)
+axis(1,at=-3/4,lab=expression(theta-7.5 ))
+axis(1,at=-2/4,lab=expression(theta-5 ))
+axis(1,at=-1/4,lab=expression(theta-2.5 ))
+axis(1,at=0,lab=expression(theta))
+axis(1,at=3/4,lab=expression(theta+7.5 ))
+axis(1,at=2/4,lab=expression(theta+5 ))
+axis(1,at=1/4,lab=expression(theta+2.5 ))
+
+text(.6, .47, "T", col="darkgray", cex = 1)
+text(.3, .4, "NP", col="red", cex = 1)
+text(.5, 3.5, "SD", col="red", cex = 1)
+text(-.1, .3, "UMP", col="red", cex = 1)
+text(-.6, .1, "B", col="blue", cex = 1)
+
+legend(-3/4,.4,legend=c("SD"), col="red",lty=5,lwd=2,bty='o',text.col="red")
+
+@
+
+The trivial procedure (T; gray horizontal line) is obviously a bad interval because it includes every false value with the same frequency as the true value. The trivial procedure will be worse than any other procedure, unless the procedure is specifically constructed to be pathological. The UMP procedure (UMP), on the other hand, is better than every other procedure for every value of $\theta'$. This is due to the fact that it was created by inverting a most-powerful test. No other confidence procedure can be better.
+
+The ordering among the three remaining procedures can be seen by comparing their curves. The sampling distribution procedure (SD) is always superior to the Bayes procedure (B), but not to the nonparametric procedure (NP). The nonparametric procedure and the Bayes procedure curves overlap, so one is not preferred to the other. \citet{Welch:1939} remarked that the Bayes procedure is ``not the best way of constructing confidence limits'' using precisely the frequentist comparison shown in Figure~\ref{fig:power1} with the UMP interval.\footnote{Several readers of a previous draft of this manuscript have noted that frequentists use the likelihood as well, and so may prefer the Bayesian procedure in this example. However, as \citet{Neyman:1977} points out, the likelihood has no special status to a frequentist; what matters is the frequentist properties of the procedure, not how it was constructed.}
+
+The frequentist comparison between the procedures is instructive, because we have arrived at an ordering of the procedures employing the criteria suggested by Neyman and used by the modern developers of new confidence procedures: coverage and power. The UMP procedure is the best, followed by the sampling distribution procedure. The sampling distribution procedure is better than the Bayes procedure. The nonparametric procedure is not preferred to any interval, but neither is it the worst. 
+
+We can also examine the procedures from a Bayesian perspective, which primarily concerned with whether the inferences are reasonable in light of the data and what was known before the data were observed \citep{Howson:Urbach:2006}. We have already seen that interpreting the non-Bayesian procedures in this way leads to trouble, and that the Bayesian procedure, unsurprisingly, has better properties in this regard. We will show how the Bayesian interval was derived in order to provide insight into why it has good properties. 
+
+Consider the left column of Figure~\ref{fig:bubblesBayes}, which shows Bayesian reasoning from prior and likelihood to posterior and so-called credible interval. The prior distribution in the top panel shows that prior to observing the data, all the locations are equally probable. Upon observing the bubbles shown in Figure~\ref{fig:bubbles1}A --- also shown in the top of the ``likelihood panel'' --- the likelihood is a function that is 1 for all possible locations for the hatch, and 0 otherwise. To combine our prior knowledge with the new information from the two bubbles, we multiply the prior by the likelihood, which results in the posterior distribution in the bottom row. The central 50\% credible interval contains all values in the central 50\% of the area of the posterior, shown as the shaded region. The right column of Figure~\ref{fig:bubblesBayes} shows a similar computation using a prior distribution that does not assume that all locations are equally likely, as might occur if some other information about the location of the submersible were available.
+
+It is now obvious why the Bayesian credible interval has the properties typically ascribed to confidence intervals. The credible interval can be interpreted as having a 50\% probability of containing the true value, because the values within it account for 50\% of the posterior probability. It reveals the precision of our knowledge of the parameter, in light of the data and prior, through its relationship with the posterior and likelihood. 
+
+Of the five procedures considered, intervals from the Bayesian procedure are the {\em only ones} that can be said to have 50\% probability of containing the true value, upon observing the data. Importantly, the ability to interpret the interval in this way arises from Bayesian theory and not from confidence interval theory. Also importantly, it was necessary to stipulate a prior to obtain the desired interval; the interval should be interpreted in light of the stipulated prior. Of the other four intervals, none can be justified as providing a ``reasonable'' inference or conclusion from the data, because of their strange properties and that there is no possible prior distribution that could lead to these procedures. In this light, it is clear why Neyman's rejection of ``conclusions'' and ``reasoning'' from data naturally flowed from his theory. It is also clear why scientists seeking a method to draw inferences from data might want want to reject confidence interval theory as a basis for evaluating intervals, if they care about the making reasonable inferences from data.
+
+<<bubblesBayes,echo=FALSE,fig.cap='Forming Bayesian credible intervals. Prior information (top) is combined with the likelihood information from the data (middle) to yield a posterior distribution (bottom). In the likelihood plots, the shaded regions show the locations within 5 meters of each bubble; the dark shaded regions show where these overlap, indicating the possible location of the hatch $\\theta$. In the posterior plots, the central 50\\% region (shaded region within posterior) shows one possible 50\\% credible interval, the central credible interval.',fig.width=6,fig.height=4>>=
+
+
+par(mgp=c(2,1,0),mar=c(1,3.5,3.5,1),cex=1.3,mfcol=c(3,2),cex.axis=1.3,cex.lab=1.3)
+
+
+plot(0,0,ty='n',ylim=c(0,2),xlim=c(-.5,1.5),axes=F,ylab="Prior",xlab="")
+axis(3,at=1:5/2-1,lab=expression(theta - 10,
+                                 theta - 5,
+                                 theta,
+                                 theta + 5,
+                                 theta + 10
+))
+axis(2,at=0)
+
+abline(h=1, col="blue", lwd=2)
+abline(h=0,col="gray")
+box()
+
+par(mar=c(1,3.5,1,1))
+
+
+
+plot(0,0,ty='n',ylim=c(0,2),xlim=c(-.5,1.5),axes=F,ylab="Likelihood",xlab="")
+points(x.a,0*x.a + 1.5,pch=21,col="black",bg="lightblue",cex=1)
+box()
+abline(h=0,col="gray")
+rect(x.a[1] - .5, 1.5 - .1, x.a[1] + .5, 1.5 + .1, col=rgb(0,0,1,.2),lty=0)
+rect(x.a[2] - .5, 1.5 - .1, x.a[2] + .5, 1.5 + .1, col=rgb(0,0,1,.2),lty=0)
+segments(min(x.a) + .5, 0, min(x.a) + .5, 1, col="blue", lwd=2)
+segments(max(x.a) - .5, 0, max(x.a) - .5, 1,col="blue", lwd=2)
+segments(max(x.a) - .5, 1, min(x.a) + .5, 1,  col="blue", lwd=2)
+
+axis(2,at=0)
+
+par(mar=c(3.5,3.5,1,1))
+
+plot(0,0,ty='n',ylim=c(0,2),xlim=c(-.5,1.5),axes=F,ylab="Posterior",xlab="Location")
+box()
+abline(h=0,col="gray")
+segments(min(x.a) + .5, 0, min(x.a) + .5, 1,  col="blue", lwd=2)
+segments(max(x.a) - .5, 0, max(x.a) - .5, 1,  col="blue", lwd=2)
+segments(max(x.a) - .5, 1, min(x.a) + .5, 1,  col="blue", lwd=2)
+
+axis(2,at=0)
+
+axis(1,at=1:5/2-1,lab=expression(theta - 10,
+                                 theta - 5,
+                                 theta,
+                                 theta + 5,
+                                 theta + 10
+))
+
+rect(mean(x.a) - (1/4 - diff(x.a)/4),
+     0, mean(x.a) + (1/4 - diff(x.a)/4), 1, 
+     col=rgb(0,0,1,.2),lty=0)
+
+#####
+
+par(mar=c(1,1,3.5,3.5))
+
+
+
+plot(0,0,ty='n',ylim=c(0,2),xlim=c(-.5,1.5),axes=F,ylab="",xlab="")
+axis(3,at=1:5/2-1,lab=expression(theta - 10,
+                                 theta - 5,
+                                 theta,
+                                 theta + 5,
+                                 theta + 10
+))
+
+xx = seq(-1,2, len=200)
+
+lines(xx,dnorm(xx,.25,1)*3,  col="blue", lwd=2)
+abline(h=0,col="gray")
+box()
+
+par(mar=c(1,1,1,3.5))
+
+
+
+plot(0,0,ty='n',ylim=c(0,2),xlim=c(-.5,1.5),axes=F,ylab="Likelihood",xlab="")
+points(x.b,0*x.b + 1.5,pch=21,col="black",bg="lightblue",cex=1)
+box()
+abline(h=0,col="gray")
+rect(x.b[1] - .5, 1.5 - .1, x.b[1] + .5, 1.5 + .1, col=rgb(0,0,1,.2),lty=0)
+rect(x.b[2] - .5, 1.5 - .1, x.b[2] + .5, 1.5 + .1, col=rgb(0,0,1,.2),lty=0)
+segments(min(x.b) + .5, 0, min(x.b) + .5, 1, col="blue", lwd=2)
+segments(max(x.b) - .5, 0, max(x.b) - .5, 1, col="blue", lwd=2)
+segments(max(x.b) - .5, 1, min(x.b) + .5, 1, col="blue", lwd=2)
+
+
+par(mar=c(3.5,1,1,3.5))
+  
+plot(0,0,ty='n',ylim=c(0,2),xlim=c(-.5,1.5),axes=F,ylab="Posterior",xlab="Location")
+box()
+abline(h=0,col="gray")
+segments(min(x.b) + .5, 0, min(x.b) + .5, dnorm(min(x.b) + .5,.25,1)*3, col="blue", lwd=2)
+segments(max(x.b) - .5, 0, max(x.b) - .5, dnorm(max(x.b) - .5,.25,1)*3, col="blue", lwd=2)
+xx = seq(max(x.b) - .5,min(x.b) + .5,len=100)
+lines(xx,dnorm(xx,.25,1)*3, col="blue", lwd=2)
+
+axis(1,at=1:5/2-1,lab=expression(theta - 10,
+                                 theta - 5,
+                                 theta,
+                                 theta + 5,
+                                 theta + 10
+))
+
+total.area  = pnorm(min(x.b) + .5,.25,1) - pnorm(max(x.b) - .5,.25,1)
+left.side = qnorm(pnorm(max(x.b) - .5,.25,1) + total.area*.25, .25, 1)
+right.side = qnorm(pnorm(max(x.b) - .5,.25,1) + total.area*.75, .25, 1)
+ 
+xx = seq(left.side,right.side,len=100)
+
+polygon(c(xx, rev(xx)), c(xx*0, dnorm(rev(xx),.25,1)*3), col=rgb(0,0,1,.2),lty=0)
+
+@
+
+We can now review what we know concerning the four procedures procedures. Only the Bayesian procedure --- when its intervals are interpreted as credible intervals  --- allows the interpretation that there is a 50\% probability that the hatch is located in the interval. Only the Bayesian procedure properly tracks the precision of the estimate. Only the Bayesian procedure covers the plausible values in the expected way: the other procedures produce intervals that are {\em known} with certainty --- by simple logic --- to contain the true value, but still are ``50\%'' intervals. Yet the Bayesian procedure is rejected by frequentist confidence interval theory as inferior.
+
+The disconnect between frequentist theory and Bayesian theory arises from the different goals of the two theories. Frequentist theory is a ``pre-data'' theory. It looks forward, devising procedures that will have particular average properties in repeated sampling \citep{Jaynes:2003,Mayo:1981,Mayo:1982} in the future (see also Neyman, 1937, p. 349). This thinking can be clearly seen in Neyman (1942) as quoted above: reasoning ends once the procedure is derived.   Confidence interval theory is vested in the average frequency of including or excluding true and false parameter values, respectively. Any given inference may --- or may not --- be reasonable in light of the observed data, but this is not Neyman's concern; he disclaims any conclusions or beliefs on the basis of data. Bayesian theory, on the other hand, is a post-data theory: a Bayesian analyst uses the information in the data to determine what is reasonable to believe, in light of the model assumptions and prior information. 
+
+Using an interval justified by a pre-data theory to make post-data inferences can lead to unjustified, and possibly arbitrary, inferences. This problem is not limited to the pedagogical pedagogical submersible example \citep{Berger:Wolpert:1988,Wagenmakers:etal:2014}, but having a simple example is instructive when identifying these issues. In the next section we show how a commonly-used confidence interval leads to similarly flawed post-data inferences.
+
+\section{Example 2: A confidence interval in the wild}
+
+The previous example was designed to show, in a simple, accessible example, the logic of confidence interval theory. Further, it shows that confidence procedures cannot be {\em assumed} to have the properties that analysts desire.
+
+When presenting the confidence intervals, CI proponents almost always focus on estimation of the mean of a normal distribution. In this simple case, frequentist, fiducial, and objective Bayesian answers coincide.\footnote{This should not be taken to mean that inference by confidence intervals is not problematic even in this simple case; see \citet[e.g.][]{Brown:1967,Buehler:Feddersen:1963}.} However, the proponents of confidence intervals suggest the use of confidence intervals for many other quantities: for instance, standardized effect size Cohen's $d$ \citep{Cumming:Finch:2001}, medians, \citep{Bonett:Price:2002,Olive:2008}, correlations \citep{Zou:2007}, ordinal association \citep{Woods:2007}, and many others. Quite often authors of such articles provide no analysis of the properties of the proposed confidence intervals beyond showing that contains the true value in the correct proportion of samples: that is, that it is a confidence interval. Sometimes the authors provide an analysis of the frequentist properties of the interval, such as average width. The developers of new confidence procedures do not, however, examine whether their procedures allow for quality post-data reasoning.
+
+As the first example showed, a sole focus on frequentist properties of procedures is potentially disastrous for users of these confidence procedures because a confidence procedure has no guarantee of supporting reasonable inferences about the parameter of interest. \citet{Casella:1992} underscores this point with confidence intervals, saying that ``we must remember that practitioners are going to make conditional (post-data) inferences. Thus, we must be able to assure the user that any inference made, either pre-data or post-data, possesses some definite measure of validity'' (p. 10). Any development of an interval procedure that does not, at least in part, focus on its post-data properties is incomplete at best and extremely misleading at worst: {\em caveat emptor}.
+
+Can such misleading inferences occur using procedures suggested by proponents of confidence intervals, and in use by researchers? The answer is yes, which we will show by examining a confidence interval for $\omega^2$, the proportion of variance accounted for in ANOVA designs. The parameter $\omega^2$ serves as a measure of effect size when there are more than two levels in a one-way design. This interval was suggested by \citet[][see also Steiger \& Fouladi, 1997]{Steiger:2004}, cited approvingly by \citet{Cumming:2014}, implemented in software for social scientists \citep[e.g.,][]{Kelley:2007,Kelley:2007a}, and evaluated, solely for its frequentist properties, by \citet{Finch:French:2012}. The problems we discuss here are shared by other related confidence intervals, such as confidence intervals for $\eta^2$, partial $\eta^2$, the noncentrality parameter of the $F$ distribution, the signal-to-noise ratio $f$, RMSSE $\Psi$, and others discussed by Steiger (2004).
+
+\citet{Steiger:2004} introduces confidence intervals by emphasizing a desire to avoid significance tests, and to focus more on the precision of estimates. Steiger says that ``the scientist is more interested in knowing how large the difference between the two groups is (and how precisely it has been determined) than whether the difference between the groups is 0'' (pp. 164-165). Steiger and Fouladi (1997) say that ``[t]he advantage of a confidence interval is that the width of the interval provides a ready indication of the precision of measurement...'' (p. 231). Given our knowledge of the precision fallacy this should raise a red flag.
+
+Steiger then gives a confidence interval on the $\omega^2$ by inverting a significance test. Given the strange behavior of the UMP procedure in the submersible example, this too should raise a red flag. A confidence procedure based on a test, even a good, high-powered test, will not in general yield a procedure that provides for reasonable inferences. We will outline the logic of building a confidence interval by inverting a significance test before showing how Steiger's confidence interval behaves with data.
+
+<<echo=FALSE,results='hide',message=FALSE>>=
+source('steiger.utility.R')
+
+cl = 1-2*pnorm(-1) ## Confidence level corresponding to standard error
+alpha = 1 - cl
+J = 3 ## Number of groups
+N = 10 ## observations in a group
+
+df1 = J - 1
+df2 = J * (N - 1)
+
+Fstat0 = qf(alpha/2, df1, df2) ## an F statistic just on the border of both 
+Fstat = Fstat0+.001
+
+set.seed(1) ## reset seed (so that it is consistent with supplement)
+
+y = fake.data.F(Fstat, df1, df2)
+aov.results = summary(aov(y~grp, data = y))
+SStr = aov.results[[1]][1,2]
+MSE = aov.results[[1]][2,3]
+SSto = aov.results[[1]][1,2] + aov.results[[1]][2,2]
+omega.sq.est = (SStr - df1 * MSE) / (SSto + MSE)
+
+testCI = steigerCI.omega2(Fstat,df1,df2,conf.level=cl)
+HPD = BayesHPD2.omega2(Fstat,df1,df2,conf.level=cl)
+
+@
+
+<<CIinvert1,echo=FALSE,fig.cap='Building a confidence interval by inverting a significance test. The two noncentral $F$ distributions with 16\\% of $F$ values less than, or greater than, $F=5$ respectively. When $F=5$, the 100 - 16 - 16 = 68\\% confidence interval is [.1, .36].' ,fig.width=6,fig.height=4,warning=FALSE>>=
+
+
+par(mfrow=c(1,1), mar = c(3.5,3.5,1,1),mgp=c(2,.5,0), las = 1, cex.axis = 1.1, cex.lab = 1.1, cex = 1.1)
+
+
+
+FF = seq(0, 17, len = 250)
+
+
+
+####
+
+Fstat.demo = 5
+
+omega.sq = steigerCI.omega2(Fstat.demo,df1,df2,conf.level=cl)
+
+lambda.sq = N*J*omega.sq/(1-omega.sq)
+
+plot(FF, df(FF, df1,df2,ncp = lambda.sq[1]),ty='l', lwd=2, ylab="Density", xlab="F statistic", yaxt="n", xlim=c(0,15), col="blue")
+lines(FF, df(FF, df1,df2,ncp = lambda.sq[2]), lwd=2, col="red")
+abline(v= Fstat.demo, lty=2)
+abline(v = 0, col="gray")
+abline(h = 0, col="gray")
+text(3.5, par()$usr[4]*.8, col="blue",
+     substitute(paste(omega^2,"=",o), list(o = round(omega.sq[1],2)))
+     )
+
+text(10, par()$usr[4]*.45, col="red",
+     substitute(paste(omega^2,"=",o), list(o = round(omega.sq[2],2)))
+     )
+
+FF0 = FF[FF<= Fstat.demo]
+polygon(c(FF0,rev(FF0)), c(FF0*0, df(rev(FF0), df1,df2,ncp = lambda.sq[2])), 
+        col=rgb(1,0,0,.1), lty=0)
+text(3.5,0 , col="red", paste0(round(100*alpha/2,0),"%"),adj=c(.5,0))
+
+
+FF0 = FF[FF>= Fstat.demo]
+polygon(c(FF0,rev(FF0)), c(FF0*0, df(rev(FF0), df1,df2,ncp = lambda.sq[1])), 
+        col=rgb(0,0,1,.1), lty=0)
+text(6,0 , col="blue", paste0(round(100*alpha/2,0),"%"),adj=c(.5,0))
+
+
+###
+
+@
+
+In order to understand how a confidence interval can be built by inverting a significance test, consider that a two-sided significance test of size $\alpha$ can be thought of as a combination of two one-sided tests at size $\alpha/2$: one for each tail. The two-sided test rejects when one of the one-tailed tests rejects. To build a 68\% confidence interval (e.g., to approximate a standard error), we can use two one-sided tests of size $(1 - .68)/2 = .16$. Suppose we have a one-way design with three groups and $N=10$ participants in each group. The effect size $\omega^2$ in such a design indexes how large we expect $F$ to be. The distribution of $F$ given the effect size $\omega^2$ is called the noncentral~$F$ distribution. When $\omega^2=0$ --- that is, there is no effect --- the familiar central $F$ distribution is obtained.
+
+Figure~\ref{fig:CIinvert1} shows that the value $F(2,27)=5$ yields $p=.16$ for two one-sided tests: the one-sided test of $\omega^2=.1$ that rejects when $F$ is large, and the one-sided test of $\omega^2=.36$ that rejects when $F$ is small. For any $\omega^2$ value in $[.1, .36]$, the $p$ value for both one-sided tests will be greater than $p>.16$, and hence will not be rejected. A 68\% confidence interval for when $F=5$ can be defined as all $\omega^2$ values that are not rejected by one of the two-tailed tests, and so $[.1,.36]$ is taken as a 68\% confidence interval. Because $\omega^2$ cannot be less than 0, sometimes there is no one-sided test that yields $p=.16$. When the $p$ value from the ANOVA $F$ test is greater than $\alpha/2 = .16$, there is no upper-tailed test that will yield .16, so no lower bound on the CI exists. If the $F$ test $p$ value is greater than $1-\alpha/2$, neither bound exists. If a bound does not exist, Steiger (2004) arbitrarily sets it at 0.
+
+To see how this CI works in practice, suppose we design a three-group, between-subjects experiment with $N=10$ participants in each group and obtain an $F(\Sexpr{df1},\Sexpr{df2})=\Sexpr{round(Fstat,3)}, p = \Sexpr{aov.results[[1]][1,5]}$. Following recommendations for good analysis practices \citep[e.g.][]{PsychonomicsGuidelines:2012,Wilkinson:etal:1999}, we would like to compute a confidence interval on the standardized effects size $\omega^2$. Using software to compute Steiger's CI, we obtain the 68\% confidence interval $[\Sexpr{testCI[1]},\Sexpr{testCI[2]}]$.
+
+Figure~\ref{fig:steiger1}A (top interval) shows the resulting 68\% interval. If we were not aware of the fallacies of confidence intervals, we might publish this confidence interval thinking provides a good measure of the precision of the estimate of $\omega^2$. Note that the lower limit of the confidence interval is exactly 0, because the lower bound did not exist. In discussing this situation \citet{Steiger:Fouladi:1997} say
+\begin{quote}
+``[Arbitrarily setting the confidence limit at 0] maintains the correct coverage probability for the confidence interval, but the width of the confidence interval may be suspect as an index of the precision of measurement when either or both ends of the confidence interval are at 0. In such cases, one might consider obtaining alternative indications of precision of measurement, such as an estimate of the standard error of the statistic.'' (Steiger and Fouladi, 1997, p. 255)
+\end{quote}
+\citet{Steiger:2004} further notes that ``relationship [between CI width and precision] is less than perfect and is seriously compromised in some situations for several reasons'' (p. 177). This is rather startling; a major part of the justification for confidence intervals, including the one computed here, is that confidence intervals supposedly allow an assessment of the precision with which the parameter is estimated. The confidence interval fails to meet the purpose for which it was advocated in the first place.
+
+We can confirm the need for Steiger's caution --- essentially, a warning about the precision fallacy --- by looking at the likelihood, which is probability density of the observed $F$ statistic computed for all true values of $\omega^2$. Notice how narrow the confidence interval is compared to the likelihood of $\omega^2$. The likelihood falls much more slowly as $\omega^2$ gets larger than the confidence interval would appear to imply, if we believed the precision fallacy. We can also compare the confidence interval to a 68\% Bayesian credible interval, computed assuming standard ``noninformative'' priors on the means and the error variance\footnote{See supplement for details. We do not generally advocate non-informative priors on parameters of interest \citep{Rouder:etal:2012,Wetzels:etal:2012}; in this instance we use them as a comparison because many people believe, incorrectly, that confidence intervals numerically correspond to Bayesian credible intervals with noninformative priors.}. The Bayesian credible interval is substantially wider, revealing the imprecision with which $\omega^2$ is estimated.
+
+Figure~\ref{fig:steiger1}B shows the same case, but for a slightly smaller $F$ value. The precision with which $\omega^2$ is estimated has not changed to any measurable degree; yet now the confidence interval contains only the value $\omega^2=0$: or, more accurately, the confidence interval is empty because this $F$ value would always be rejected by one of the pairs of one-sided tests that led to the construction of the confidence interval. As Steiger points out, a ``zero-width confidence interval obviously does not imply that effect size was determined with perfect precision,'' (p. 177), nor can it imply that there is a 68\% probability that $\omega^2$ is exactly 0. This can be clearly seen by examining the likelihood and Bayesian credible interval. 
+
+Some authors \citep[e.g.,][]{Dufour:1997} interpret empty confidence intervals as indicative of model misfit. In the case of this one sample design, if the confidence interval is empty then the means are more similar than would be expected even under the null hypothesis $\alpha/2$ of the time; that is, $p>1-\alpha/2$, and hence $F$ is small. If this model rejection significance test logic is used, the confidence interval itself becomes uninterpretable as the model gets close to rejection, because it appears to indicate false precision \citep{Gelman:2011a}. Moreover, in this case the $p$ value is certainly more informative than the CI; the $p$ value provides graded information, while the CI is simply empty for all values of $p>1-\alpha/2$.
+
+Panel~C shows what happens when we increase the confidence coefficient slightly to 70\%. Again, the precision with which the parameter is estimated has not changed, yet the confidence interval now again has nonzero width.
+
+<<steiger1,echo=FALSE,fig.cap='Likelihoods, confidence intervals, and Bayesian credible intervals (highest posterior density, or HPD, intervals) for four hypothetical experimental results. The top interval is Steiger\'s (2004) confidence interval for $\\omega^2$; the bottom interval is the Bayesian HPD. See text for details.' ,fig.width=10,fig.height=10,warning=FALSE>>=
+
+
+par(mfrow=c(2,2), mar = c(4,4,2,1),mgp=c(2.5,1,0), las = 1, cex.axis = 1.3, cex.lab = 1.3, cex = 1.3)
+
+xx = seq(0, min(HPD[2]*5,1), len=100)  
+plot(xx,likelihood.omega2(xx, Fstat, df1, df2), ty='l', yaxt="n", ylab = "Likelihood",xlab=expression(omega^2),lwd=2, col="blue")
+mtext(paste0("F = ",round(Fstat,3)),3,.1,adj=.95)
+mtext(paste0("Conf. = ",round(cl,3)),3,.1,adj=.05)
+arrows(testCI[1], par()$usr[4]*.75, testCI[2]+.0005,par()$usr[4]*.75, col="red", lwd=2, code = 3, angle = 90)
+abline(v=0,col="gray")
+arrows(HPD[1], par()$usr[4]*.25, HPD[2],par()$usr[4]*.25, col="blue", lwd=2, code = 3, angle = 90)
+abline(h = 0, col="gray")
+mtext("A",3,-2,adj=.9,cex=2.5)
+
+Fstat = Fstat0
+testCI = steigerCI.omega2(Fstat,df1,df2,conf.level=cl)
+HPD = BayesHPD2.omega2(Fstat,df1,df2,conf.level=cl)
+
+plot(xx,likelihood.omega2(xx, Fstat, df1, df2), ty='l', yaxt="n", ylab = "Likelihood",xlab=expression(omega^2),lwd=2, col="blue")
+mtext(paste0("F = ",round(Fstat,3)),3,.1,adj=.95)
+mtext(paste0("Conf. = ",round(cl,3)),3,.1,adj=.05)
+arrows(testCI[1], par()$usr[4]*.75, testCI[2]+.0005,par()$usr[4]*.75, col="red", lwd=2, code = 3, angle = 90)
+abline(v=0,col="gray")
+arrows(HPD[1], par()$usr[4]*.25, HPD[2],par()$usr[4]*.25, col="blue", lwd=2, code = 3, angle = 90)
+abline(h = 0, col="gray")
+mtext("B",3,-2,adj=.9,cex=2.5)
+
+Fstat = Fstat0
+cl = .70
+testCI = steigerCI.omega2(Fstat,df1,df2,conf.level=cl)
+HPD = BayesHPD2.omega2(Fstat,df1,df2,conf.level=cl)
+
+plot(xx,likelihood.omega2(xx, Fstat, df1, df2), ty='l', yaxt="n", ylab = "Likelihood",xlab=expression(omega^2),lwd=2, col="blue")
+mtext(paste0("F = ",round(Fstat,3)),3,.1,adj=.95)
+mtext(paste0("Conf. = ",round(cl,3)),3,.1,adj=.05)
+arrows(testCI[1], par()$usr[4]*.75, testCI[2]+.0005,par()$usr[4]*.75, col="red", lwd=2, code = 3, angle = 90)
+abline(v=0,col="gray")
+arrows(HPD[1], par()$usr[4]*.25, HPD[2],par()$usr[4]*.25, col="blue", lwd=2, code = 3, angle = 90)
+abline(h = 0, col="gray")
+mtext("C",3,-2,adj=.9,cex=2.5)
+
+Fstat =  qf(.9749, df1, df2)
+cl = .95
+testCI = steigerCI.omega2(Fstat,df1,df2,conf.level=cl)
+HPD = BayesHPD2.omega2(Fstat,df1,df2,conf.level=cl)
+
+xx = seq(0, min(HPD[2]*5,1), len=100)  
+plot(xx,likelihood.omega2(xx, Fstat, df1, df2), ty='l', yaxt="n", ylab = "Likelihood",xlab=expression(omega^2),lwd=2, col="blue")
+mtext(paste0("F = ",round(Fstat,3)),3,.1,adj=.95)
+mtext(paste0("Conf. = ",round(cl,3)),3,.1,adj=.05)
+arrows(testCI[1], par()$usr[4]*.75, testCI[2]+.0005,par()$usr[4]*.75, col="red", lwd=2, code = 3, angle = 90)
+abline(v=0,col="gray")
+arrows(HPD[1], par()$usr[4]*.25, HPD[2],par()$usr[4]*.25, col="blue", lwd=2, code = 3, angle = 90)
+abline(h = 0, col="gray")
+mtext("D",3,-2,adj=.9,cex=2.5)
+
+
+@
+
+Figure~\ref{fig:steiger1}D shows the results of an analysis with $F(\Sexpr{df1},\Sexpr{df2})=\Sexpr{round(Fstat,3)}, p = \Sexpr{1-pf(Fstat,df1,df2)}$, and using a 95\% confidence interval. Steiger's interval has now encompassed most of the likelihood, but the lower bound is still ``stuck'' at 0. In this situation, Steiger and Fouladi advise us that the width of the CI is ``suspect'' as an indication of precision, and that we should ``obtain[] [an] alternative indication[] of precision of measurement.'' As it turns out, here the confidence interval is not too different from the credible interval, though the confidence interval is longer and is unbalanced. However, we would not know this if we did not examine the likelihood and the Bayesian credible interval; the only reason we know the confidence interval has a reasonable width in this particular case is its agreement with the actual measures of precision offered by the likelihood and the credible interval.
+
+How often will Steiger's confidence procedure yield a ``suspect'' confidence interval? This will occur whenever the $p$ value for the corresponding $F$ test is $p>\alpha/2$; for a 95\% confidence interval, this means that whenever $p>0.025$, Steiger and Fouladi recommend against using the confidence interval for precisely the purpose that they --- and other proponents of confidence intervals --- recommend it for. This is not a mere theoretical issue; moderately-sized $p$ values often occur. In a cursory review of papers using Steiger's confidence intervals, we found many that obtained and reported, without note, suspect confidence intervals bounded at 0 \citep[e.g.,][]{Cumming:etal:2012,Gilroy:Pearce:2014,Hamerman:Morewedge:2015,Lahiri:etal:2013,Hamerman:Morewedge:2015,Todd:etal:2014,Winter:etal:2014}. The others did not use confidence intervals, instead relying on point estimates of effect size and $p$~values \citep[e.g.][]{Hollingdale:Greitemeyer:2014}; but from the $p$ values it could be inferred that if they had followed ``good practice'' and computed such confidence intervals, they would have obtained intervals that according to Steiger could not be interpreted as anything but an inverted $F$ test.
+
+It makes sense, however, that authors using confidence intervals would not note that the interpetation of their confidence intervals is problematic. If a confidence intervals truly contained the most likely values, or if it were an index of the precision, or if the confidence coefficient indexed the uncertainty we should have that the the parameter is in the interval, then it would seem that a CI is a CI: what you learn from one is the same as what you learn from another. The idea that the $p$ value can determine whether the interpretion of a confidence interval is possible is not intuitive in light of the way CIs are typically presented.
+
+We see no reason, however, why our ability to interpret an interval {\em should} be compromised simply because we obtained a $p$ value that was not low enough. Certainly, the confidence coefficient is arbitrary; if the width is suspect for one confidence coefficient, it makes little sense that the CI width would become acceptable just because we changed the confidence coefficient so the interval bounds did not include 0. Also, if the width is too narrow with moderate $p$ values, such that it is not an index of precision, it seems that the interval will be too wide in other circumstances, possibly threatening the interpretation as well. This was evident with the UMP procedure in the submersible example: the UMP interval was too narrow when the data provided little information, and was too wide when the data provided substantial information.
+
+Steiger and Fouladi (1997) summarize the central problem with confidence intervals when they say that in order to maintain the correct coverage probability --- a frequentist pre-data concern --- they sacrifice the very thing researchers want confidence intervals to be: a post-data index of the precision of measurement. If our goal is to move away from significance testing, we should not use methods which cannot be interpreted except as inversions of significance tests. We agree with Steiger and Fouladi that researchers should consider obtaining alternative indications of precision of measurement; luckily, Bayesian credible intervals fit the bill rather nicely, rendering confidence intervals unnecessary. 
 
 \section{Discussion}
 
-Using two examples, we have shown that confidence intervals do not have the properties that are often claimed on their behalf. Confidence intervals were developed to solve a very constrained problem: how can one construct an interval that contains the true mean a fixed proportion of the time? This definition, which concerns only average performance, does not support reasonable inference from specific data. Claims that confidence intervals yield an impression of precision, that the values within them are plausible, and that the confidence coefficient can be read as a measure of certainty that the interval contains the true value, are all errors. 
+Using the theory of confidence intervals and the support of two examples, we have shown that CIs do not have the properties that are often claimed on their behalf. Confidence interval theory was developed to solve a very constrained problem: how can one construct an procedure that produces intervals containing the true parameter a fixed proportion of the time?  Claims that confidence intervals yield an index of precision, that the values within them are plausible, and that the confidence coefficient can be read as a measure of certainty that the interval contains the true value, are all errors and unjustified by confidence interval theory.
 
-Good intentions underlie the advocacy of confidence intervals: it would be excellent to have procedures with the properties claimed. The FCF is driven by a desire to assess the plausibility that an interval contains the true value; the likelihood error is driven by a desire to determine which values of the parameter are likely; and the precision error is driven by a desire to quantify the precision of the estimates. We support these goals \citep{Morey:etal:2014}, but CIs are not the way to achieve them. 
+Good intentions underlie the advocacy of confidence intervals: it would be excellent to have procedures with the properties claimed. The FCF is driven by a desire to assess the plausibility that an interval contains the true value; the likelihood fallacy is driven by a desire to determine which values of the parameter should be taken seriously; and the precision fallacy is driven by a desire to quantify the precision of the estimates. We support these goals \citep{Morey:etal:2014}, but confidence interval theory is not the way to achieve them. 
+
+\subsection{Guidelines for interpreting and reporting intervals}
+Frequentist theory can be counter-intuitive at times; as Fisher was fond of pointing out, frequentist theorists often seemed disconnected with the concerns of scientists, developing methods that did not suit their needs \citep[e.g.,][p. 70]{Fisher:1955}. This has lead to confusion where practitioners assume that methods designed for one purpose were really meant for another. In order to help mitigate such confusion, here we would like to offer readers a clear guide to interpreting and reporting confidence intervals.
+
+Once one has collected data and computed a confidence interval, how does one then interpret the interval? The answer is quite straightforward: one does not -- at least not within confidence interval theory.\footnote{Some recent writers have suggested replacing Neyman's behavioral view on confidence intervals with a frequentist view focused on tests at various levels of ``stringency'' \citep[see, e.g.,][]{Mayo:Cox:2006,Mayo:Spanos:2006}. Readers who prefer a frequentist paradigm may wish to explore this approach; however, we are unaware of any comprehensive account of CIs within this paradigm, and regardless, it does not offer the properties desired by CI proponents. This is not to be read as an argument against it, but rather a warning that one must make a choice.} As Neyman and others pointed out repeatedly, and as we have shown, confidence limits cannot be interpreted as anything besides the result of a procedure that will contain the true value in a fixed proportion of samples. Unless an interpretation of the interval can be specifically justified by some {\em other} theory of inference, confidence intervals must remain uninterpreted, lest one make arbitrary inferences or inferences that are contradicted by the data. This applies even to ``good'' confidence intervals, as these are often built by inverting significance tests and may have strange properties \citep[e.g.][]{Steiger:2004}.
+
+In order to help mitigate confusion in the scientific literature, we suggest the following guidelines for reporting of confidence intervals, all informed by our discussion in this manuscript.
+
+{\bf Report credible intervals instead.} We believe any author who chooses to use confidence intervals should ensure that the intervals correspond numerically with credible intervals under some reasonable prior. Many confidence intervals cannot be so interpreted, but if the authors know they can be, they should be called ``credible intervals''. This signals to readers that they can interpret the interval as they have been (incorrectly) told they can interpret confidence intervals. Of course, the corresponding prior must also be reported.
+
+This is not to say that one can't also call them confidence intervals if they are; however, readers are likely more interested in the post-data properties of the procedure --- not the long-run coverage --- if they are interested arriving at substantive conclusions from the interval.
+
+{\bf Do not use procedures whose Bayesian properties are not known.} As \citet{Casella:1992} pointed out, the post-data properties of a procedure are necessary for understanding what can be inferred from an interval. Any procedure whose Bayesian properties have not been explored can have properties that make it unsuitable for post-data inference. Procedures whose properties have not been adequately studied are inappropriate for general use.
+
+{\bf Warn readers if the confidence procedure does not correspond to a Bayesian procedure.} If it is known that a confidence interval does not correspond to a Bayesian procedure, warn readers that the confidence interval cannot be interpreted as having a X\% probability of containing the parameter, that it cannot be interpreted in terms of the precision of measurement, and that cannot be said to contain the values that should be taken seriously: the interval is merely an interval that, prior to sampling, had a X\% probability of containing the true value. Authors choosing to report CIs have a responsibility to keep their readers from invalid inferences, because it is almost sure that readers will misinterpret them without a warning \citep{Hoekstra:etal:2014}.
+
+{\bf {\em Never} report a confidence interval without noting the procedure and the corresponding statistics.} As we have described, there are many different ways to construct confidence intervals, and they will have different properties. Some will have better frequentist properties than others; some will correspond to credible intervals, and others will not. It is unfortunately common for authors to report confidence intervals without noting how they were constructed. As can be seen from the examples we've presented, this is a terrible practice because without knowing which confidence intervals was used, it is unclear what can be inferred. In the submersible example, consider a 50\% confidence interval .5 meters wide. This could correspond to very precise information (Bayesian interval) or very imprecise information (UMP and nonparametric interval). Not knowing which procedure was used could lead to very poor inferences. In addition, enough information should be presented so that any reader can compute a different confidence interval or credible interval. In most cases, this is covered by standard reporting practices, but in other cases more information may need to be given.
+
+{\bf Consider reporting likelihoods or posteriors instead.} An interval provides fairly impoverished information. Just as proponents of confidence intervals argue that CIs provide more information than a significance test (although this is debatable for many CIs), a likelihood or a posterior provides much more information than an interval. Recently, \citet{Cumming:2014} has proposed so-called ``cat's eye'' intervals which  correspond to either fiducial distributions or Bayesian posteriors under a ``non-informative'' prior. With modern scientific graphics so easy to create, we see no reason why likelihoods and posteriors cannot augment or even replace intervals in most circumstances \citep[e.g.][]{Kruschke:2010}. With a likelihood or a posterior, the arbitrariness of the confidence or credibility coefficient is avoided altogether.
 
 \subsection{Confidence intervals versus credible intervals}
-One of the misconceptions regarding the relationship between Bayesian inference and frequentist inference is that they will lead to the same inferences. In the case where data are normally distributed, for instance, there is a particular prior that will lead to a confidence interval that is numerically identical to Bayesian credible intervals computed using the Bayesian posterior \citep{Jeffreys:1961,Lindley:1965}. This occurs, for instance, in the Student's $t$ scenario described above.\footnote{The fact that the confidence interval and objective Bayesian credible interval are numerically the same might lead one to believe that Bayesian intervals are susceptible to relevant subsets as well. However, the objective Bayesian interval is not a proper probability distribution. Bayesian inference with proper priors will be immune to relevant subsets.} This might lead one to suspect that it does not matter whether one uses confidence procedures or Bayesian procedures. 
+One of the misconceptions regarding the relationship between Bayesian inference and frequentist inference is that they will lead to the same inferences, and hence all confidence intervals can simply be interpreted in a Bayesian way. In the case where data are normally distributed, for instance, there is a particular prior that will lead to a confidence interval that is numerically identical to Bayesian credible intervals computed using the Bayesian posterior \citep{Jeffreys:1961,Lindley:1965}. This might lead one to suspect that it does not matter whether one uses confidence procedures or Bayesian procedures. We showed, however, that confidence intervals and credible intervals can disagree markedly. The only way to know that a confidence interval is numerically identical to some credible interval is to {\em prove} it. The correspondence cannot --- and should not --- be assumed.
 
-If researchers were only expected to study phenomena that were normally distributed, and researchers were only expected to make a single inference from the data -- the confidence interval -- then inference by confidence procedures might seem indistinguishable from inference by Bayesian procedures.  The defense of confidence procedures by noting that, in some restricted cases, they numerically correspond to Bayesian procedures is actually no defense at all. One must first choose {\em which} confidence procedure, of many, to use, and if one is committed to the procedure that corresponds to Bayesian inference, then this is an admission that it was the Bayesian procedure that was desired all along. More broadly, if psychologists are to be sophisticated statistical thinkers, they should not be limited to a single inferential statement under restrictive assumptions.
+More broadly, the defense of confidence procedures by noting that, in some restricted cases, they numerically correspond to Bayesian procedures is actually no defense at all. One must first choose which confidence procedure, of many, to use; if one is committed to the procedure that allows a Bayesian interpretation, then one's time is much better spent simply applying Bayesian theory. If the benefits of Bayesian theory are desired --- and they clearly are, by proponents of confidence intervals ---  then there is no reason why Bayesian inference should not be applied in its full generality.
 
-\citet{Loftus:1993b} argued in the context of recommending abandoning significance testing, that limiting ourselves to common designs and assumptions (e.g., normal populations) severely limits the inferences we can make. To prevent arbitrary limitations on statistical inferences, if Bayesian interpretations are desired, Bayesian inference should be applied in its full generality -- not just when it numerically corresponds with frequentist inference. The correspondence between confidence procedures and Bayesian procedures is not a general rule. In some cases, for instance with count data, there are many different confidence intervals \citep[among others the Wald, the Agresti-Coull, the Clopper-Pearson, the arcsine, and the logit; see][for a review]{Brown:etal:2001}. These confidence procedures all yield different inferences among themselves, not to mention differences with Bayesian credible intervals. 
+It is important to emphasize, however, that for many of the confidence procedures presented in the applied statistical literature, no effort has been made to show that the intervals have the properties that proponents of confidence intervals desire. We should expect, as a matter of course, that developers of new confidence intervals show that their intervals have the desired inferential properties, instead of just proper coverage of the true value and ``short'' width. Because developers of confidence intervals have not done this, the push for confidence intervals rests on uncertain ground. Adopting Bayesian inference, where all inferences arise within a logical, unified framework, would render the problems of assessing the properties of these confidence procedures moot. If desired, coverage can also be assessed, but if one is interested primarily in reasonable post-data inference, then those properties should be the priority, not coverage \citep[c.f.][]{Gelman:2008,Wasserman:2008}.
 
-In some cases confidence procedures do not even allow an inference. The end-points of a confidence interval are always set by the data. Suppose, however, we are interested in determining the plausibility that a parameter is in a particular range; for instance, in the United States, it is against the law to execute criminals who are intellectually disabled. The criterion used for intellectual disability in the US state of Florida is having an IQ lower than 70. Since IQ is measured with error, one might ask what confidence we have that a particular criminal's IQ is between 0 and 70. In this case, the interval is no longer a function of the sample. The long-run probability that the true value is inside a fixed interval is unknown and is either 0 or 1, and hence no CP can be constructed, even though such information may be critically important to a researcher, policy maker, or criminal defendant. 
+For advocates of reasoning by intervals, adopting Bayesian inference would have other benefits. The end-points of a confidence interval are always set by the data. Suppose, however, we are interested in determining the plausibility that a parameter is in a particular range; for instance, in the United States, it is against the law to execute criminals who are intellectually disabled. The criterion used for intellectual disability in the US state of Florida is having an IQ lower than 70. Since IQ is measured with error, one might ask what confidence we have that a particular criminal's IQ is between 0 and 70. In this case, the interval is no longer a function of the sample. The long-run probability that the true value is inside a fixed interval is unknown and is either 0 or 1, and hence no confidence procedure can be constructed, even though such information may be critically important to a researcher, policy maker, or criminal defendant \citep{Pratt:etal:1995}.
 
-Even in seemingly simple cases where a fixed interval is nested inside a CI, or {\em vice versa}, one cannot draw conclusions about the confidence of a fixed interval. One might assume that an interval nested within a CI must have lower confidence than the CI; however, in the second submersible rescue scenario, a 100\% confidence interval (all the possible values of $\theta$) was nested within both CI1 and CI2, which were 50\% CIs. Likewise, one might believe that if a CI is nested within a fixed interval, then the fixed interval must have greater confidence than the interval. In the first submersible rescue scenario, intervals within which the 50\% CI1 were nested had low plausibility, due to their narrowness. In contrast, Bayesian procedures offer the ability to compute the plausibility of any given range of values, and are guaranteed to yield statements that are mutually coherent. Because all inferences must be made through Bayes theorem, inferences must remain internally consistent \citep[c.f.][]{Stone:Dawid:1972}.
- 
-Finally, we believe that in science, the meaning of our inferences are important. Bayesian credible intervals support an interpretation of probability in terms of plausibility, thanks to the explicit use of a prior. Confidence intervals, on the other hand, are based on a philosophy that does not allow inferences about plausibility, but do not require a prior. Using confidence intervals as if they were credible intervals is an attempt to smuggle Bayesian meaning into frequentist statistics, without proper consideration of a prior. Priors have consequences, and must be carefully considered. There is no free lunch; to get reasonable inference, one must pay a price \citep{Rouder:etal:submitted}.
+Even in seemingly simple cases where a fixed interval is nested inside a CI, or {\em vice versa}, one cannot draw conclusions about the probability of a fixed interval. One might assume that an interval nested within a CI must have lower confidence than the CI; however, as shown in Figure~\ref{fig:bubbles1}B, a 100\% confidence interval (the likelihood) is nested within some of the 50\% confidence intervals. Likewise, one might believe that if a CI is nested within a fixed interval, then the fixed interval must have greater probability than the interval. But in Figure~\ref{fig:bubbles1}A, one can imagine a fixed interval just larger than the 50\% UMP interval; this will have much lower than 50\% probability of containing the true value, due to the fact that it occupies a small proportion of the likelihood. Knowledge of the FCF prohibits one from using confidence intervals to assess the probability of fixed intervals. Bayesian procedures, on the other hand, offer the ability to compute the plausibility of any given range of values. Because all such inferences must be made from the posterior distribution, inferences must remain mutually consistent (Lindley, 1985; see also Fisher, 1935, for a similar argument).
+
+\nocite{Fisher:1935a,Lindley:1985}
+
+Moving to credible intervals from confidence intervals would necessitate a shift in thinking, however, away from a test-centric view (e.g., ``is 0 in the interval?''). Although every confidence interval can be interpreted as a test, this is not true of credible intervals. Assessing the Bayesian credibility of a specific parameter value by whether it is included in a credible interval is, as \citet{Berger:2006a} puts it, ``simply wrong.'' When testing a specific value is of interest (such as a null hypothesis), that specific value must be assigned non-zero probability {\em a priori}. While not conceptually difficult, it is beyond the scope of this paper; see \citet{Rouder:etal:2009a}, \citet{Wagenmakers:etal:2008}, or \citet{Dienes:2011} for accessible accounts.
+
+Finally, we believe that in science, the meaning of our inferences are important. Bayesian credible intervals support an interpretation of probability in terms of plausibility, thanks to the explicit use of a prior. Confidence intervals, on the other hand, are based on a philosophy that does not allow inferences about plausibility, and does not require priors. Using confidence intervals as if they were credible intervals is an attempt to smuggle Bayesian meaning into frequentist statistics, without proper consideration of a prior. As they say, there is no such thing as a free lunch; one must choose. We suspect that researchers, given the choice, would rather specify priors and get the benefits that come from Bayesian theory. We should not pretend, however, that the choice need not be made. Confidence interval theory and Bayesian theory are not interchangeable, and should not be treated so.
 
 \subsection{Conclusion}
-We have suggested that confidence intervals do not support the inferences that their advocates believe they do. The problems with confidence intervals -- particularly the fact that they admit can relevant subsets -- shows a fatal flaw with their logic. They cannot be used to draw reasonable inferences. We recommend that their use be abandoned.
+We have suggested that confidence intervals do not support the inferences that their advocates believe they do. It is an interesting question how the theory of confidence intervals began with Neyman as a method of avoiding the problem of reasoning from data by making dichotomous statements \citep{Neyman:1937,Neyman:1941}, eventually becoming a method that many believe is the best way to reason from data \citep[e.g.][]{Cumming:Finch:2005,Cumming:Fidler:2009} and a way to avoid dichotomous statements \citep[e.g.][]{Cumming:2014,Hoekstra:etal:2006,Wilkinson:etal:1999}. However this confusion ultimately started, we think it is critical in the current atmosphere of statistical reform that we ensure that claims made on behalf of confidence interval theory have a firm foundation. We show here that they do not.
 
-We therefore take stock of what we would be giving up, if we were to give up the use of confidence procedures. Abandoning the use of confidence procedures means abandoning a method that merely allows us to create intervals that contain the true value with a fixed long-run probability. We suspect that if researchers understand that this is the only thing they will be losing, they will not consider it a great loss. By adopting Bayesian inference, they will gain a way of making principled statements about precision and plausibility. Ultimately, this is exactly what the advocates of CIs have wanted all along.  
+We do not believe that the theory of confidence intervals provides a viable foundation for the future of psychological methods. Confidence procedures that do not have Bayesian properties have other undesirable properties; confidence procedures that {\em do} have Bayesian properties can be justified using Bayesian theory. If we were to give up the use of confidence procedures, what would we lose? Abandoning the use of confidence procedures means abandoning a method that merely allows us to create intervals that include the true value with a fixed long-run probability. We suspect that if researchers understand that this is the only thing they will be losing, they will not consider it a great loss. By adopting Bayesian inference, they will gain a way of making principled statements about precision and plausibility. Ultimately, this is exactly what the advocates of CIs have wanted all along.
 
 \printbibliography
 

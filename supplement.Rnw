@@ -2,6 +2,7 @@
 
 \usepackage{hyperref}
 %\usepackage{fullpage}
+\usepackage{bm}
 
 \usepackage[T1]{fontenc}
 \usepackage[sc]{mathpazo}
@@ -18,7 +19,7 @@
 
 \title{Supplement to ``The Fallacy of Placing Confidence in Confidence Intervals''}
 \author{Richard D. Morey (\href{mailto:richarddmorey@gmail.com}{richarddmorey@gmail.com}),\\ Rink Hoekstra, Jeffrey N. Rouder,\\ Michael D. Lee, Eric-Jan Wagenmakers}
-\date{}
+\date{\today}
 \begin{document}
 
 \maketitle
@@ -28,284 +29,181 @@ set.seed(1)
 @
 \section{The lost submarine: details}\label{app:submarine}
 
-In this section we provide more details about the submarine example. We example presented a situation where $N=2$ observations were distributed uniformly:
-
-%In the first scenario the likelihood error caused the statistian to ignore that the CI exluded most of the possible values, and the precision error caused the statistician to believe that the narrow CI indicated very precise information. In the second scenario, the likelihood error caused the statistician to ignore that the the CI included impossible values, and the precision error caused the statistician to believe that the wide CI indicated very imprecise information. In fact, whether a value was likely or not could not be determined solely by its inclusion or exclusion in the CI, and the precision the data provided about the location of the hatch was {\em inversely} related to the narrowness of the CI. 
+We presented a situation where $N=2$ observations were distributed uniformly:
 
 \begin{eqnarray*}
 x_i &\stackrel{iid}{\sim}& \mbox{Uniform}(\theta-5,\theta+5),\,i=1,\ldots,N 
 \end{eqnarray*}
-and the goal is to estimate $\theta$, the location of the submarine hatch. We consider three 50\% confidence procedures for $\theta$:
-\[
-\begin{array}{ll}
-\mbox{CP1}:&\bar{x} \pm \frac{|x_1-x_2|}{2},\\
-\mbox{CP2}:&\bar{x}\pm \left(5 - \frac{5}{\sqrt{2}}\right),\\
-\mbox{CP3}:&\bar{x} \pm \frac{1}{4}\left(10 - |x_1-x_2|\right)
-\end{array}
-\]
-Proof that these are 50\% confidence procedures is straightforward and omitted. CP1 is the same as Student's $t$ interval; CP2 is a fixed-width interval analogous to a $z$ interval used when the population variance is known; CP3 is the Bayesian credible interval based on a uniform prior over $\theta$. 
+and the goal is to estimate $\theta$, the location of the submarine hatch. Without loss of generality we denote $x_1$ as the smaller of the two observations. In the text, we considered five 50\% confidence procedures; in this section, we give the details about the sampling distribution procedure and the Bayes procedure that were omitted from the text.
 
-Though we will not prove that CP3 is a 50\% confidence procedure, we will show that it arises from Bayes' theorem assuming the use of a uniform prior for $\theta$.The posterior distribution is proportional to the likelihood times the prior. The likelihood is
+
+\subsection{Sampling distribution procedure}
+
+Consider the sample mean, $\bar{x} = (x_1 + x_2)/2$. As the sum of two uniform deviates, it is a well-known fact that $\bar{x}$ will have a triangular distribution with location $\theta$ and minimum and maximum $\theta-5$ and $\theta+5$, respectively. This distribution is shown in Figure~\ref{fig:sampleDistCI}.
+
+<<sampleDistCI,echo=FALSE,fig.cap="The sampling distribution of the mean $\\bar{x}$ in the submarine scenario. The shaded region represents the central 50\\% of the area. The unshaded triangle marked ``a'' has area .25.",fig.width=8,fig.height=6>>=
+
+par(mfrow=c(1,1), mar = c(4,4,2,1),mgp=c(3,.6,0), las = 1, cex.axis = 1.3, cex.lab = 1.3, cex = 1.3)
+
+plot(0,0,ty='n',ylim=c(0,2),xlim=c(-.5,1.5),axes=F,ylab="Density",xlab="Location")
+axis(1,at=1:5/2-1,lab=expression(theta - 10,
+                                 theta - 5,
+                                 theta,
+                                 theta + 5,
+                                 theta + 10
+))
+box()
+axis(2, at = 0:4/2, lab = 0:4/20)
+abline(h=0,col="gray")
+segments(-2,0,0,0, lwd=2)
+segments(1,0,2,0, lwd=2)
+segments(0,0,.5,2, lwd=2)
+segments(.5,2,1,0, lwd=2)
+
+ci.hwidth = (1-1/sqrt(2))/2
+
+x.pts = c(.5 - ci.hwidth, .5 - ci.hwidth, .5, .5 + ci.hwidth, .5 + ci.hwidth)
+y.pts = c(0,(.5-ci.hwidth)*4,2,(.5-ci.hwidth)*4,0)
+
+polygon(x.pts,y.pts, lty=0, col=rgb(0,1,0,.2))
+
+text(.23,1.5/5,"a")
+
+@
+
+It is desired to find the width of the base of the shaded triangle in Figure~\ref{fig:sampleDistCI} such that it has an area of .5. To do this we first find the width of the base of the unshaded triangular area marked ``a'' in Figure~\ref{fig:sampleDistCI} such that the area of the triangle is .25. The corresponding unshaded triangle on the left side will also have area .25, which means that since the figure is a density, the shaded region must have the remaining area of .5. Elementary geometry will show that the width of the base of triangle ``a'' is $5/\sqrt{2}$, meaning that the distance between $\theta$ and the altitude of triangle ``a'' is $5 - 5/\sqrt{2}$ or about 1.46m.
+
+We can thus say that 
+
+\[
+Pr(- (5 - 5/\sqrt{2}) < \bar{x} - \theta <  5 - 5/\sqrt{2} ) = .5
+\]
+
+which implies that, in repeated sampling,
+
+\[
+Pr(\bar{x} - (5 - 5/\sqrt{2}) < \theta <  \bar{x} + (5 - 5/\sqrt{2}) ) = .5
+\]
+
+which defines the sampling distribution confidence procedure. This is an example of using $\bar{x} - \theta$ as a pivotal quantity \citep{Casella:Berger:2002}.
+
+\subsection{Bayesian procedure}
+
+The posterior distribution is proportional to the likelihood times the prior. The likelihood is
 \[
 p(x_1,x_2\mid\theta) \propto \prod_{i=1}^2 {\cal I}(\theta-5 < x_i < \theta+5);
 \]
 where $\cal I$ is an indicator function. Note since this is the product of two indicator functions, it can only be nonzero when both indicator functions' conditions are met; that is, when $x_1+5$ and $x_2+5$ are both greater than $\theta$, and $x_1-5$ and $x_2-5$ are both less than $\theta$. If the minimum of $x_1+5$ and $x_2+5$ is greater than $\theta$, then so to must be the maximum. The likelihood thus can be rewritten
 \[
-p(x_1,x_2\mid\theta) \propto {\cal I}(x_{(2)} - 5 <\theta< x_{(1)}+5);
+p(x_1,x_2\mid\theta) \propto {\cal I}(x_2 - 5 <\theta< x_1+5);
 \]
-where $x_{(1)}$ and $x_{(2)}$ are the minimum and maximum observations, respectively. If the prior for $\theta$ is proportional to a constant, then the posterior is
+where $x_1$ and $x_2$ are the minimum and maximum observations, respectively. If the prior for $\theta$ is proportional to a constant, then the posterior is
 \[
-p(\theta\mid x_1,x_2) \propto {\cal I}(x_{(2)} - 5 <\theta< x_{(1)}+5),
+p(\theta\mid x_1,x_2) \propto {\cal I}(x_2 - 5 <\theta< x_1+5),
 \]
 This posterior is a uniform distribution over all {\em a posteriori} possible values of $\theta$ (that is, all $\theta$ values within 5 meters of all observations), has width 
 \[
-10 - |x_{1} - x_{2}|,
+10 - (x_{2} - x_{1}),
 \]
-and is centered around $\bar{x}$. Because the posterior comprises all values of $\theta$ the data have not ruled out -- and is essentially just the classical likelihood -- the width of this posterior can be taken as an indicator of the precision of the estimate of $\theta$. The posterior given the data in the two submarine scenarios is depicted in the top line of Figure~2 in the main text. A 50\% credible interval can be constructed by taking half the width of the posterior centered around $\bar{x}$, leading to the formula for CP3.
+and is centered around $\bar{x}$. Because the posterior comprises all values of $\theta$ the data have not ruled out -- and is essentially just the classical likelihood -- the width of this posterior can be taken as an indicator of the precision of the estimate of $\theta$. 
 
-\subsection{Properties of the three confidence procedures}
-In this section we expand the points in the main text regarding the three myths of confidence intervals. 
+The middle 50\% of the likelihood can be taken as a 50\% objective Bayesian credible interval. Proof that this Bayesian procedure is also a confidence procedure is trivial and can be found in \citet{Welch:1939}.
 
-\subsubsection{The precision error}
-That confidence intervals do not necessarily track the precision of an estimate can be easily seen by noting that the precision of the estimate is inversely proportional to the width of the likelihood, or
+\section{Credible interval for $\omega^2$: details}
+
+In the manuscript, we compare Steiger's (2004) confidence intervals for $\omega^2$ to Bayesian highest posterior density (HPD) credible intervals. In this section we describe how the Bayesian HPD intervals were computed.
+
+\nocite{Steiger:2004}
+
+Consider a one-way design with $J$ groups and $N$ observations in each group. Let $y_{ij}$ be the $i$th observation in the $j$th group. Also suppose that
 \[
-w(x_1, x_2) = 10 - |x_{1} - x_{2}|.
+y_{ij} \stackrel{indep.}{\sim} \mbox{Normal}(\mu_j, \sigma^2)
 \]
-A confidence interval's width should increase as $w$ increases. A brief look at the formulas for CP1, CP2, and CP3 reveal that CP1's width is proportional to $|x_{1} - x_{2}|$, and therefore inversely proportional to $w$. CP2's width is fixed, and so is also not proportional to $w$. CP3's width, on the other hand, is proportional to $w$ (which is not surprising, given that it was derived by taking half the posterior's width).
+where $\mu_j$ is the population mean of the $j$th group and $\sigma^2$ is the error variance. We assume a ``non-informative'' prior on parameters $\bm \mu,\sigma^2$:
+\[
+p(\mu_1,\ldots,\mu_J,\sigma^2) \propto (\sigma^2)^{-1}.
+\]
+This prior is flat on $(\mu_1,\ldots,\mu_J, \log\sigma^2)$. In application, it would be wiser to assume an informative prior on these parameters, in particular assuming a population over the $\mu$ parameters or even the possibility that $\mu_1 = \ldots = \mu_J = 0$ \citep{Rouder:etal:2012}. However, for this manuscript we compare against a ``non-informative'' prior in order to show the differences between the confidence interval and the Bayesian result with ``objective'' priors. 
 
-
-\subsubsection{The likelihood error}
-The easiest way to see that CP1 and CP2 can lead to the likelihood error is to note that they include impossible values. This will occur when the width of the CI is greater than the width of the likelihood/posterior. For CP1, this will occur when:
+Assuming the prior above, an elementary Bayesian calculation \citep{Gelman:etal:2004} reveals that
+\[
+\sigma^2\mid\bm y \sim \mbox{Inverse Gamma}(J(N-1)/2, S/2)
+\]
+where $S$ is the error sum-of-squares from the corresponding one-way ANOVA, and
+\[
+\mu_j\mid\sigma^2, \bm y \stackrel{indep.}{\sim} \mbox{Normal}(\bar{x}_j, \sigma^2/N)
+\]
+where $\mu_j$ and $\bar{x}_j$ are the true and observed means for the $j$th group. Following Steiger (2004) we can define 
+\[
+\alpha_j = \mu_j - \frac{1}{J}\sum_{j=1}^J\mu_j
+\]
+as the deviation from the grand mean of the $j$th group, and
 \begin{eqnarray*}
-w(x_1, x_2) &<& 2\times|x_{1} - x_{2}|/2\\
-10 - |x_{1} - x_{2}| &<& |x_{1} - x_{2}|\\
-|x_{1} - x_{2}| &>& 5
+\lambda &=& N\sum_{j=1}^J \left(\frac{\alpha}{\sigma}\right)^2\\
+\omega^2 &=& \frac{\lambda}{\lambda + NJ}.
 \end{eqnarray*}
-For CP2, this will occur when
-\begin{eqnarray*}
-w(x_1, x_2) &<& 2\times\left(5 - \frac{5}{\sqrt{2}}\right)\\
-10 - |x_{1} - x_{2}| &<& 10 - \frac{10}{\sqrt{2}}\\
-|x_{1} - x_{2}| &>& \frac{10}{\sqrt{2}}  
-\end{eqnarray*}
-Figure~\ref{fig:CIincProb}A shows the proportion of impossible values in confidence intervals from the three confidence procedures as a function of the difference between the two observed data points $|x_1 - x_2|$. Both CP1 and CP2 can include anywhere from 0\% to 100\% impossible values. If one uses using CP1 or CP2, if  $|x_1 - x_2|$ is sufficiently large then one is certain that nearly all the values in the interval are impossible. Bayesian credible intervals, however, can never include impossible values. 
 
+It is then straightforward to set up an MCMC sampler for $\omega^2$. Let $M$ be the number of MCMC iterations desired. We first sample $M$ samples from the marginal posterior distribution of $\sigma^2$, then sample the group means from the conditional posterior distribution for $\mu_1,\ldots,\mu_J$. Using these posterior samples, $M$ posterior samples for $\lambda$ and $\omega^2$ can be computed. 
 
-<<CIincProb,echo=FALSE,fig.cap="A: The proportion of impossible values in the confidence interval, as a function of the difference between the two observed data points. B: The probability that a 50\\% CI computed via one of the three confidence procedures includes the true value, as a function of the difference between the observed data points. ",fig.width=8,fig.height=4.5>>=
-
-source('CIinclusionPlot.R')
+<<echo=FALSE,results='hide',message=FALSE>>=
+source('steiger.utility.R')
 
 @
 
-
-\subsubsection{Identification of relevant subsets}
-Demonstrating the precision and likelihood errors using CP1 and CP2 was straightforward. Identification of relevant subsets, on the other hand, is harder. Consider Figure~\ref{fig:bivarplot}A. On the horizontal axis, possible values of the first bubble, denoted $x_1$, are shown. The vertical axis shows possible values of the second bubble, $x_2$. The two shaded squares show values for $x_1$ and $x_2$ where a confidence interval from CP1 will contain the true location of the hatch, $\theta$. This occurs when $x_1>\theta$ and $x_2<\theta$, or when $x_1<\theta$ and $x_2>\theta$. The fact that the procedure is a 50\% CP can be seen by the fact that the two shaded squares occupy 1/2 of the total possible area. 
-
-<<bivarplot,echo=FALSE,fig.cap='Left: Possible locations of the first ($x_1$) and second ($x_2$) bubbles. Right: $x_2-x_1$ plotted against the mean of $x_1$ and $x_2$. Shaded regions show the areas where the respective 50\\% confidence interval contains the true value (CP1, CP2, and CP3 in the top, middle, and bottom rows, respectively). Points numbered 1 and 2 represent the pairs of bubbles from the first and second scenario, respectively.',fig.width=9.5,fig.height=13.68>>=
-
-source('x1x2plot.R')
-
-@
-
-Instead of considering the two values $x_1$ and $x_2$, it is actually more helpful to consider the location and width of the CI. The sample mean $\bar{x}$ is the center of the CI, and the width is $|\omega|$: 
-\begin{eqnarray*}
-\bar{x} &=& \frac{x_1+x_2}{2}\\
-\omega &=& x_2 - x_1
-\end{eqnarray*}
-Figure~\ref{fig:bivarplot}B contains the same information as panel~A, except appropriately rotated so that the axes show $\bar{x}$ and $\omega$. Possible values of $\bar{x}$ and $\omega$ are shown within the diamond outlined in black; any values outside these black lines are not possible observations.
-
-Using the Figure~\ref{fig:bivarplot}B, we can work out the probability that CP2 contains the true value, {\em conditioned on} the observed value of $\omega$. In order to do this, consider a horizontal line at any value $\omega=c$. The proportion of horizontal line that is under the shaded region (within the black diamond) yields the probability. From Figure~\ref{fig:bivarplot}B it is obvious if $\omega>.5$, the entire horizontal line within the diamond is shaded, and thus the probability that the CI contains the true value is 1. These conditional probabilities are also shown as a function of $|\omega|$ in Figure~\ref{fig:CIincProb}B.
-
-Consider the first submarine scenario in light of Panel~B. Of all confidence intervals with widths that are the same as the one we observed in the first scenario, how many contain the true value? To determine this, we need only follow the horizontal gray line that passes through point~1. By considering this horizontal slice, we are conditioning on the fact that the observed CI was only \Sexpr{diff(x.a)*10} meters wide. Only a small proportion of this horizontal slice -- about \Sexpr{round(100 * 2*diff(x.a)*10 / (20 - 2*diff(x.a)*10),0)}\% -- passes over the shaded area. When the two bubbles are \Sexpr{diff(x.a)*10} meters apart, the 50\% CI is virtually certain to exclude the true value, showing how wrong the reasoning of the Fundamental Confidence Fallacy is.
-
-Consider now the second submarine scenario. All of this horizontal slice through point~2 passes over the shaded area, because when the two bubbles are \Sexpr{diff(x.b)*10} meters apart, the 50\% CI absolutely {\em must} contain the true value, even though the Fundamental Confidence Fallacy would lead us to believe that we should be only 50\% confident that the true value is contained in the interval.
-
-Figures~\ref{fig:bivarplot}C and~D show the analogous plot for CP2. Examining panel~D it is obvious that the probability that the CI contains the true value is a function of $\omega$. for $\omega$ near 0, the probability that the CI contains the true value is about 30\%. For larger $|\omega|$, this the probability increases to 100\% (see Figure~\ref{fig:CIincProb}B). For the first submarine scenario, the probability that the CI computed from CP2 contains the true value is about 30\%; for the second, it is 100\%.
-
-The fact that we can condition on $x_2-x_1=c$ and obtain a different probability for whether a confidence interval from CP1 or CP2 contains the true value indicates that there are relevant subsets. These relevant subsets are found by simply conditioning on $x_2-x_1$, which is known because it was observed.
-
-The blue diamond in Figure~\ref{fig:bivarplot}E and~F shows where the true value is contained within the CP3, the Bayesian credible procedure. Notice that in Panel~B, 50\% of the Bayesian credible intervals contain the true value, for {\em every} value of $x_2-x_1$: that is, $x_2-x_1$ is not a recognizable subset for the Bayesian credible procedure. It is important to emphasize, however, that although CP3 is a confidence procedure, the good properties of the interval stem {\em not} from the fact that the Bayesian credible interval is a confidence interval -- that should be clear from the fact that the other two confidence intervals fail -- but rather from the fact that it is a Bayesian credible interval. 
-
-\subsubsection{More about the confidence procedures}
-At this point, one might suspect that there was something defective about CP1 and CP2. The intervals are easily shown to be a 50\% confidence interval, but perhaps there are other valid reasons why a frequentist -- that is, someone only concerned with long-run average coverage -- might dislike CP1 and CP2. Since CP3 is also a confidence interval, it might be interesting to ask whether a frequentist has any reason to prefer it.
-
-Frequentists typically prefer intervals that are shorter on average, because they have a tendency to {\em exclude} values of the parameter that are false. Figure~\ref{fig:twoCIprops}A shows the distribution of the widths of the three confidence procedures. Interestingly, although the distributions of widths of CP1 and CP3 differ between the two intervals, they have exactly the same average width: exactly 10/3 meters. CP2 has a lower average width than the other two intervals, at a fixed $10(1-1/\sqrt{2})\approx 2.93$ meters.
-
-Shortness, however, isn't by itself the main goal of a confidence procedure. Frequentists prefer intervals that have a lower probability of including all false values of $\theta$, which we can denote $\theta^\prime$. If for every value of $\theta^\prime$, one interval has a lower probability of including $\theta^\prime$ than the other, a frequentist would prefer that interval. Figure~\ref{fig:twoCIprops}B
-shows the probability that each interval includes every false value $\theta^\prime$. Of CP1 and CP3, neither interval dominates the other; CP1 has a greater probability of including false values near the true value, but the Bayesian interval can include values farther from the true value. The average probability for CP1 and CP3 in Figure~\ref{fig:twoCIprops}B is exactly the same: 2/9. From a frequentist perspective, the CP1 and CP3 are equally justifiable.
-
-<<twoCIprops,echo=FALSE,fig.cap="A: Distribution of the widths of the CI presented in the submarine example and of the Bayesian credible interval. The vertical dashed line shows the average width for both intervals. B: Probability that the CI presented in the submarine example and the Bayesian credible interval contain a given alternative false value of $\\theta$, denoted $\\theta^\\prime$. The horizontal dashed line shows the average function value for both intervals.",fig.width=10,fig.height=10>>=
-
-
-source('CIwidthAltPlot.R')
-
-@
-
-CP2, on the other hand, dominates CP3, but does not dominate CP1 \citep[see][for another example of a CI that dominates CP3 in frequentist terms]{Welch:1939}. On strictly frequentist grounds, we would prefer CP2 to CP3, in spite of the fact that it does not track the precision implied by the data, can include impossible values, and admits relevant subsets. This underscores the fact that to a frequentist, all that matters is the long-run performance of the procedure, and not being able to make reasonable inferences for any given data set.
-
-\section{Student's $t$ examples} \label{app:student}
-
-
-\subsection{Proof of results in $t$ example 1}
-In the first example, we showed that longer $t$ intervals have a greater probability including the true value, and thus relevant subsets exist. To prove this result requires only basic statistical knowledge, and we prove it here. Following this, we prove a result showing how much we can gain from the use of this knowledge.
-
-There are two facts to know: first, that $\bar{x}$ and $s^2$ are independent; and second, that $(N-1)s^2/\sigma^2$ has a $\chi^2_{N-1}$ distribution. 
-Because the critical $t_1$ values for a 50\% CI are -1 and 1, The probability that the 50\% confidence interval contains the true value is 
-\[
-Pr\left(\bar{y} - s/\sqrt{2}<\mu<\bar{y} + s/\sqrt{2}\right) = .5
-\]
-This can be rearranged algebraically in a few steps to
-\[
-Pr\left(\bar{y} - s/\sqrt{2}<\mu<\bar{y} + s/\sqrt{2}\right) = 
-  Pr\left(\left(\frac{\bar{y}-\mu}{\sigma/\sqrt{2}}\right)^2 < \frac{s^2}{\sigma^2}\right)
-\]
-If we call
-\begin{eqnarray*}
-Z &=& \left(\frac{\bar{y}-\mu}{\sigma/\sqrt{2}}\right)^2\\
-W &=& \frac{s^2}{\sigma^2},
-\end{eqnarray*}
-the condition that the confidence interval includes the true value is $Z<W$.
-$Z$ is a squared standard normal variate, and hence both $Z$ and $W$ have identical, and independent, $\chi^2_1$ distributions. ``Long'' confidence intervals occur when $W$ (and thus $s$) is larger. If we know that $W$ is larger, then this increases the probability that $Z$ is less than $W$. Because $Pr(Z<W)$ is also the probability that the true value is in the CI, knowing that $s$ is larger increases the probability that the true value is in the CI.
-
-In order to see how we can use this result to make better judgments, it helps to follow \citet{Buehler:1959} and consider playing a game. Suppose you are convinced that all 50\% confidence intervals have a 50\% probability of containing the true value. Paul offers you a bet. You and Paul will $N=2$ observations from a normal with unknown mean and variance (suppose you ask a third friend to pick the values of $\mu$ and $\sigma^2$ without your knowledge). Paul will then decide to bet whether the true value is inside or outside the CI. You will be offered the opposite bet. 
-
-If you hold the Fundamental Confidence Fallacy, you will be indifferent to the two choices. After all, if there is a 50\% probability that any given CI contains the true value, then there is the same 50\% probability that it does not. You therefore accept Paul's challenge, thinking that neither of you have any advantage over the other.
-
-As described in the main text, Paul's strategy is simple: pick a number $a$, look at the observed value of $s$, and if $s<a$ (``short'' intervals), bet that the confidence interval excludes the true value. If $s>a$ (``long'' intervals) then Paul bets that the interval includes the true value. 
-
-We now prove that Paul will win more than you will (possibly substantially more). Following Buehler, let $C$ be the event $s<a$, $C'$ be the event $s>a$, and let $A$ be the event that the confidence interval contains $\mu$. Also let
-\[
-a_0 = \frac{a^2}{\sigma^2}.
-\]
-Then $s>a$ implies that $s^2/\sigma^2>a_0$. We seek two probabilities: $Pr(A\mid C)$ (the probability that the confidence interval contains $\mu$ given that the interval is ``short'') and $Pr(A\mid C')$ (the probability that the confidence interval contains $\mu$ given that the interval is ``long''). Using the same results as above, these can be written:
-\begin{eqnarray*}
-Pr(A\mid C) &=& Pr(Z<W\mid W<a_0)\\
-Pr(A\mid C') &=& Pr(Z<W\mid W>a_0).
-\end{eqnarray*}
-where $Z$ and $W$ are independent $\chi^2_1$ variates. Let $f$ and $F$ be the PDF and CDF of a $\chi^2_1$ random variable. Then
-\begin{eqnarray*}
-Pr(Z<W~\mbox{and}~W<a_0) &=& \int_0^{a_0} \int_0^w f(w)f(z)\,dz\,dw\\
- &=& \int_0^{a_0} f(w)\int_0^w f(z)\,dz\,dw\\
-  &=& \int_0^{a_0} f(w)F(w)\,dw\\
-\end{eqnarray*}
-Make the substitution $q = F(w)$. Then
-\begin{eqnarray*}
-\int_0^{a_0} f(w)F(w)\,dw &=& \int_0^{F(a_0)}q\,dq\\
-&=& \frac{1}{2}F(a_0)^2.
-\end{eqnarray*}
-This implies that
-\begin{eqnarray*}
-Pr(Z<W\mid W<a_0) &=& \frac{\frac{1}{2}F(a_0)^2}{Pr(W<a_0)}\\
-&=& \frac{\frac{1}{2}F(a_0)^2}{F(a_0)}\\
-&=& \frac{1}{2}F(a_0)\\
-&=& Pr(A\mid C)
-\end{eqnarray*}
-In the same way, one can prove that
-\[
-Pr(A\mid C') = \frac{1}{2} + \frac{1}{2}F(a_0).
-\]
-%(In Buehler's notation, $\phi = F(a_0)$).
-
-Let $V$ be the probability that Paul wins. Under this scheme, $Pr(V)$ is:
-\begin{eqnarray}
-Pr(V) &=& Pr({\sim}A\mid C)P(C) + Pr(A\mid C')P(C')\\
-&=& \left(1 - \frac{1}{2}F(a_0)\right)F(a_0) + \frac{1}{2}\left(1+F(a_0)\right)\left(1-F(a_0)\right)
-\end{eqnarray}
-A bit of algebra simplifies this to
-\begin{eqnarray}
-Pr(V) &=&\frac{1}{2} + F(a_0)(1 - F(a_0)).\label{eq:probwin}
-\end{eqnarray}
-Since $0<a_0<\infty$, the probability that Paul wins $P(V)>1/2$. By using the information in $s$, Paul will, in the long run, outperform you in judgments of whether the confidence interval contains the true value.
-
-<<paulWins,echo=FALSE,fig.cap="Probability that Paul wins when betting against someone making the Fundamental Confidence Fallacy, as a function of his criterion $a$. See text for details.",fig.width=10,fig.height=6>>=
-
-source('CIgamePlot.R')
-@
-
-How often will Paul win? This depends on the choice of the criterion $a$. If $a$ is very large or very small relative to the true population standard deviation, then Paul will win more often than not, but only just. If Paul picks his criterion well, then Paul can win up to 3/4 of the time. Figure~\ref{fig:paulWins} shows the probability that Paul wins as a function of the criterion.
-
-It is obvious from Eq.~\ref{eq:probwin} that the optimal winning probability is .75, and holds when $F(a_0) = 1-F(a_0)=.5$. Since $F$ is the CDF of the $\chi^2_1$ distribution, this implies that the optimal $a_0$ occurs when $\Phi(\sqrt{a_0})=0.75$. Because $a_0=(a/\sigma)^2$, this implies that the optimal value for $a$ is
-\[
-a = \sigma\Phi^{-1}(.75) \approx .67\sigma.
-\]
-
-But even if one does not have enough knowledge to pick the optimal value for $a$, Figure~\ref{fig:paulWins} shows that for a very wide range of possible values, the probability that Paul wins is substantially above 0.5, and {\em always} above 0.5.
-
-
-%\subsubsection{Eliminating the relevant subsets with Bayes}
-%As mentioned in the main text, Bayesian analysis with proper priors is not susceptible to relevant subsets. Because all analysis flows from the posterior distribution, probability statements must be coherent and unique, so long as the posterior distribution is proper.
-
-%We can show this via simulation.
-
-
-<<bayesRelSubPlot,echo=FALSE,fig.cap='Top row: 1000 confidence intervals (left) and credible intervals (right), normalized by true values and sorted by width. Bottom row: The cumulative proportion (by width) of confidence intervals (left) and confidence intervals (right) that contain the true value. The expected proportion, if successful inclusions are uniformly distributed across interval widths, is along the diagonal.',fig.width=7,fig.height=7,message=FALSE,eval=FALSE>>=
-
-source('bayesRelSubPlot.R')
-
-@
-
-\subsection{$t$ example 2}
-In this section we provide R code to perform the simulation for confirming the claim made in the main text in $t$ example 2, after \citet{Pierce:1973}. We also try to provide some intuition about why the phenomenon occurs. We first recapitulate the example.
-
-Suppose we sample $N=2$ observations from a normal with unknown mean $\mu$ and unknown variance $\sigma^2$, and construct a 50\% Student's $t$ confidence interval. Suppose also that we compute the $p$ value from a two-sided Student's $t$ test with $H_0: \mu=0$. If $p>.25$ from the hypothesis test, then the probability that the confidence interval contains the true mean is $\geq2/3$, regardless of the true values of $\mu$ and $\sigma^2$.
-
-When we first came across this result, we were astounded and had to simulate the result for ourselves. We provide R code so that any reader can simulate the result for themselves.
-<<>>=
-
-## Set the true values
-mu = 1
-sigma = 1
-
-## Find critical values for the significance test
-critt = qt(.25/2,1)
-
-## Number of simulations to perform
-M = 100000
-
-@
+The following function will sample from the marginal posterior distribution of $\omega^2$:
 
 <<>>=
+## Assumes that data.frame y has two columns:
+## $y is the dependent variable
+## $grp is the grouping variable, as a factor
+Bayes.posterior.omega2
+@
 
-## Sample data, and put it in a matrix
-y = rnorm(M*2,mu,sigma)
-dim(y) = c(M,2)
- 
-## Compute sample statistics
-ybar = (y[,1] + y[,2])/2
-s = abs(y[,1] - y[,2])/sqrt(2)
+The {\tt Bayes.posterior.omega2} function can be used to compute the posterior and HPD for the first example in the manuscript. The {\tt fake.data.F} function, defined in the file {\tt steiger.utility.R} (available with the manuscript source code at \url{https://github.com/richarddmorey/ConfidenceIntervalsFallacy}), generates a data set with a specified $F$ statistic.
 
-## Compute test statistic
-tval = ybar/s*sqrt(2)
+<<>>=
+cl = .683 ## Confidence level corresponding to standard error
+J = 3 ## Number of groups
+N = 10 ## observations in a group
 
-## Is the p value greater than .25?
-pvalGtCrit = (tval>critt & tval< -critt)
+df1 = J - 1
+df2 = J * (N - 1)
 
-## Does the CI contain the true value?
-contains = apply(y,1,function(v) min(v)<mu & max(v)>mu)
+## F statistic from manuscript
+Fstat = 0.1748638
 
-## Compute estimates of conditional probabilities
-counts = table(pvalGtCrit,contains)
-condProbs = counts / rowSums(counts)
+set.seed(1)
+y = fake.data.F(Fstat, df1, df2)
+
+## Steiger confidence interval
+steigerCI = steigerCI.omega2(Fstat,df1,df2, conf.level=cl)
+samples.omega2 = Bayes.posterior.omega2(y, cl, 100000)
+@
+
+We can compute the Bayesian HPD interval with the `HPDinterval` function in the package `coda`: 
+<<>>=
+library(coda)
+
+HPDinterval( samples.omega2, prob = cl )
+@
+
+<<omega2samp,echo=FALSE,fig.cap="Histogram of the posterior MCMC samples for $\\omega^2$. The 68\\% Bayesian HPD credible interval is highest density region than captures 68\\% of the posterior density, shown in gray.  The vertical dashed line denotes the upper bound of the HPD. The 68\\% Steiger confidence interval is shown as the interval near the top.",fig.width=8,fig.height=6>>=
+
+nbreaks = 20
+
+q = HPDinterval( samples.omega2, prob = cl )
+bks = seq(0,max(samples.omega2)*1.01,q[2]/nbreaks)
+cols = rgb(1-(bks<q[2]),0,0,.3)
+
+z = hist(samples.omega2, breaks = bks, main=expression(paste("Posterior distribution for ",omega^2)), freq=FALSE, col=cols,lty=0, xlab = expression(omega^2))
+abline(v=q[2], lty=2)
+text(q[2]/2,3,"68%", cex = 2)
+
+arrows(steigerCI[1], par()$usr[4]*.75, steigerCI[2]+.0005,par()$usr[4]*.75, col="red", lwd=2, code = 3, angle = 90)
 
 @
 
-The table below shows the probabilities, conditioned on the results of the $t$ test, that the confidence interval contains the true value. The relevant row is the bottom one; it shows that when $\mu=\Sexpr{mu}$ and $\sigma=\Sexpr{sigma}$ (as defined above), the probability that the CI contains the true value, given that $p>.25$, is approximately \Sexpr{round(condProbs[2,2],2)}. The result of a (possibly uninteresting) hypothesis test therefore bears on whether we should believe that the confidence interval contains the true value.
 
-<<echo=FALSE,results='asis'>>=
-rownames(condProbs) = c('$p<.25$','$p>.25$')
-colnames(condProbs) = c('Prob. CI excludes $\\mu$','Prob. CI includes $\\mu$')
-print(xtable(condProbs),type="latex",sanitize.text.function = function(x) x)
-@
-
-Why does this occur? We will not give a formal proof; however, when the problem is demonstrated graphically the reason is clear. Consider Figure~\ref{fig:student2Plot} (left). The contours show the joint density of $\bar{x}$ and $s$ when $\mu=0$ and $\sigma=1$. Inside the dotted ``V'', the resulting confidence interval will include the true mean $\mu$; outside the dotted ``V'', the resulting confidence interval will exclude the true mean. The relevant subsets from the previous example are obvious; for large $s$ values, more of the distribution is between the dotted ``V''
-
-<<student2Plot,echo=FALSE,fig.cap="Bivariate contour density of the sample mean $\\bar{x}$ and standard deviation $s$ for $\\mu=0$ (left) and $\\mu=2.5$ (right). Within the dotted 'V', the CI contains the true value; within the dashed 'V', the significance test $p>0.25$. In both panels, $\\sigma^2=1$ and $N=2$.",fig.width=7,fig.height=4>>=
-
-source('student2Plot.R')
-@
-
-The dashed lines show pairs of ($\bar{x},s$) for which $p=.25$. Inside the dashed lines, $p>.25$. The probability that the confidence interval contains the true value, given that $p>.25$, is simply the proportion of area inside the dashed ``V'' that is inside the dotted ``V''. This must be greater than 50\%, since the unconditional area inside the dotted ``V'' is 50\%. The conditional probability can be proven to be 2/3.
-
-If we move the true mean $\mu$ away from 0, then this probability will get larger. To see this, consider Figure~\ref{fig:student2Plot} (right), where $\mu=2.5$. Because the null hypothesis $\mu=0$ is far away from the true $\mu$, the majority of the region corresponding to $p>.25$ (within the dashed ``V'') is within the dotted ``V''. Put another way, $\mu$ is very far from 0, yet we obtain $p>.25$ from our significance test against $H_0: \mu=0$, this must mean that $s$ is large. If $s$ is large, then it has a greater probability of including the true value.
 
 \printbibliography
 
