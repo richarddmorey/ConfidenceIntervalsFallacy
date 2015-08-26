@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>The Fallacy of Placing Confidence in Confidence Intervals</title>
+
+   <!-- Markdown CSS -->
+   <link href="css/markdown.css" rel="stylesheet">
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/sticky-footer-navbar.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+    <!-- hypothes.is -->
+    <script async defer src="//hypothes.is/embed.js"></script>
+
+    <!-- lightbox style -->
+    <link href="css/slimbox2.css" rel="stylesheet">
+
+    <!-- my article style -->
+    <link href="css/article.css" rel="stylesheet">
+
+    <script type="text/javascript"
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        showProcessingMessages: false,
+        messageStyle: 'none',
+        // show equation numbers
+        TeX: {
+          equationNumbers: {
+            autoNumber: "AMS"
+          }
+        },
+        'HTML-CSS': {
+          imageFont: null
+        }
+      });
+    </script>
+
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">The Fallacy of Placing Confidence in Confidence Intervals</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown active">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Main paper<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class=""><a href="introduction.html">Introduction</a></li>
+                <li><a href="folktheory.html">The folk theory of confidence intervals</a></li>
+                <li><a href="CItheory.html">The theory of confidence intervals</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="lostsub.html">Example 1: The Lost Submarine</a></li>
+                <li><a href="subCIs.html">Five confidence procedures</a></li>
+                <li class="active"><a href="subCIproperties.html">Properties of the procedures</a></li>                
+                <li><a href="subCIevaluation.html">Evaluating the procedures</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="omegasqCI.html">Example 2: A confidence interval in the wild</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="discussion.html">Discussion</a></li>
+                <li><a href="guidelines.html">Guidelines for interpreting and reporting intervals</a></li>
+                <li><a href="confvscred.html">Confidence intervals versus credible intervals</a></li>
+                <li><a href="conclusion.html">Conclusion</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="references.html">References</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Supplements<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="supplement.html">Details and code</a></li>
+                <li><a href="discussion_guide.html">Discussion guide</a></li>
+              </ul>
+            </li>            
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <!-- Begin page content -->
+    <div class="container">
+      <button onclick="TogetherJS(this); return false;">Start collaboration with TogetherJS</button>
+      <p><a href="https://twitter.com/share" class="twitter-share-button" data-via="richarddmorey" data-hashtags="statistics">Tweet</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+          </script>
+        </p>
+
+      <div class="page-header">
+        <h2>Properties of the procedures</h2>
+      </div>
+      
+
+      <p>The four statisticians report their four confidence procedures to the rescue team, who are understandably bewildered by the fact that there appear to be at least four ways to summarize the data about the hatch location from two bubbles. Just after the statisticians present their confidence procedures to the rescuers, two bubbles appear at locations <span class="math">\(x_1=1\)</span> and <span class="math">\(x_2=1.5\)</span>. The resulting likelihood and the four confidence intervals are shown in <a href="lostsub.html#bubbles1">Figure 1</a>A.</p>
+      
+      <h4>The fundamental confidence fallacy</h4>
+      <p>After using the observed bubbles to compute the four confidence intervals, the rescuers wonder how to interpret them. It is clear, first of all, why the fundamental confidence fallacy is a fallacy. As Fisher pointed out in the discussion of CI theory mentioned above, for any given problem — as for this one — there are many possible confidence procedures. These confidence procedures will lead to different confidence intervals. In the case of our submersible confidence procedures, all confidence intervals are centered around <span class="math">\(\bar{x}\)</span>, and so the intervals will be nested within one another.</p>
+      <p>If we mistakenly interpret these observed intervals as having a 50% probability of containing the true value, a logical problem arises. First, there must always be a 50% probability that the <em>shortest</em> interval contains the parameter. The reason is basic probability theory: the narrowest interval would have probability 50% of including the true value, and the widest interval would have probability 50% of excluding the true value. According to this reasoning, there must be a 0% probability that the true value is outside the narrower, nested interval yet inside the wider interval. If we believed the FCF, we would always come to the conclusion that the shortest of a set of nested <span class="math">\(X\%\)</span> intervals has an <span class="math">\(X\%\)</span> probability of containing the true value. Of course, the confidence procedure “always choose the shortest of the nested intervals” will tend to have a lower than <span class="math">\(X\%\)</span> probability of including the true value. If we believed the FCF, then we must come to the conclusion that the shortest interval simultaneously has an <span class="math">\(X\%\)</span> probability of containing the true value, and a less than <span class="math">\(X\%\)</span> probability. Believing the FCF results in logical contradiction.</p>
+      <p>This point regarding the problem of interpreting nested CIs is not, by itself, a critique of confidence interval theory <em>proper</em>; it is rather a critique of the folk theory of confidence. Neyman himself was very clear that this interpretation was not permissible, using similarly nested confidence intervals to demonstrate the fallacy <span class="citation">(Neyman, 1941, pp. 213–215)</span>. It is a warning that the improper interpretations of confidence intervals used throughout the scientific literature leads to mutually contradictory inferences, just as Fisher warned.</p>
+      <p>Even without nested confidence procedures, one can see that the FCF must be a fallacy. Consider <a href="lostsub.html#bubbles1">Figure 1</a>B, which shows the resulting likelihood and confidence intervals when <span class="math">\(x_1=0.5\)</span> and <span class="math">\(x_2=9.5\)</span>. When the bubbles are far apart, as in this case, the hatch can be localized very precisely: the bubbles are far enough apart that they must have come from the bow and stern of the submersible. The sampling distribution, nonparametric, and UMP confidence intervals all encompass the likelihood, meaning that there is 100% certainty that these 50% confidence intervals contain the hatch. Reporting 50% certainty, 50% probability, or 50% confidence in a specific interval that surely contains the parameter would clearly be a mistake.</p>
+      
+      <h4>Relevant subsets</h4>
+      <p>The fact that we can have 100% certainty that a 50% CI contains the true value is a specific case of a more general problem flowing from the FCF. The shaded regions in <a href="#bivarplot">Figure 2</a>, left column, shows when the true value is contained in the various confidence procedures for all possible pairs of observations. The top, middle, and bottom row correspond to the sampling distribution, nonparametric/UMP, and the Bayes procedures, respectively. Because each procedure is a 50% confidence procedure, in each plot the shaded area occupies 50% of the larger square delimiting the possible observations. The points ‘a’ and ‘b’ are the bubble patterns in <a href="#bivarplot">Figure 2</a>A and B, respectively; point ‘b’ is in the shaded region for all intervals because the true value is included in all the intervals, as shown in <a href="#bivarplot">Figure 2</a>B; likewise, ‘a’ is outside the shaded region because all CIs exclude the true value for these bubbles.</p>
+
+      <div class="article_figure">
+        <a href="figures/bivarplot-1.svg" rel="lightbox" title="Figure 2: Left: Possible locations of the first (&lt;span class='math'&gt;y&lt;sub&gt;1&lt;/sub&gt;&lt;/span&gt;) and second (&lt;span class='math'&gt;y&lt;sub&gt;2&lt;/sub&gt;&lt;/span&gt;) bubbles. Right: &lt;span class='math'&gt;y&lt;sub&gt;2&lt;/sub&gt;-y&lt;sub&gt;1&lt;/sub&gt;&lt;/span&gt; plotted against the mean of &lt;span class='math'&gt;y&lt;sub&gt;1&lt;/sub&gt;&lt;/span&gt; and &lt;span class='math'&gt;y&lt;sub&gt;2&lt;/sub&gt;&lt;/span&gt;. Shaded regions show the areas where the respective 50% confidence interval contains the true value. The figures in the top row (A,B) show the sampling distribution interval; the middle row (C,D) shows the NP and UMP intervals; the bottom row (E,F) shows the Bayes interval. Points a and b represent the pairs of bubbles from &lt;a href='lostsub.html#bubbles1'&gt;Figure 1A and B&lt;/a&gt;, respectively. &lt;a href='http://learnbayes.org/redirects/CIshiny1.html' target='_blank' class='btn btn-info'&gt;View interactive version&lt;/a&gt;" name="bivarplot"></a>
+      </div>
+
+      <p>Instead of considering the bubbles themselves, we might also translate their locations into the mean location <span class="math">\(\bar{y}\)</span> and the difference between them, <span class="math">\(b=y_2-y_1\)</span>. We can do this without loss of any information: <span class="math">\(\bar{y}\)</span> contains the point estimate of the hatch location, and <span class="math">\(b\)</span> contains the information about the precision of that estimate. <a href="#bivarplot">Figure 2</a>, right column, shows the same information as in the left column, except as a function of <span class="math">\(\bar{y}\)</span> and <span class="math">\(b\)</span>. The figures in the right column are <span class="math">\(45^\circ\)</span> clockwise rotations of those in the left. Although the two columns show the same information, the rotated right column reveals a critical fact: the various confidence procedures have different probabilities of containing the true value when the distance between the bubbles varies.</p>
+      
+      <p>To see this, examine the horizontal line under point ‘a’ in <a href="#bivarplot">Figure 2</a>B. The horizontal line is the subset of all bubble pairs that show the same difference between the bubbles as those in <a href="lostsub.html#bubbles1">Figure 1</a>A: <span class="math">\(0.05\)</span> meters. About 31% of this line falls under the shaded region, meaning that in the long run, 31% of sampling distributions intervals will contain the true value, when the bubbles are <span class="math">\(0.05\)</span> meters apart. For the nonparametric and UMP intervals (middle row), this percentage is only about 5%. For the Bayes interval (bottom row), it is exactly 50%.</p>
+      <p>Believing the FCF implies believing that we can use the long-run probability that a procedure contains the true value as an index of our post-data certainty that a particular interval contains the true value. But in this case, we have identified <em>two</em> long-run probabilities for each interval: the average long-run probability <em>not</em> taking into account the observed difference — that is, 50% — and the long-run probability taking into account <span class="math">\(b\)</span> which, for the sampling distribution interval is 31% and for the nonparametric/UMP intervals is 5%. Both are valid long-run probabilities; which do we use for our inference? Under FCF, both are valid. Hence the FCF leads to contradiction.</p>
+      <p>The existence of relevant subsets brings back into focus the confusion between what we know before the experiment with what we know after the experiment. For any of these confidence procedures, we know before the experiment that 50% of future CIs will contain the true value. After observing the results, conditioning on an aspect of the data — such as, in this case, the variance of the bubbles — can radically our assessment of the probability.</p>
+      <p>The problem of contradictory inferences arising from multiple applicable long-run probabilities is an example of the “reference class” problem <span class="citation">(Reichenbach, 1949; Venn, 1888)</span>. Fisher noted that when there are identifiable subsets of the data that have different probabilities of containing the true value — such as those subsets with a particular value of <span class="math">\(d\)</span>, in our confidence interval example — those subsets are relevant to the inference <span class="citation">(Fisher, 1959)</span>. The existence of relevant subsets means that one can assign more than one probability to an interval. Relevant subsets are identifiable in many confidence procedures, including the common classical Student’s <span class="math">\(t\)</span> interval, where wider CIs have a greater probability of containing the true value <span class="citation">(Buehler, 1959; Buehler &amp; Feddersen, 1963; Casella, 1992; Robinson, 1979)</span>. There are, as far as we know, only two general strategies for eliminating the threat of contradiction from relevant subsets: Neyman’s strategy of avoiding any assignment of probabilities to particular intervals, and the Bayesian strategy of always conditioning on the observed data, to be discussed subsequently.</p>
+      
+      <h4>The precision and likelihood fallacies</h4>
+      <p>This set of confidence procedures also makes clear the precision fallacy. Consider <a href="#precision1">Figure 3</a>, which shows how the width of each of the intervals produced by the four confidence procedures changes as a function of the width of the likelihood. The Bayes procedure tracks the uncertainty in the data: when the likelihood is wide, the Bayes CI is wide. The reason for this necessary correspondence between the likelihood and the Bayes interval will be discussed later.</p>
+
+      <div class="article_figure">
+              <a href="figures/precision1-1.svg" rel="lightbox" title="Figure 3: The relationship between CI width and the uncertainty in the estimation of the hatch location for the four confidence procedures. SD: Sampling distribution procedure; NP: Nonparametric procedure; UMP: UMP procedure; B: Bayes procedure. Note that the NP and UMP procedures overlap when the width of the likelihood is &gt;5. &lt;a href='http://learnbayes.org/redirects/CIshiny1.html' target='_blank' class='btn btn-info'&gt;View interactive version&lt;/a&gt;" name="precision1"></a>
+      </div>
+
+      <p>Intervals from the sampling distribution procedure, in contrast, have a fixed width, and so cannot reveal any information about the precision of the estimate. The sampling distribution interval is of the commonly-seen CI form <span class="math">\[
+        \bar{x}\pm C\times SE,
+      \]</span> Like the CI for a normal population mean with known population variance, the standard error — defined as the standard deviation of the sampling distribution of <span class="math">\(\bar{x}\)</span> — is known and fixed; here, it is approximately 2.04 (see the supplement for details). This indicates that the long-run standard error — and hence, confidence intervals based on the standard error — cannot always be used as a guide to the uncertainty we should have in a parameter estimate.</p>
+      <p>Strangely, the nonparametric procedure generates intervals whose widths are <em>inversely</em> related to the uncertainty in the parameter estimates. Even   more strangely, intervals from the UMP procedure initially increase in width with the uncertainty in the data, but when the width of the likelihood is greater than 5 meters, the width of the UMP interval is inversely related to the uncertainty in the data, like the nonparametric interval. This can lead to bizarre situations. Consider observing the UMP 50% interval <span class="math">\([1,1.5]\)</span>. This is consistent with two possible sets of observations: <span class="math">\((1,1.5)\)</span>, and <span class="math">\((-3.5,6)\)</span>. Both of these sets of bubbles will lead to the same CI. Yet the second data set indicates high precision, and the first very low precision! The UMP and sampling distribution procedures share the dubious distinction that their CIs cannot be used to work backwards to the observations. In spite of being the “most powerful” procedure, the UMP procedure clearly throws away important information.</p>
+      <p>To see how the likelihood fallacy is manifest in this example, consider again <a href="#precision1">Figure 3</a>. When the uncertainty is high, the likelihood is wide; yet the nonparametric and UMP intervals are extremely narrow, indicating both false precision and excluding almost all likely values. Furthermore, the sampling distribution procedure and the nonparametric procedure can contain impossible values.<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a></p>
+
+      <div class="footnotes">
+        <hr />
+        <ol start="4">
+          <li id="fn4"><p>In order to construct a better interval, a frequentist would typically truncate the interval to only the possible values, as was done in generating the UMP procedure from the nonparametric procedure <span class="citation">(Spanos, 2011)</span>. This is guaranteed to lead to a better procedure. Our point here is that it is a mistake to naively assume that a procedure has good properties on the basis that it is a confidence procedure. However, see <span class="citation">(Velicer et al., 2008)</span> for an example of CI proponents including impossible values in confidence intervals, and <span class="citation">(Fidler &amp; Thompson, 2001)</span> for a defense of this practice.<a href="#fnref4">↩</a></p></li>
+        </ol>
+      </div>
+
+      <ul class="pager">
+        <li class="previous"><a href="subCIs.html">Previous</a></li>
+        <li class="next"><a href="subCIevaluation.html">Next</a></li>
+      </ul>
+    
+    </div>
+
+
+      <footer class="footer">
+        <div class="container">
+        <p class="text-muted">Please cite as Morey, Hoekstra, Rouder, Lee and Wagenmakers (in press). Psychonomic Bulletin &amp; Review.</p>
+        </div>
+      </footer>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <script type="text/javascript" src="js/slimbox2.js"></script>
+    <script type="text/javascript" src="js/article.js"></script>
+    <script src="https://togetherjs.com/togetherjs-min.js"></script>
+
+    <script>make_figures();</script>
+  </body>
+</html>

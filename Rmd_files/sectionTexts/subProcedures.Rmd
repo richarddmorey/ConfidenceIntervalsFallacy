@@ -1,0 +1,42 @@
+A group of four statisticians [^3] happen to be on board, and the rescuers decide to ask them for help improving their judgments using statistics. The four statisticians suggest four different 50% confidence procedures. We will outline the four confidence procedures; first, we describe a trivial procedure that no one would ever suggest. An applet allowing readers to sample from these confidence procedures is available at the link in the caption for Figure `r figr('bubbles1')`.
+
+[^3]: John Tukey has said that the collective noun for a group of statisticians is "quarrel" [@McGrayne:2011].
+
+#### 0. A trivial procedure
+
+A trivial 50\% confidence procedure can be constructed by using the ordering of the bubbles. If $y_1>y_2$, we construct an interval that contains the whole ocean, $(-\infty,\infty)$. If $y_2>y_1$, we construct an interval that contains only the single, *exact* point directly under the middle of the rescue boat. This procedure is obviously a 50% confidence procedure; exactly half of the time &mdash; when $y_1>y_2$ &mdash; the rescue hatch will be within the interval. We describe this interval merely to show that *by itself*, a procedure including the true value $X\%$ of the time means nothing [see also @Basu:1981]. We must obviously consider something more than the confidence property, which we discuss subsequently. We call this procedure the "trivial" procedure.
+
+#### 1. A procedure based on the sampling distribution of the mean
+
+The first statistician suggests building a confidence procedure using the sampling distribution of the mean $\bar{x}$. The sampling distribution of $\bar{x}$ has a known triangular distribution with $\theta$ as the mean. With this sampling distribution, there is a 50% probability that $\bar{x}$ will differ from $\theta$ by less than $5 - 5/\sqrt{2}$, or about 1.46m.  We can thus use $\bar{x} - \theta$ as a so-called "pivotal quantity" [see @Casella:Berger:2002 and the supplement to this manuscript for more details] by noting that there is a 50% probability that $\theta$ is within this same distance of $\bar{x}$ in repeated samples. This leads to the confidence procedure
+\[
+\bar{x} \pm (5 - 5/\sqrt{2}),
+\]
+which we call the "sampling distribution" procedure. This procedure also has the familiar form $\bar{x} \pm C\times SE$, where here the standard error (that is, the standard deviation of the estimate $\bar{x}$) is known to be 2.04. 
+
+#### 2. A nonparametric procedure
+
+The second statistician notes that $\theta$ is both the mean and median bubble location. @Olive:2008 and @Rusu:Dobra:2008 suggest a confidence procedure for the median that in this case is simply the interval between the two observations:
+\[
+\bar{x} \pm d/2.
+\]
+It is easy to see that this must be a 50% confidence procedure; the probability that both observations fall below $\theta$ is $.5\times .5=.25$, and likewise for both falling above. There is thus a 50% chance that the two observations encompass $\theta$. Coincidentally, this is the same as the 50% Student's $t$ procedure for $n=2$. We call this the "nonparametric" procedure.
+
+#### 3. The uniformly most-powerful procedure
+
+The third statistician, citing @Welch:1939, describes a procedure that can be thought of as a slight modification of the nonparametric procedure. Suppose we obtain a particular confidence interval using the nonparametric procedure. If the nonparametric interval is more than 5 meters wide, then it *must* contain the hatch, because the only possible values are less than 5 meters from both bubbles. Moreover, in this case the interval will contain impossible values, because it will be wider than the likelihood. We can exclude these impossible values by truncating the interval to the likelihood whenever the width of the interval is greater than 5 meters:
+\[
+\bar{x} \pm \left\{\begin{array}{lllr}
+\frac{d}{2} & \mbox{if} & d < 5 & \mbox{(nonparametric procedure)}\\
+5 - \frac{d}{2} &\mbox{if} & d \geq 5 & \mbox{(likelihood)}
+\end{array} \right.
+\]
+This will not change the probability that the interval contains the hatch, because it is simply replacing one interval that is sure to contain it with another. @Pratt:1961 noted that this interval can be justified as an inversion of the uniformly most-powerful (UMP) test. We thus call this the "UMP procedure".
+
+#### 4. An objective Bayesian procedure
+
+The fourth statistician suggests an objective Bayesian procedure. Using this procedure, we simply take the central 50\% of the likelihood as our interval:
+\[
+\bar{x} \pm \frac{1}{2}\left(5 - \frac{d}{2}\right).
+\]
+From the objective Bayesian viewpoint, this can be justified by assuming a prior distribution that assigns equal probability to each possible hatch location. In Bayesian terms, this procedure generates "credible intervals" for this prior. It can also be justified under Fisher's fiducial theory; see @Welch:1939. 

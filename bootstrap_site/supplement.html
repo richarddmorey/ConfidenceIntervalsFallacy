@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>The Fallacy of Placing Confidence in Confidence Intervals</title>
+
+   <!-- Markdown CSS -->
+   <link href="css/markdown.css" rel="stylesheet">
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/sticky-footer-navbar.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+    <!-- lightbox style -->
+    <link href="css/slimbox2.css" rel="stylesheet">
+
+    <!-- hypothes.is -->
+    <script async defer src="//hypothes.is/embed.js"></script>
+
+    <!-- my article style -->
+    <link href="css/article.css" rel="stylesheet">
+
+    <!-- code highlighting-->
+    <link rel="stylesheet" href="css/highlight/default.css">
+    <script src="js/highlight.pack.js"></script>
+
+    <script type="text/javascript"
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        showProcessingMessages: false,
+        messageStyle: 'none',
+        // show equation numbers
+        TeX: {
+          equationNumbers: {
+            autoNumber: "AMS"
+          }
+        },
+        'HTML-CSS': {
+          imageFont: null
+        }
+      });
+    </script>
+
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">The Fallacy of Placing Confidence in Confidence Intervals</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Main paper<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="introduction.html">Introduction</a></li>
+                <li><a href="folktheory.html">The folk theory of confidence intervals</a></li>
+                <li><a href="CItheory.html">The theory of confidence intervals</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="lostsub.html">Example 1: The Lost Submarine</a></li>
+                <li><a href="subCIs.html">Five confidence procedures</a></li>
+                <li><a href="subCIproperties.html">Properties of the procedures</a></li>                
+                <li><a href="subCIevaluation.html">Evaluating the procedures</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="omegasqCI.html">Example 2: A confidence interval in the wild</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="discussion.html">Discussion</a></li>
+                <li><a href="guidelines.html">Guidelines for interpreting and reporting intervals</a></li>
+                <li><a href="confvscred.html">Confidence intervals versus credible intervals</a></li>
+                <li><a href="conclusion.html">Conclusion</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="references.html">References</a></li>
+              </ul>
+            </li>
+            <li class="active dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Supplements<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class="active"><a href="supplement.html">Details and code</a></li>
+                <li><a href="discussion_guide.html">Discussion guide</a></li>
+              </ul>
+            </li>            
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <!-- Begin page content -->
+    <div class="container">
+      <button onclick="TogetherJS(this); return false;">Start collaboration with TogetherJS</button>
+      <p><a href="https://twitter.com/share" class="twitter-share-button" data-via="richarddmorey" data-hashtags="statistics">Tweet</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+          </script>
+        </p>
+
+      <div class="page-header">
+        <h2>Supplement to “The Fallacy of Placing Confidence in Confidence Intervals”</h2>
+        <h4 class="author"><em>Richard D. Morey</em></h4>
+        <address class="author_afil">Cardiff University</address>
+      </div>
+
+      <p>The source code for this document, and the main manuscript, is available at <a href="https://github.com/richarddmorey/ConfidenceIntervalsFallacy" class="uri" target="_blank">https://github.com/richarddmorey/ConfidenceIntervalsFallacy</a>.</p>
+      <div id="the-lost-submarine-details" class="section level2">
+      <h4>The lost submarine: details</h4>
+      <p>We presented a situation where <span class="math">\(N=2\)</span> observations were distributed uniformly:</p>
+      <p><span class="math">\[
+      \begin{eqnarray*}
+      y_i &amp;\stackrel{iid}{\sim}&amp; \mbox{Uniform}(\theta-5,\theta+5),\,i=1,\ldots,N 
+      \end{eqnarray*}
+      \]</span> and the goal is to estimate <span class="math">\(\theta\)</span>, the location of the submarine hatch. Without loss of generality we denote <span class="math">\(x_1\)</span> as the smaller of the two observations. In the text, we considered five 50% confidence procedures; in this section, we give the details about the sampling distribution procedure and the Bayes procedure that were omitted from the text.</p>
+      <div id="sampling-distribution-procedure" class="section level3">
+      <h5>Sampling distribution procedure</h5>
+      <p>Consider the sample mean, <span class="math">\(\bar{y} = (y_1 + y_2)/2\)</span>. As the sum of two uniform deviates, it is a well-known fact that <span class="math">\(\bar{y}\)</span> will have a triangular distribution with location <span class="math">\(\theta\)</span> and minimum and maximum <span class="math">\(\theta-5\)</span> and <span class="math">\(\theta+5\)</span>, respectively. This distribution is shown in <a href="#sampleDistCI">Figure 1</a>.</p>
+
+      <div class="article_figure">
+        <a href="figures/sampleDistCI-1.svg" rel="lightbox" title="Figure 1: The sampling distribution of the mean x&#772; in the submarine scenario. The shaded region represents the central 50% of the area. The unshaded triangle marked a has area .25, and the standard deviation of this sampling distribution is about 2.04." name="sampleDistCI"></a>
+      </div>
+
+
+      The sampling distribution of the mean <span class="math">\(\bar{x}\)</span> in the submarine scenario. The shaded region represents the central 50% of the area. The unshaded triangle marked ‘a’ has area .25, and the standard deviation of this sampling distribution is about 2.04.</p>
+
+      <p>It is desired to find the width of the base of the shaded region in <a href="#sampleDistCI">Figure 1</a> such that it has an area of .5. To do this we first find the width of the base of the unshaded triangular area marked ‘a’ in <a href="#sampleDistCI">Figure 1</a> such that the area of the triangle is .25. The corresponding unshaded triangle on the left side will also have area .25, which means that since the figure is a density, the shaded region must have the remaining area of .5. Elementary geometry will show that the width of the base of triangle ‘a’ is <span class="math">\(5/\sqrt{2}\)</span>, meaning that the distance between <span class="math">\(\theta\)</span> and the altitude of triangle ‘a’ is <span class="math">\(5 - 5/\sqrt{2}\)</span> or about 1.46m.</p>
+      <p>We can thus say that</p>
+      <p><span class="math">\[
+      Pr(- (5 - 5/\sqrt{2}) &lt; \bar{y} - \theta &lt;  5 - 5/\sqrt{2} ) = .5
+      \]</span></p>
+      <p>which implies that, in repeated sampling,</p>
+      <p><span class="math">\[
+      Pr(\bar{y} - (5 - 5/\sqrt{2}) &lt; \theta &lt;  \bar{y} + (5 - 5/\sqrt{2}) ) = .5
+      \]</span></p>
+      <p>which defines the sampling distribution confidence procedure. This is an example of using <span class="math">\(\bar{y} - \theta\)</span> as a pivotal quantity <span class="citation">(Casella &amp; Berger, 2002)</span>.</p>
+      <p>We can also derive the standard deviation of the sampling distribution of <span class="math">\(\bar{y}\)</span>, also called the standard error. It is defined as: <span class="math">\[
+      SE(\bar{y}) = \sqrt{V(\bar{y})} = \sqrt{\int_{-5}^{5}z^2p(z)\,dz}
+      \]</span> where <span class="math">\(p(z)\)</span> is the triangular sampling distribution in <a href="#sampleDistCI">Figure 1</a> centered around <span class="math">\(\theta=0\)</span>. Solving the integral yields <span class="math">\[
+      SE(\bar{y}) = \frac{5}{\sqrt{6}} \approx 2.04.
+      \]</span></p>
+      </div>
+      <div id="bayesian-procedure" class="section level3">
+      <h5>Bayesian procedure</h5>
+      <p>The posterior distribution is proportional to the likelihood times the prior. The likelihood is <span class="math">\[
+      p(y_1,y_2\mid\theta) \propto \prod_{i=1}^2 {\cal I}(\theta-5 &lt; y_i &lt; \theta+5);
+      \]</span> where <span class="math">\(\cal I\)</span> is an indicator function. Note since this is the product of two indicator functions, it can only be nonzero when both indicator functions’ conditions are met; that is, when <span class="math">\(y_1+5\)</span> and <span class="math">\(y_2+5\)</span> are both greater than <span class="math">\(\theta\)</span>, and <span class="math">\(y_1-5\)</span> and <span class="math">\(y_2-5\)</span> are both less than <span class="math">\(\theta\)</span>. If the minimum of <span class="math">\(y_1+5\)</span> and <span class="math">\(y_2+5\)</span> is greater than <span class="math">\(\theta\)</span>, then so to must be the maximum. The likelihood thus can be rewritten <span class="math">\[
+      p(x_1,x_2\mid\theta) \propto {\cal I}(x_2 - 5 &lt;\theta&lt; x_1+5);
+      \]</span> where <span class="math">\(x_1\)</span> and <span class="math">\(x_2\)</span> are the minimum and maximum observations, respectively. If the prior for <span class="math">\(\theta\)</span> is proportional to a constant, then the posterior is <span class="math">\[
+      p(\theta\mid x_1,x_2) \propto {\cal I}(x_2 - 5 &lt;\theta&lt; x_1+5),
+      \]</span> This posterior is a uniform distribution over all {} possible values of <span class="math">\(\theta\)</span> (that is, all <span class="math">\(\theta\)</span> values within 5 meters of all observations), has width <span class="math">\[
+      10 - (x_{2} - x_{1}),
+      \]</span> and is centered around <span class="math">\(\bar{x}\)</span>. Because the posterior comprises all values of <span class="math">\(\theta\)</span> the data have not ruled out – and is essentially just the classical likelihood – the width of this posterior can be taken as an indicator of the precision of the estimate of <span class="math">\(\theta\)</span>.</p>
+      <p>The middle 50% of the likelihood can be taken as a 50% objective Bayesian credible interval. Proof that this Bayesian procedure is also a confidence procedure is trivial and can be found in <span class="citation">Welch (1939)</span>.</p>
+      </div>
+      <div id="bugs-implementation" class="section level3">
+      <h5>BUGS implementation</h5>
+      <p>The submersible example was selected in part because it is so trivial; the confidence intervals and Bayesian credible intervals can be derived with very little effort. However, for more complicated problems, credible intervals can be more challenging to derive. Thankfully, modern Bayesian software tools make estimation of credible intervals in many problems as trivial as stating the problem along with priors on the parameters.</p>
+      <p>BUGS is a special language that allows users to define a model and prior. Using a software that interprets the BUGS language, such as JAGS <span class="citation">(Plummer, 2003)</span> or WinBUGS <span class="citation">(Lunn, Thomas, Best, &amp; Spiegelhalter, 2000)</span>, the model and prior are then combined with the data. The software then outputs samples from the posterior distribution for all the parameters, which can be used to create credible intervals.</p>
+      <p>A full explanation of how to use the BUGS language is beyond the scope of this supplement. Readers can find more information about using BUGS in <span class="citation">Ntzoufras (2009)</span>], <span class="citation">(Lee &amp; Wagenmakers, 2013)</span>, and many tutorials are available on the world wide web. Here, we show how to obtain a credible interval for the submersible Example 1 using JAGS; in a later section we show how to obtain a confidence interval for Example 2, <span class="math">\(\omega^2\)</span> in ANOVA designs.</p>
+      <p>We first define the model in and prior in R using the BUGS language. Notice that this is simply stating the distributions of the data points, along with a prior for <span class="math">\(\theta\)</span>.</p>
+      <pre><code class="r">
+BUGS_model = &quot;
+  model{
+    y1 ~ dunif(theta - 5, theta + 5)
+    y2 ~ dunif(theta - 5, theta + 5)
+    theta ~ dnorm( theta_mean, theta_precision)
+  }    
+&quot;</code></pre>
+      <p>We now define a list of values that will get passed to JAGS. <code>y1</code> and <code>y2</code> are the data observed values from the manuscript’s <a href="lostsub.html#bubbles1">Figure 1</a>A, and the prior we choose is an informative prior for demonstration.</p>
+      <pre class="r"><code class="r">
+for_JAGS = list( y1 = -4.5, 
+                y2 = 4.5,
+                theta_mean = -2.5,
+                theta_precision = 1/10^2 )</code></pre>
+      <p>Since precision is the reciprocal of variance, the prior on <span class="math">\(\theta\)</span> corresponds to a Normal<span class="math">\((\mu=-2.5, \sigma=10)\)</span> prior. All that remains is to load JAGS and combine the model information in <code>BUGS_model</code> with the data in <code>for_JAGS</code>, then to obtain samples from the posterior distribution.</p>
+      <pre class="r"><code >
+# Load the rjags package to interface with JAGS
+require( rjags )</code></pre>
+      <pre><code>
+## Loading required package: rjags
+## Loading required package: coda
+## Linked to JAGS 3.4.0
+## Loaded modules: basemod,bugs</code></pre>
+      <pre class="r"><code>
+# Set initial value for the sampler
+initial.values = list(theta = 0)
+
+# Combine the model with the data
+compiled_model = jags.model( file = textConnection(BUGS_model), 
+                             data = for_JAGS, inits = initial.values,
+                             quiet = TRUE )
+
+# Sample from the posterior distribution
+posterior_samples = coda.samples( model = compiled_model,
+                                  variable.names = c(&quot;theta&quot;),
+                                  n.iter = 100000 )</code></pre>
+      <p>We can now plot the samples we obtained using the <code>hist</code> function in R.</p>
+      <pre class="r"><code>
+theta_samples = posterior_samples[[ 1 ]][ , &quot;theta&quot; ]
+hist( theta_samples, breaks = 20, freq = FALSE )</code></pre>
+
+      <div class="article_figure">
+        <a href="figures/subCI.svg" rel="lightbox" title="Figure 2: JAGS Samples from the posterior distribution of θ, the hatch location." name="subCI"></a>
+      </div>
+
+      <p>Note the resemblance to <a href="subCIevaluation.html#bubblesBayes1">Figure 5</a>, bottom panel, in the manuscript. We use the <code>summary</code> function on the samples to obtain a point estimate as well as quantiles of the posterior distribution, which can be used to form credible intervals. The 50% central credible interval is the interval between the 25th and 75th percentile.</p>
+      <pre class="r"><code>
+summary(theta_samples)</code></pre>
+      <pre><code>
+## 
+## Iterations = 1001:101000
+## Thinning interval = 1 
+## Number of chains = 1 
+## Sample size per chain = 1e+05 
+## 
+## 1. Empirical mean and standard deviation for each variable,
+##    plus standard error of the mean:
+## 
+##           Mean             SD       Naive SE Time-series SE 
+##     -0.0011830      0.2881537      0.0009112      0.0010825 
+## 
+## 2. Quantiles for each variable:
+## 
+##      2.5%       25%       50%       75%     97.5% 
+## -0.474832 -0.250590 -0.001707  0.248218  0.474519</code></pre>
+      </div>
+      </div>
+      <div id="credible-interval-for-omega2-details" class="section level2">
+      <h4>Credible interval for <span class="math">\(\omega^2\)</span>: details</h4>
+      <p>In the manuscript, we compare Steiger’s <span class="citation">(2004)</span> confidence intervals for <span class="math">\(\omega^2\)</span> to Bayesian highest posterior density (HPD) credible intervals. In this section we describe how the Bayesian HPD intervals were computed.</p>
+      <p>Consider a one-way design with <span class="math">\(J\)</span> groups and <span class="math">\(N\)</span> observations in each group. Let <span class="math">\(y_{ij}\)</span> be the <span class="math">\(i\)</span>th observation in the <span class="math">\(j\)</span>th group. Also suppose that <span class="math">\[
+      y_{ij} \stackrel{indep.}{\sim} \mbox{Normal}(\mu_j, \sigma^2)
+      \]</span> where <span class="math">\(\mu_j\)</span> is the population mean of the <span class="math">\(j\)</span>th group and <span class="math">\(\sigma^2\)</span> is the error variance. We assume a “non-informative” prior on parameters <span class="math">\(\boldsymbol\mu,\sigma^2\)</span>: <span class="math">\[
+      p(\mu_1,\ldots,\mu_J,\sigma^2) \propto (\sigma^2)^{-1}.
+      \]</span> This prior is flat on <span class="math">\((\mu_1,\ldots,\mu_J, \log\sigma^2)\)</span>. In application, it would be wiser to assume an informative prior on these parameters, in particular assuming a population over the <span class="math">\(\mu\)</span> parameters or even the possibility that <span class="math">\(\mu_1 = \ldots = \mu_J = 0\)</span> <span class="citation">(Rouder, Morey, Speckman, &amp; Province, 2012)</span>. However, for this manuscript we compare against a “non-informative” prior in order to show the differences between the confidence interval and the Bayesian result with “objective” priors.</p>
+      <p>Assuming the prior above, an elementary Bayesian calculation <span class="citation">(Gelman, Carlin, Stern, &amp; Rubin, 2004)</span> reveals that <span class="math">\[
+      \sigma^2\mid\boldsymbol y \sim \mbox{Inverse Gamma}(J(N-1)/2, S/2)
+      \]</span> where <span class="math">\(S\)</span> is the error sum-of-squares from the corresponding one-way ANOVA, and <span class="math">\[
+      \mu_j\mid\sigma^2, \boldsymbol y \stackrel{indep.}{\sim} \mbox{Normal}(\bar{x}_j, \sigma^2/N)
+      \]</span> where <span class="math">\(\mu_j\)</span> and <span class="math">\(\bar{x}_j\)</span> are the true and observed means for the <span class="math">\(j\)</span>th group. Following Steiger (2004) we can define <span class="math">\[
+      \alpha_j = \mu_j - \frac{1}{J}\sum_{j=1}^J\mu_j
+      \]</span> as the deviation from the grand mean of the <span class="math">\(j\)</span>th group, and <span class="math">\[
+      \begin{eqnarray*}
+      \lambda &amp;=&amp; N\sum_{j=1}^J \left(\frac{\alpha}{\sigma}\right)^2\\
+      \omega^2 &amp;=&amp; \frac{\lambda}{\lambda + NJ}.
+      \end{eqnarray*}
+      \]</span></p>
+      <p>It is now straightforward to set up an MCMC sampler for <span class="math">\(\omega^2\)</span>. Let <span class="math">\(M\)</span> be the number of MCMC iterations desired. We first sample <span class="math">\(M\)</span> samples from the marginal posterior distribution of <span class="math">\(\sigma^2\)</span>, then sample the group means from the conditional posterior distribution for <span class="math">\(\mu_1,\ldots,\mu_J\)</span>. Using these posterior samples, <span class="math">\(M\)</span> posterior samples for <span class="math">\(\lambda\)</span> and <span class="math">\(\omega^2\)</span> can be computed.</p>
+      <p>The following R function will sample from the marginal posterior distribution of <span class="math">\(\omega^2\)</span>:</p>
+      <pre class="r"><code>
+## Assumes that data.frame y has two columns:
+## $y is the dependent variable
+## $grp is the grouping variable, as a factor
+Bayes.posterior.omega2</code></pre>
+      <pre><code>
+## function (y, conf.level = 0.95, iterations = 10000) 
+## {
+##     J = nlevels(y$grp)
+##     N = nrow(y)/J
+##     aov.results = summary(aov(y ~ grp, data = y))
+##     SSE = aov.results[[1]][2, 2]
+##     sig2 = 1/rgamma(iterations, J * (N - 1)/2, SSE/2)
+##     lambda = matrix(NA, iterations)
+##     group.means = tapply(y$y, y$grp, mean)
+##     for (m in 1:iterations) {
+##         mu = rnorm(J, group.means, sqrt(sig2[m]/N))
+##         lambda[m] = N * sum((mu - mean(mu))^2/sig2[m])
+##     }
+##     mcmc(lambda/(lambda + N * J))
+## }</code></pre>
+      <p>The <code>Bayes.posterior.omega2</code> function can be used to compute the posterior and HPD for the first example in the manuscript. The <code>fake.data.F</code> function, defined in the R language in the file <code>steiger.utility.R</code> (available with the manuscript source code at <a href="https://github.com/richarddmorey/ConfidenceIntervalsFallacy" class="uri">https://github.com/richarddmorey/ConfidenceIntervalsFallacy</a>, generates a data set with a specified <span class="math">\(F\)</span> statistic.</p>
+      <pre class="r"><code>
+cl = .683 ## Confidence level corresponding to standard error
+J = 3 ## Number of groups
+N = 10 ## observations in a group
+
+df1 = J - 1
+df2 = J * (N - 1)
+
+## F statistic from manuscript
+Fstat = 0.1748638
+
+set.seed(1)
+y = fake.data.F(Fstat, df1, df2)
+
+## Steiger confidence interval
+steigerCI = steigerCI.omega2(Fstat,df1,df2, conf.level=cl)
+samples.omega2 = Bayes.posterior.omega2(y, cl, 100000)</code></pre>
+      <p>We can compute the Bayesian HPD interval with the <code>HPDinterval</code> function in the R package <code>coda</code>:</p>
+      <pre class="r"><code>
+library(coda)
+
+HPDinterval( samples.omega2, prob = cl )</code></pre>
+      <pre><code>
+##             lower      upper
+## var1 5.219606e-06 0.08299102
+## attr(,&quot;Probability&quot;)
+## [1] 0.683</code></pre>
+
+      <div class="article_figure">
+        <a href="figures/omega2samp-1.svg" rel="lightbox" title="Figure 3: Histogram of the posterior MCMC samples for ω&lt;sup&gt;2&lt;/sup&gt;. The 68% Bayesian HPD credible interval is highest density region than captures 68% of the posterior density, shown in gray. The vertical dashed line denotes the upper bound of the HPD. The 68% Steiger confidence interval is shown as the interval near the top." name="omega2samp"></a>
+      </div>
+
+      <div id="bugs-implementation-1" class="section level3">
+      <h5>BUGS implementation</h5>
+      <p>Although the code above can be used to quickly sample <span class="math">\(\omega^2\)</span> for any one-way design, it is not particularly generalizable for typical users. We can use the BUGS language for Bayesian modeling to create credible intervals in a way that is more accessible to the general user.</p>
+      <pre class="r"><code>BUGS_model = &quot;
+model{
+  for( i in 1:NJ ){ # iterate over participants
+    # Error model for this observation
+    y[ i ] ~ dnorm( mu[ group[i] ], precision )
+  }
+
+  for( j in 1:J ){ # iterate over groups
+    # prior for group mean
+    mu[ j ] ~ dnorm( mean_mu, precision_mu )
+    # group mean's standardized squared deviation
+    # from overall mean
+   mu_dev_sq[ j ] &lt;- pow( mu[ j ] - mean( mu ), 2 ) / variance
+  }
+
+  # BUGS uses the inverse of the variance (precision)
+  # instead of the variance
+  precision &lt;- 1 / variance
+  # prior on error variance
+  variance ~ dgamma( a_variance, b_variance )
+
+  # Define our quantities of interest
+  lambda &lt;- N * sum( mu_dev_sq )
+  omega2 &lt;- lambda / ( lambda + N * J )
+}    
+&quot;</code></pre>
+      <p>In the R code below, we define all the constants and the data needed for the analysis, including the prior parameters. These prior parameters were chosen to approximate the “non-informative” prior we used in the previous analysis. As we mentioned in the manuscript, we do not generally advise the use of such non-informative priors; these values are merely chosen for demonstration. In practice, reasonable values would be chosen to inform the analysis.</p>
+      <pre class="r"><code>
+for_JAGS = list( y = y$y, 
+               group = y$grp, 
+               N = N, 
+               J = J,
+               NJ = N*J,
+               mean_mu = 0,
+               precision_mu = 1e-6,
+               a_variance = 1e-6,
+               b_variance = 1e-6 )</code></pre>
+      <p>The following code joins the model (<code>BUGS_model</code>) with the data and defined constants (<code>for_JAGS</code>) and 10,000 samples from the posterior distribution, outputting the samples of <code>omega2</code>, the parameter of interest.</p>
+      <pre class="r"><code>
+# Load the rjags package to interface with JAGS
+require( rjags )
+
+# Combine the model with the data
+compiled_model = jags.model( file = textConnection(BUGS_model), 
+                       data = for_JAGS, quiet = TRUE )
+
+# Sample from the posterior distribution
+posterior_samples = coda.samples( model = compiled_model,
+                                  variable.names = c(&quot;omega2&quot;),
+                                  n.iter = 10000 )</code></pre>
+      <p>The object <code>posterior_samples</code> now contains all posterior samples of the parameter <span class="math">\(\omega^2\)</span>. We can plot their histogram:</p>
+      <pre class="r"><code>
+omega2_samples = posterior_samples[[ 1 ]][ , &quot;omega2&quot; ]
+hist( omega2_samples, breaks = 20, freq = FALSE )</code></pre>
+
+
+      <div class="article_figure">
+        <a href="figures/omega2jags-1.svg" rel="lightbox" title="Figure 4: Posterior distribution for ω&lt;sup&gt;2&lt;/sup&gt;, estimated using JAGS." name="omega2jags"></a>
+      </div>
+
+      <p>Note the close similarity between Figure <a href="#omega2jags">4</a> and Figure <a href="#omega2samp">3</a>. We can do whatever we like with these samples; of particular interest would be a point estimate and credible interval. For the point estimate, we might select the posterior mean; for the credible interval, we can compute a highest-density region:</p>
+      <pre class="r"><code>
+# Compute the posterior mean
+mean( omega2_samples )</code></pre>
+      <pre><code>
+## [1] 0.06745069</code></pre>
+      <pre class="r"><code>
+# Compute the HDR
+HPDinterval( omega2_samples , prob = cl )</code></pre>
+      <pre><code>
+##             lower      upper
+## var1 2.832317e-05 0.08108649
+## attr(,&quot;Probability&quot;)
+## [1] 0.683</code></pre>
+      <p>Further useful information about the posterior can be obtained using the <code>summary</code> function.</p>
+      <pre class="r"><code>summary( omega2_samples )</code></pre>
+      <pre><code>
+## 
+## Iterations = 1001:11000
+## Thinning interval = 1 
+## Number of chains = 1 
+## Sample size per chain = 10000 
+## 
+## 1. Empirical mean and standard deviation for each variable,
+##    plus standard error of the mean:
+## 
+##           Mean             SD       Naive SE Time-series SE 
+##      0.0674507      0.0594478      0.0005945      0.0005739 
+## 
+## 2. Quantiles for each variable:
+## 
+##     2.5%      25%      50%      75%    97.5% 
+## 0.002015 0.021750 0.051531 0.095971 0.223484</code></pre>
+      <div class="references">
+        <h3>References</h3>
+        <p>Casella, G., &amp; Berger, R. L. (2002). <em>Statistical inference</em>. Pacific Grove, CA: Duxbury.</p>
+        <p>Gelman, A., Carlin, J. B., Stern, H. S., &amp; Rubin, D. B. (2004). <em>Bayesian data analysis (2nd edition)</em>. London: Chapman; Hall.</p>
+        <p>Lee, M. D., &amp; Wagenmakers, E.-J. (2013). <em>Bayesian modeling for cognitive science: A practical course</em>. Cambridge University Press.</p>
+        <p>Lunn, D., Thomas, A., Best, N., &amp; Spiegelhalter, D. (2000). WinBUGS – a Bayesian modelling framework: Concepts, structure, and extensibility. <em>Statistics and Computing</em>, <em>10</em>, 325–337.</p>
+        <p>Ntzoufras, I. (2009). <em>Bayesian Modeling Using WinBUGS</em>. Hoboken, New Jersey: Wiley.</p>
+        <p>Plummer, M. (2003). JAGS: A program for analysis of Bayesian graphical models using Gibbs sampling. In <em>Proceedings of the 3rd international workshop on distributed statistical computing</em>.</p>
+        <p>Rouder, J. N., Morey, R. D., Speckman, P. L., &amp; Province, J. M. (2012). Default Bayes factors for ANOVA designs. <em>Journal of Mathematical Psychology</em>, <em>56</em>, 356–374. Retrieved from <a href="http://dx.doi.org/10.1016/j.jmp.2012.08.001" class="uri">http://dx.doi.org/10.1016/j.jmp.2012.08.001</a></p>
+        <p>Steiger, J. H. (2004). Beyond the <span class="math">\(F\)</span> test: Effect size confidence intervals and tests of close fit in the analysis of variance and contrast analysis. <em>Psychological Methods</em>, <em>9</em>(2), 164–182.</p>
+        <p>Welch, B. L. (1939). On confidence limits and sufficiency, with particular reference to parameters of location. <em>The Annals of Mathematical Statistics</em>, <em>10</em>(1), 58–69.</p>
+      </div>
+      </div>
+      </div>
+
+
+      <ul class="pager">
+        <li class="previous"><a href="introduction.html">Previous</a></li>
+        <li class="next"><a href="discussion_guide.html">Next</a></li>
+      </ul>
+    </div>
+
+
+      <footer class="footer">
+        <div class="container">
+        <p class="text-muted">Please cite as Morey, Hoekstra, Rouder, Lee and Wagenmakers (in press). Psychonomic Bulletin &amp; Review.</p>
+        </div>
+      </footer>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <script type="text/javascript" src="js/slimbox2.js"></script>
+    <script type="text/javascript" src="js/article.js"></script>
+    <script src="https://togetherjs.com/togetherjs-min.js"></script>
+
+    <script>make_figures();</script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </body>
+</html>

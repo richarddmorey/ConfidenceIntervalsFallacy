@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>The Fallacy of Placing Confidence in Confidence Intervals</title>
+
+   <!-- Markdown CSS -->
+   <link href="css/markdown.css" rel="stylesheet">
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/sticky-footer-navbar.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- hypothes.is -->
+    <script async defer src="//hypothes.is/embed.js"></script>
+  
+    <!-- lightbox style -->
+    <link href="css/slimbox2.css" rel="stylesheet">
+
+    <!-- my article style -->
+    <link href="css/article.css" rel="stylesheet">
+
+    <script type="text/javascript"
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        showProcessingMessages: false,
+        messageStyle: 'none',
+        // show equation numbers
+        TeX: {
+          equationNumbers: {
+            autoNumber: "AMS"
+          }
+        },
+        'HTML-CSS': {
+          imageFont: null
+        }
+      });
+    </script>
+
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">The Fallacy of Placing Confidence in Confidence Intervals</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown active">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Main paper<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class=""><a href="introduction.html">Introduction</a></li>
+                <li><a href="folktheory.html">The folk theory of confidence intervals</a></li>
+                <li><a href="CItheory.html">The theory of confidence intervals</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="lostsub.html">Example 1: The Lost Submarine</a></li>
+                <li><a href="subCIs.html">Five confidence procedures</a></li>
+                <li><a href="subCIproperties.html">Properties of the procedures</a></li>                
+                <li><a href="subCIevaluation.html">Evaluating the procedures</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="omegasqCI.html">Example 2: A confidence interval in the wild</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="active"><a href="discussion.html">Discussion</a></li>
+                <li><a href="guidelines.html">Guidelines for interpreting and reporting intervals</a></li>
+                <li><a href="confvscred.html">Confidence intervals versus credible intervals</a></li>
+                <li><a href="conclusion.html">Conclusion</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="references.html">References</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Supplements<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="supplement.html">Details and code</a></li>
+                <li><a href="discussion_guide.html">Discussion guide</a></li>
+              </ul>
+            </li>            
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <!-- Begin page content -->
+    <div class="container">
+      <button onclick="TogetherJS(this); return false;">Start collaboration with TogetherJS</button>
+      <p><a href="https://twitter.com/share" class="twitter-share-button" data-via="richarddmorey" data-hashtags="statistics">Tweet</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+          </script>
+        </p>
+
+      <div class="page-header">
+        <h2>Discussion</h2>
+      </div>
+      
+      <p>Using the theory of confidence intervals and the support of two examples, we have shown that CIs do not have the properties that are often claimed on their behalf. Confidence interval theory was developed to solve a very constrained problem: how can one construct an procedure that produces intervals containing the true parameter a fixed proportion of the time? Claims that confidence intervals yield an index of precision, that the values within them are plausible, and that the confidence coefficient can be read as a measure of certainty that the interval contains the true value, are all fallacies and unjustified by confidence interval theory.</p>
+      <p>Good intentions underlie the advocacy of confidence intervals: it would be desirable to have procedures with the properties claimed. The FCF is driven by a desire to assess the plausibility that an interval contains the true value; the likelihood fallacy is driven by a desire to determine which values of the parameter should be taken seriously; and the precision fallacy is driven by a desire to quantify the precision of the estimates. We support these goals <span class="citation">(Morey, Rouder, Verhagen, &amp; Wagenmakers, 2014)</span>, but confidence interval theory is not the way to achieve them.</p>
+
+
+
+
+      <ul class="pager">
+        <li class="previous"><a href="omegasqCI.html">Previous</a></li>
+        <li class="next"><a href="guidelines.html">Next</a></li>
+      </ul>
+    
+    </div>
+
+
+      <footer class="footer">
+        <div class="container">
+        <p class="text-muted">Please cite as Morey, Hoekstra, Rouder, Lee and Wagenmakers (in press). Psychonomic Bulletin &amp; Review.</p>
+        </div>
+      </footer>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <script type="text/javascript" src="js/slimbox2.js"></script>
+    <script type="text/javascript" src="js/article.js"></script>
+    <script src="https://togetherjs.com/togetherjs-min.js"></script>
+
+    <script>make_figures();</script>
+  </body>
+</html>

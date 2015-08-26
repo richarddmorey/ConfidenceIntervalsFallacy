@@ -1,52 +1,56 @@
-\documentclass{article}
+---
+title: "Supplement to 'The Fallacy of Placing Confidence in Confidence Intervals'"
+author:
+- name: Richard D. Morey
+  affiliation: Cardiff University
+- name: Rink Hoekstra
+  affiliation: University of Groningen
+- name: Jeffrey N. Rouder
+  affiliation: University of Missouri
+- name: Michael D. Lee
+  affiliation: University of California-Irvine
+- name: Eric-Jan Wagenmakers
+  affiliation: University of Amsterdam
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output: 
+  html_document:
+    fig_caption: yes 
+    dev: CairoSVG
+    keep_md: yes
+bibliography: bibfile.bib
+csl: apa.csl
+---
 
-\usepackage{hyperref}
-\usepackage{fullpage}
-\usepackage{bm}
-
-\usepackage[T1]{fontenc}
-\usepackage[sc]{mathpazo}
-\linespread{1.05}         % Palatino needs more leading (space between lines)
-
-\usepackage[american]{babel}
-\usepackage{csquotes}
-\usepackage[style=apa,natbib=true,backend=biber]{biblatex}
-%\usepackage[longnamesfirst]{natbib}
-\DeclareLanguageMapping{american}{american-apa}
-
-
-\bibliography{lab}
-
-\title{Supplement to ``The Fallacy of Placing Confidence in Confidence Intervals''}
-\author{Richard D. Morey (\href{mailto:richarddmorey@gmail.com}{richarddmorey@gmail.com}),\\ Rink Hoekstra, Jeffrey N. Rouder,\\ Michael D. Lee, Eric-Jan Wagenmakers}
-\date{\today}
-\begin{document}
-
-\maketitle
-<<echo=FALSE,message=FALSE,warning=FALSE,results='hide'>>=
+```{r echo=FALSE,message=FALSE,warning=FALSE,results='hide'}
 library(xtable)
+library(kfigr)
+library(knitr)
 set.seed(1)
-@
 
-The source code for this document, and the main manuscript, is available at \url{https://github.com/richarddmorey/ConfidenceIntervalsFallacy}.
+opts_knit$set(self.contained = FALSE)
+```
 
-\section{The lost submarine: details}\label{app:submarine}
+The source code for this document, and the main manuscript, is available at https://github.com/richarddmorey/ConfidenceIntervalsFallacy.
+
+## The lost submarine: details
 
 We presented a situation where $N=2$ observations were distributed uniformly:
 
+\[
 \begin{eqnarray*}
 y_i &\stackrel{iid}{\sim}& \mbox{Uniform}(\theta-5,\theta+5),\,i=1,\ldots,N 
 \end{eqnarray*}
+\]
 and the goal is to estimate $\theta$, the location of the submarine hatch. Without loss of generality we denote $x_1$ as the smaller of the two observations. In the text, we considered five 50\% confidence procedures; in this section, we give the details about the sampling distribution procedure and the Bayes procedure that were omitted from the text.
 
 
-\subsection{Sampling distribution procedure}
+### Sampling distribution procedure
 
-Consider the sample mean, $\bar{y} = (y_1 + y_2)/2$. As the sum of two uniform deviates, it is a well-known fact that $\bar{y}$ will have a triangular distribution with location $\theta$ and minimum and maximum $\theta-5$ and $\theta+5$, respectively. This distribution is shown in Figure~\ref{fig:sampleDistCI}.
+Consider the sample mean, $\bar{y} = (y_1 + y_2)/2$. As the sum of two uniform deviates, it is a well-known fact that $\bar{y}$ will have a triangular distribution with location $\theta$ and minimum and maximum $\theta-5$ and $\theta+5$, respectively. This distribution is shown in Figure `r figr('sampleDistCI', type="figure")`.
 
-<<sampleDistCI,echo=FALSE,fig.cap="The sampling distribution of the mean $\\bar{x}$ in the submarine scenario. The shaded region represents the central 50\\% of the area. The unshaded triangle marked ``a'' has area .25, and the standard deviation of this sampling distribution is about 2.04.",fig.width=8,fig.height=6>>=
+```{r sampleDistCI,echo=FALSE,fig.cap="The sampling distribution of the mean $\\bar{x}$ in the submarine scenario. The shaded region represents the central 50% of the area. The unshaded triangle marked 'a' has area .25, and the standard deviation of this sampling distribution is about 2.04.",fig.width=6,fig.height=4}
 
-par(mfrow=c(1,1), mar = c(4,4,2,1),mgp=c(3,.6,0), las = 1, cex.axis = 1.3, cex.lab = 1.3, cex = 1.3)
+par(mfrow=c(1,1), mar = c(4,4,2,1),mgp=c(3,.6,0), las = 1, cex.axis = 1.3, cex.lab = 1.3, cex = 1)
 
 plot(0,0,ty='n',ylim=c(0,2),xlim=c(-.5,1.5),axes=F,ylab="Density",xlab="Location")
 axis(1,at=1:5/2-1,lab=expression(theta - 10,
@@ -72,9 +76,9 @@ polygon(x.pts,y.pts, lty=0, col=rgb(0,1,0,.2))
 
 text(.23,1.5/5,"a")
 
-@
+```
 
-It is desired to find the width of the base of the shaded region in Figure~\ref{fig:sampleDistCI} such that it has an area of .5. To do this we first find the width of the base of the unshaded triangular area marked ``a'' in Figure~\ref{fig:sampleDistCI} such that the area of the triangle is .25. The corresponding unshaded triangle on the left side will also have area .25, which means that since the figure is a density, the shaded region must have the remaining area of .5. Elementary geometry will show that the width of the base of triangle ``a'' is $5/\sqrt{2}$, meaning that the distance between $\theta$ and the altitude of triangle ``a'' is $5 - 5/\sqrt{2}$ or about 1.46m.
+It is desired to find the width of the base of the shaded region in Figure `r figr('sampleDistCI', type="figure")` such that it has an area of .5. To do this we first find the width of the base of the unshaded triangular area marked 'a' in Figure `r figr('sampleDistCI', type="figure")` such that the area of the triangle is .25. The corresponding unshaded triangle on the left side will also have area .25, which means that since the figure is a density, the shaded region must have the remaining area of .5. Elementary geometry will show that the width of the base of triangle 'a' is $5/\sqrt{2}$, meaning that the distance between $\theta$ and the altitude of triangle 'a' is $5 - 5/\sqrt{2}$ or about 1.46m.
 
 We can thus say that 
 
@@ -88,7 +92,7 @@ which implies that, in repeated sampling,
 Pr(\bar{y} - (5 - 5/\sqrt{2}) < \theta <  \bar{y} + (5 - 5/\sqrt{2}) ) = .5
 \]
 
-which defines the sampling distribution confidence procedure. This is an example of using $\bar{y} - \theta$ as a pivotal quantity \citep{Casella:Berger:2002}.
+which defines the sampling distribution confidence procedure. This is an example of using $\bar{y} - \theta$ as a pivotal quantity [@Casella:Berger:2002].
 
 We can also derive the standard deviation of the sampling distribution of $\bar{y}$, also called the standard error. It is defined as:
 \[
@@ -99,7 +103,7 @@ where $p(z)$ is the triangular sampling distribution in Figure~\ref{fig:sampleDi
 SE(\bar{y}) = \frac{5}{\sqrt{6}} \approx 2.04.
 \]
 
-\subsection{Bayesian procedure}
+### Bayesian procedure
 
 The posterior distribution is proportional to the likelihood times the prior. The likelihood is
 \[
@@ -119,19 +123,19 @@ This posterior is a uniform distribution over all {\em a posteriori} possible va
 \]
 and is centered around $\bar{x}$. Because the posterior comprises all values of $\theta$ the data have not ruled out -- and is essentially just the classical likelihood -- the width of this posterior can be taken as an indicator of the precision of the estimate of $\theta$. 
 
-The middle 50\% of the likelihood can be taken as a 50\% objective Bayesian credible interval. Proof that this Bayesian procedure is also a confidence procedure is trivial and can be found in \citet{Welch:1939}.
+The middle 50\% of the likelihood can be taken as a 50\% objective Bayesian credible interval. Proof that this Bayesian procedure is also a confidence procedure is trivial and can be found in @Welch:1939.
 
-\subsection{BUGS implementation}
+### BUGS implementation
 
 The submersible example was selected in part because it is so trivial; the confidence intervals and Bayesian credible intervals can be derived with very little effort. However, for more complicated problems, credible intervals can be more challenging to derive. Thankfully, modern Bayesian software tools make estimation of credible intervals in many problems as trivial as stating the problem along with priors on the parameters.
 
-BUGS is a special language that allows users to define a model and prior. Using a software that interprets the BUGS language, such as JAGS \citep{Plummer:2003} or WinBUGS \citep{Lunn:etal:2000}, the model and prior are then combined with the data. The software then outputs samples from the posterior distribution for all the parameters, which can be used to create credible intervals.
+BUGS is a special language that allows users to define a model and prior. Using a software that interprets the BUGS language, such as JAGS [@Plummer:2003] or WinBUGS [@Lunn:etal:2000], the model and prior are then combined with the data. The software then outputs samples from the posterior distribution for all the parameters, which can be used to create credible intervals.
 
-A full explanation of how to use the BUGS language is beyond the scope of this supplement. Readers can find more information about using BUGS in \citet{Ntzoufras:2009}, \citet{Lee:Wagenmakers:2013}, and many tutorials are available on the world wide web. Here, we show how to obtain a credible interval for the submersible Example~1 using JAGS; in a later section we show how to obtain a confidence interval for Example~2, $\omega^2$ in ANOVA designs.
+A full explanation of how to use the BUGS language is beyond the scope of this supplement. Readers can find more information about using BUGS in @Ntzoufras:2009], [@Lee:Wagenmakers:2013], and many tutorials are available on the world wide web. Here, we show how to obtain a credible interval for the submersible Example 1 using JAGS; in a later section we show how to obtain a confidence interval for Example 2, $\omega^2$ in ANOVA designs.
 
-We first define the model and prior in R using the BUGS language. Notice that this is simply stating the distributions of the data points, along with a prior for $\theta$.
+We first define the model in and prior in R using the BUGS language. Notice that this is simply stating the distributions of the data points, along with a prior for $\theta$.
 
-<<>>=
+```{r}
 BUGS_model = "
   model{
   y1 ~ dunif(theta - 5, theta + 5)
@@ -139,20 +143,20 @@ BUGS_model = "
   theta ~ dnorm( theta_mean, theta_precision)
   }    
 "
-@
+```
 
-We now define a list of values that will get passed to JAGS. {\tt y1} and {\tt y2} are the data observed values from Figure~1A, and the prior we choose is an informative prior for demonstration.
+We now define a list of values that will get passed to JAGS. `y1` and `y2` are the data observed values from the manuscript's Figure 1A, and the prior we choose is an informative prior for demonstration.
 
-<<>>=
+```{r}
 for_JAGS = list( y1 = -4.5, 
                  y2 = 4.5,
                  theta_mean = -2.5,
                  theta_precision = 1/10^2 )
-@
+```
 
-Since precision is the reciprocal of variance, the prior on $\theta$ corresponds to a Normal$(\mu=-2.5, \sigma=10)$ prior. All that remains is to load JAGS and combine the model information in {\tt BUGS\_model} with the data in {\tt for\_JAGS}, then to obtain samples from the posterior distribution.
+Since precision is the reciprocal of variance, the prior on $\theta$ corresponds to a Normal$(\mu=-2.5, \sigma=10)$ prior. All that remains is to load JAGS and combine the model information in `BUGS_model` with the data in `for_JAGS`, then to obtain samples from the posterior distribution.
 
-<<>>=
+```{r}
 # Load the rjags package to interface with JAGS
 require( rjags )
 
@@ -169,16 +173,16 @@ posterior_samples = coda.samples( model = compiled_model,
                                   variable.names = c("theta"),
                                   n.iter = 100000 )
 
-@
+```
 
-We can now plot the samples we obtained using the {\tt hist} function in R.
+We can now plot the samples we obtained using the `hist` function in R.
 
-<<eval = FALSE>>=
+```{r eval = FALSE}
 theta_samples = posterior_samples[[ 1 ]][ , "theta" ]
 hist( theta_samples, breaks = 20, freq = FALSE )
-@
+```
 
-<<echo=FALSE,fig.width=8,fig.height=6,fig.cap="Posterior distribution for $\\theta$, estimated using JAGS.">>=
+```{r echo = FALSE}
 theta_samples = posterior_samples[[ 1 ]][ , "theta" ]
 
 nbreaks = 30
@@ -191,67 +195,67 @@ cols = rgb(1-(bks<q[2] & bks>q[1]),0,0,.3)
 z = hist(theta_samples, breaks = bks, main=expression(paste("Posterior distribution for ",theta)), freq=FALSE, col=cols,lty=0, xlab = expression(theta))
 #abline(v=q, lty=2)
 text((q[1]+q[2])/2,par()$usr[4]/3,"50%", cex = 2)
-@
+```
 
-Note the resemblance to Figure~5, bottom panel, in the manuscript. We use the {\tt summary} function on the samples to obtain a point estimate as well as quantiles of the posterior distribution, which can be used to form credible intervals. The 50\% central credible interval is the interval between the 25th and 75th percentile.
+Note the resemblance to Figure 5, bottom panel, in the manuscript. We use the `summary` function on the samples to obtain a point estimate as well as quantiles of the posterior distribution, which can be used to form credible intervals. The 50% central credible interval is the interval between the 25th and 75th percentile.
 
-<<>>=
+```{r}
 summary(theta_samples)
-@
+```
 
-\section{Credible interval for \texorpdfstring{$\omega^2$}{omega-squared}: details}
+## Credible interval for $\omega^2$: details
 
-In the manuscript, we compare Steiger's (2004) confidence intervals for $\omega^2$ to Bayesian highest posterior density (HPD) credible intervals. In this section we describe how the Bayesian HPD intervals were computed.
-
-\nocite{Steiger:2004}
+In the manuscript, we compare Steiger's [-@Steiger:2004] confidence intervals for $\omega^2$ to Bayesian highest posterior density (HPD) credible intervals. In this section we describe how the Bayesian HPD intervals were computed.
 
 Consider a one-way design with $J$ groups and $N$ observations in each group. Let $y_{ij}$ be the $i$th observation in the $j$th group. Also suppose that
 \[
 y_{ij} \stackrel{indep.}{\sim} \mbox{Normal}(\mu_j, \sigma^2)
 \]
-where $\mu_j$ is the population mean of the $j$th group and $\sigma^2$ is the error variance. We assume a ``non-informative'' prior on parameters $\bm \mu,\sigma^2$:
+where $\mu_j$ is the population mean of the $j$th group and $\sigma^2$ is the error variance. We assume a "non-informative" prior on parameters $\boldsymbol\mu,\sigma^2$:
 \[
 p(\mu_1,\ldots,\mu_J,\sigma^2) \propto (\sigma^2)^{-1}.
 \]
-This prior is flat on $(\mu_1,\ldots,\mu_J, \log\sigma^2)$. In application, it would be wiser to assume an informative prior on these parameters, in particular assuming a population over the $\mu$ parameters or even the possibility that $\mu_1 = \ldots = \mu_J = 0$ \citep{Rouder:etal:2012}. However, for this manuscript we compare against a ``non-informative'' prior in order to show the differences between the confidence interval and the Bayesian result with ``objective'' priors. 
+This prior is flat on $(\mu_1,\ldots,\mu_J, \log\sigma^2)$. In application, it would be wiser to assume an informative prior on these parameters, in particular assuming a population over the $\mu$ parameters or even the possibility that $\mu_1 = \ldots = \mu_J = 0$ [@Rouder:etal:2012]. However, for this manuscript we compare against a "non-informative" prior in order to show the differences between the confidence interval and the Bayesian result with "objective" priors. 
 
-Assuming the prior above, an elementary Bayesian calculation \citep{Gelman:etal:2004} reveals that
+Assuming the prior above, an elementary Bayesian calculation [@Gelman:etal:2004] reveals that
 \[
-\sigma^2\mid\bm y \sim \mbox{Inverse Gamma}(J(N-1)/2, S/2)
+\sigma^2\mid\boldsymbol y \sim \mbox{Inverse Gamma}(J(N-1)/2, S/2)
 \]
 where $S$ is the error sum-of-squares from the corresponding one-way ANOVA, and
 \[
-\mu_j\mid\sigma^2, \bm y \stackrel{indep.}{\sim} \mbox{Normal}(\bar{x}_j, \sigma^2/N)
+\mu_j\mid\sigma^2, \boldsymbol y \stackrel{indep.}{\sim} \mbox{Normal}(\bar{x}_j, \sigma^2/N)
 \]
 where $\mu_j$ and $\bar{x}_j$ are the true and observed means for the $j$th group. Following Steiger (2004) we can define 
 \[
 \alpha_j = \mu_j - \frac{1}{J}\sum_{j=1}^J\mu_j
 \]
 as the deviation from the grand mean of the $j$th group, and
+\[
 \begin{eqnarray*}
 \lambda &=& N\sum_{j=1}^J \left(\frac{\alpha}{\sigma}\right)^2\\
 \omega^2 &=& \frac{\lambda}{\lambda + NJ}.
 \end{eqnarray*}
+\]
 
-It is then straightforward to set up an MCMC sampler for $\omega^2$. Let $M$ be the number of MCMC iterations desired. We first sample $M$ samples from the marginal posterior distribution of $\sigma^2$, then sample the group means from the conditional posterior distribution for $\mu_1,\ldots,\mu_J$. Using these posterior samples, $M$ posterior samples for $\lambda$ and $\omega^2$ can be computed. 
+It is now straightforward to set up an MCMC sampler for $\omega^2$. Let $M$ be the number of MCMC iterations desired. We first sample $M$ samples from the marginal posterior distribution of $\sigma^2$, then sample the group means from the conditional posterior distribution for $\mu_1,\ldots,\mu_J$. Using these posterior samples, $M$ posterior samples for $\lambda$ and $\omega^2$ can be computed.
 
-<<echo=FALSE,results='hide',message=FALSE>>=
-source('steiger.utility.R')
+```{r echo=FALSE,results='hide',message=FALSE}
+source('figureCode/steiger.utility.R')
 
-@
+```
 
 The following R function will sample from the marginal posterior distribution of $\omega^2$:
 
-<<>>=
+```{r}
 ## Assumes that data.frame y has two columns:
 ## $y is the dependent variable
 ## $grp is the grouping variable, as a factor
 Bayes.posterior.omega2
-@
+```
 
-The {\tt Bayes.posterior.omega2} function can be used to compute the posterior and HPD for the first example in the manuscript. The {\tt fake.data.F} function, defined in the file {\tt steiger.utility.R} (available with the manuscript source code at \url{https://github.com/richarddmorey/ConfidenceIntervalsFallacy}), generates a data set with a specified $F$ statistic.
+The `Bayes.posterior.omega2` function can be used to compute the posterior and HPD for the first example in the manuscript. The `fake.data.F` function, defined in the R language in the file `steiger.utility.R` (available with the manuscript source code at https://github.com/richarddmorey/ConfidenceIntervalsFallacy, generates a data set with a specified $F$ statistic.
 
-<<>>=
+```{r}
 cl = .683 ## Confidence level corresponding to standard error
 J = 3 ## Number of groups
 N = 10 ## observations in a group
@@ -268,17 +272,17 @@ y = fake.data.F(Fstat, df1, df2)
 ## Steiger confidence interval
 steigerCI = steigerCI.omega2(Fstat,df1,df2, conf.level=cl)
 samples.omega2 = Bayes.posterior.omega2(y, cl, 100000)
-@
+```
 
-We can compute the Bayesian HPD interval with the {\tt HPDinterval} function in the R package {\tt coda}: 
+We can compute the Bayesian HPD interval with the `HPDinterval` function in the R package `coda`: 
 
-<<>>=
+```{r}
 library(coda)
 
 HPDinterval( samples.omega2, prob = cl )
-@
+```
 
-<<omega2samp,echo=FALSE,fig.cap="Histogram of the posterior MCMC samples for $\\omega^2$. The 68\\% Bayesian HPD credible interval is highest density region than captures 68\\% of the posterior density, shown in gray.  The vertical dashed line denotes the upper bound of the HPD. The 68\\% Steiger confidence interval is shown as the interval near the top.",fig.width=8,fig.height=6>>=
+```{r omega2samp,echo=FALSE,fig.cap="Histogram of the posterior MCMC samples for $\\omega^2$. The 68\\% Bayesian HPD credible interval is highest density region than captures 68\\% of the posterior density, shown in gray.  The vertical dashed line denotes the upper bound of the HPD. The 68\\% Steiger confidence interval is shown as the interval near the top.",fig.width=8,fig.height=6,anchor='figure'}
 
 nbreaks = 20
 
@@ -292,15 +296,13 @@ text(q[2]/2,3,"68%", cex = 2)
 
 arrows(steigerCI[1], par()$usr[4]*.75, steigerCI[2]+.0005,par()$usr[4]*.75, col="red", lwd=2, code = 3, angle = 90)
 
-@
+```
 
-\subsection{BUGS implementation}
+### BUGS implementation
 
 Although the code above can be used to quickly sample $\omega^2$ for any one-way design, it is not particularly generalizable for typical users. We can use the BUGS language for Bayesian modeling to create credible intervals in a way that is more accessible to the general user.
 
-
-
-<<>>=
+```{r}
 BUGS_model = "
   model{
     for( i in 1:NJ ){ # iterate over participants
@@ -327,12 +329,11 @@ BUGS_model = "
     omega2 <- lambda / ( lambda + N * J )
   }    
 "
+```
 
-@
+In the R code below, we define all the constants and the data needed for the analysis, including the prior parameters. These prior parameters were chosen to approximate the "non-informative" prior we used in the previous analysis. As we mentioned in the manuscript, we do not generally advise the use of such non-informative priors; these values are merely chosen for demonstration. In practice, reasonable values would be chosen to inform the analysis.
 
-In the R code below, we define all the constants and the data needed for the analysis, including the prior parameters. These prior parameters were chosen to approximate the ``non-informative'' prior we used in the previous analysis. As we mentioned in the manuscript, we do not generally advise the use of such non-informative priors; these values are merely chosen for demonstration. In practice, reasonable values would be chosen to inform the analysis.
-
-<<>>=
+```{r}
 for_JAGS = list( y = y$y, 
                  group = y$grp, 
                  N = N, 
@@ -342,11 +343,11 @@ for_JAGS = list( y = y$y,
                  precision_mu = 1e-6,
                  a_variance = 1e-6,
                  b_variance = 1e-6 )
-@
+```
 
-The following code joins the model ({\tt BUGS\_model}) with the data and defined constants ({\tt for\_JAGS}) and 10,000 samples from the posterior distribution, outputting the samples of {\tt omega2}, the parameter of interest.
+The following code joins the model (`BUGS_model`) with the data and defined constants (`for_JAGS`) and 10,000 samples from the posterior distribution, outputting the samples of `omega2`, the parameter of interest.
 
-<<>>=
+```{r}
 # Load the rjags package to interface with JAGS
 require( rjags )
 
@@ -358,16 +359,16 @@ compiled_model = jags.model( file = textConnection(BUGS_model),
 posterior_samples = coda.samples( model = compiled_model,
                                   variable.names = c("omega2"),
                                   n.iter = 10000 )
-@
+```
 
-The object {\tt posterior\_samples} now contains all posterior samples of the parameter $\omega^2$. We can plot their histogram:
+The object `posterior_samples` now contains all posterior samples of the parameter $\omega^2$. We can plot their histogram:
 
-<<eval=FALSE>>=
+```{r eval=FALSE}
 omega2_samples = posterior_samples[[ 1 ]][ , "omega2" ]
 hist( omega2_samples, breaks = 20, freq = FALSE )
-@
+```
 
-<<omega2jags,echo=FALSE,fig.cap="Posterior distribution for $\\omega^2$, estimated using JAGS.",fig.width=8,fig.height=6>>=
+```{r omega2jags,echo=FALSE,fig.cap="Posterior distribution for $\\omega^2$, estimated using JAGS.",anchor='figure'}
 omega2_samples = posterior_samples[[ 1 ]][ , "omega2" ]
 
 nbreaks = 20
@@ -380,29 +381,22 @@ z = hist(omega2_samples, breaks = bks, main=expression(paste("Posterior distribu
 abline(v=q[2], lty=2)
 text(q[2]/2,3,"68%", cex = 2)
 
-@
+```
 
+Note the close similarity between Figure `r figr('omega2jags', type="figure")` and Figure `r figr('omega2samp', type="figure")`. We can do whatever we like with these samples; of particular interest would be a point estimate and credible interval. For the point estimate, we might select the posterior mean; for the credible interval, we can compute a highest-density region:
 
-Note the close similarity between Figure~\ref{fig:omega2jags} and Figure~\ref{fig:omega2samp}. We can do whatever we like with these samples; of particular interest would be a point estimate and credible interval. For the point estimate, we might select the posterior mean; for the credible interval, we can compute a highest-density region:
-
-<<>>=
+```{r}
 # Compute the posterior mean
 mean( omega2_samples )
 # Compute the HDR
 HPDinterval( omega2_samples , prob = cl )
-@
+```
 
-Further useful information about the posterior can be obtained using the {\tt summary} function.
+Further useful information about the posterior can be obtained using the `summary` function.
 
-<<>>=
+```{r}
 summary( omega2_samples )
-@
+```
 
 
-
-\printbibliography
-
-\end{document}
-
-
-
+# References

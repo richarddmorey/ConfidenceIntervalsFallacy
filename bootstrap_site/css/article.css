@@ -1,0 +1,14 @@
+div.article_figure
+{
+	width: 50%;
+	margin: 0 auto;
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+
+.footer {
+    position: fixed;
+    height: 55px;
+    bottom: 0;
+    width: 100%;
+}

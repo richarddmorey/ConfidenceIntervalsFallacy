@@ -1,0 +1,161 @@
+---
+title: Discussion guide for "The Fallacy of Placing Confidence in Confidence Intervals"
+author:
+- name: Richard D. Morey
+  affiliation: Cardiff University
+- name: Rink Hoekstra
+  affiliation: University of Groningen
+- name: Jeffrey N. Rouder
+  affiliation: University of Missouri
+- name: Michael D. Lee
+  affiliation: University of California-Irvine
+- name: Eric-Jan Wagenmakers
+  affiliation: University of Amsterdam
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output: 
+  html_document:
+    fig_caption: yes 
+    dev: CairoSVG
+    keep_md: yes
+    toc: yes
+---
+
+
+This supplement to Morey, Hoekstra, Rouder, Lee, and Wagenmaker's "The Fallacy of Placing Confidence in Confidence Intervals" is designed for use by teachers and leaders of reading groups seeking to enhance their discussion of the issues raised in the paper. 
+
+## Questions for discussion, by section
+
+### Introduction &mdash; The Theory of Confidence Intervals
+
+1. Before reading the paper, if you had to define a confidence interval, how would you have defined it? Does your definition contain any of the fallacies mentioned in the paper?
+
+2. Neyman says that "[We] *decide* to behave as if we actually knew that the true value [is in the interval]. This is done as a result of our decision and has nothing to do with 'reasoning' or 'conclusion'." Consider this from a philosophy of science perspective. Why do you think Neyman would say this? Is it your impression that scientists would generally agree?
+
+### Example 1: The Lost Submarine
+
+1. Most of the problems we encounter in science are different and more complicated than  the Lost Submarine example. Of what value is considering a simple example, like the one presented here, in exploring the implications of a particular line of reasoning? 
+
+2. Describe the difference between pre- and post-data reasoning, how the UMP interval exemplifies "pre-data" reasoning, and how the Bayes interval exemplifies "post-data" reasoning. What are some situations in which pre- and post-data reasoning might be valuable?
+
+### Example 2: A Confidence Interval in the Wild
+
+1. Consider the list of publications in which Steiger $\omega^2$ intervals were reported, but without a warning about their problematic interpretation. What might be the consequences of this for someone reading one of these publications? What about for people designing new research or products after reading?
+
+2. The paper describes a possible interpretation of a very narrow, or empty, confidence interval in terms of "model misfit". Why might a low $F$ value indicate model misfit? Why is this problematic for the people who believe the Fundamental Confidence Fallacy or the precision fallacy?
+
+### Discussion &mdash; Conclusion
+
+1. The section "Guidelines for interpreting and reporting intervals" suggests that one should never report a confidence interval without two things:
+  a. Describing the confidence procedure used, and
+  b. Giving enough information to compute an interval from a different procedure.
+In light of the two examples, why are these two things important? What might be the result of reporting a confidence interval without saying how it was computed?
+
+2. The paper describes a situation &mdash; estimating IQ &mdash; where it is desirable to assess the uncertainty associated with a fixed interval, rather than a random one. Think of two other situations where this would be useful.
+
+
+## Using the interactive applet
+
+The exercises below use the applet located at http://learnbayes.org/redirects/CIshiny1.html to demonstrate various concepts in the paper.
+
+### Demonstration of confidence procedure coverage
+
+The property that all confidence procedures share is that in the long run, intervals generated from a confidence procedure will include the true value a fixed percentage of the time. A 50% confidence procedure will generate intervals that include the true value 50% of the time; a 95% confidence procedure, 95% of the time. This fixed proportion is called the *confidence coefficient*. The submarine example in the paper describes four 50% confidence procedures for the hatch location $\theta$. We can use the interactive applet to demonstrate how these intervals all include the true value 50% of the time, in the long run. 
+
+1. Open the applet by clicking on the link above. The applet shows interactive versions of Figures 1-5 of the paper; one view the different figures by selecting different tabs at the top. Initially, the applet shows Figure 1A from the paper. Notice the red Xs along the left side of the figure. A red X means that the corresponding confidence interval does not contain the true value $\theta$.
+
+2. Click on "Figure 1B". Notice that the red Xs change to green circles. A green circle means that the confidence intervals includes the true value. For the bubbles in Figure 1B, all confidence intervals contain the true value.
+
+3. Click on "Choose your own / Sample". Several controls open below, offering the ability to define your own bubbles, or to sample bubbles. Use the slider to change the bubble values to see how the corresponding confidence intervals change. Try the values (-3,-1), and use the formula in the paper for the Bayes interval to verify the confidence interval shown.
+
+4. Click "Sample". The applet samples two new bubbles for you, at random. What values were sampled, and which confidence intervals contained the true value? The text below helps you to keep track of how many of each type of confidence interval contained the true value. Click the "Sample" button 9 more times, for a total of ten samples. How many of each interval would you expect to contain the true value, and why?
+
+5. Click "Sample 1000". This samples 1000 pairs of bubbles, keeping track of how many include the true value, and shows you the last sample. What proportion of each interval would you expect to contain the true value? Are the observed percentages close to this value?
+
+6. Click "Sample 1000" 20 more times, each time watching the observed percentage change. Are they converging as expected to a single value? 
+
+All intervals are 50% intervals; in the long run, the must contain the true value 50% of the time. This sampling experiment shows that indeed, each of these intervals contains the true value the expected proportion of the time.
+
+### Demonstration of confidence procedure "power"
+
+As described in the paper, confidence procedures all contain the true value a fixed proportion of the time; from this fixed proportion, the procedure gets its confidence coefficient. Confidence procedures can differ, however, on how often the exclude false values. From the perspective of confidence interval theory, including the true value is a good thing, and including *false* values is a bad thing. Confidence interval theory prefers intervals with greater power to exclude false values. 
+
+We can check the power of our four confidence procedures for a specific false value using the applet.
+
+1. Open Figure 1, first click "Figure 1A" to reset the bubbles, and then click "Choose your own / Sample". In the controls below, click "Other value". Move the slider that opens below to "3". Notice that the vertical dashed line has moved from 0 to $\theta + 3$. The green Xs for each interval; an X indicates that the value $\theta+3$ is excluded from an interval, and the color green indicates that this is a good thing, because $\theta+3$ is not the true location of the hatch.
+
+2. Click "Sample". Which confidence intervals contain the false value $\theta+3$?
+
+3. Click the "Figure 4" tab from the menu at the top of the applet. Notice that there is a vertical dashed black line on the figure at $\theta+3$. Follow the dashed lined up until it meets the UMP line. What proportion of the time will the UMP interval contain the false value $\theta+3$? Confirm this by checking the text at the bottom of the left-hand panel, which tells you for every procedure what proportion of the time the intervals will contain the false value.
+
+4. Click back to Figure 1, and click "Sample" nine more times, each time checking to see which intervals contain the false value $\theta+3$. How many times out of 10 would you expect the UMP procedure to contain this false value? 
+
+5. Click "Sample 1000" 20 times, observing the proportion of times the UMP interval contains the true value. Is this converging to the value you expect? After sampling all 20,000, note all the percentages.
+
+6. Click "Figure 4". Do the percentages you obtained from sampling agree with the theoretical percentages shown here? Which procedure is the "most powerful" for $\theta=3$ in the sense that it *excludes* this false value the greatest proportion of the time? Which is the least powerful (not counting the trivial procedure)?
+
+7. Looking at Figure 4, is there any false value we could choose for which the UMP procedure would *not* exclude that false value the greatest proportion of the time? What does this say about the UMP procedure?
+
+### Demonstration of relevant subsets
+
+For some of the confidence procedures, one can tell whether the confidence interval contains the true value simply by looking at the data. Although all intervals are 50% intervals, we nonetheless have complete certainty that the true value is in the interval.
+
+1. Open Figure 1 and click "Figure 1B". Notice that the observed bubbles are very far apart. Notice that the likelihood &mdash; which tells us the possible locations of the hatch, taking into account the observed bubbles &mdash; is very narrow. Why?
+
+2. Look at the sampling distribution, nonparametric, and UMP intervals. Suppose we did not know the true values, but only the loations of the bubbles (and hence the likelihood). What would we know about the probability that these intervals contain the true value, and why?
+
+3. Consider that each of these intervals is a 50% interval, because they contain the true value 50% of the time. In light of your answer to (2) above, does it make sense to say that we are 50% "certain" that a 50% intervals contain the true value? Why?
+
+4. Click on "Figure 2" from the tab menu at the top of the applet, then click "UMP". The left-hand panel is a plot of $y_2$ versus $y_1$; the shaded region is where the true value will be included in the UMP interval. Notice that the bubble location is inside the shaded region, indicating that the true value is in the interval for this bubble set. What proportion of the plot is shaded? Why that proportion in particular?
+
+5. Now examine the right panel of the figure. This panel plots $y_2 - y_1$ against $\bar{y}$. It is, in fact, just a 45&deg; rotation of the left-hand panel. The values inside the large black diamond correspond to values inside the large black square in the left panel; that is, they are possible values, and values outside the black diamond are impossible.  What is $y_2 - y_1$ for this set of bubbles? This value is indicated by a horizontal line. 
+
+6. Given that we observe $y_2 - y_1$ equal to the value we observed in this bubble set, what is the probability that the UMP interval contains the true value? Look at the proportion of possible values that is under the shaded region. Does this agree with the information in text in the left panel, and with your answer in (2)?
+
+7. Go back to Figure 1, and click "Figure 1A". What is $y_2 - y_1$ for this set of bubbles? Go back to Figure 2. Given that we observe $y_2 - y_1$ equal to the value we observed in this bubble set, what is the probability that the UMP interval contains the true value? Look at the proportion of possible values that is under the shaded region (that is, the proportion of the red/green horizontal line that is green), and shown in text in the left panel. 
+
+8. If someone told you that they computed an 50% UMP interval of (-3,-1), would you want to know $y_2 - y_1$? Why or why not?
+
+9. Repeat 1-7, this time selecting the Bayes interval. What do you find, and how is this related to the shape of the blue diamond in Figure 2? Would you trust "50%" as a measure of certainty that a given UMP interval contains the true value? What about a Bayes interval?
+
+10. Consider question (7) from the previous exercise, regarding the fact that the UMP interval is the "best" interval in terms of excluding false values, in the long run. In light of what you learned, would you say that the UMP interval is "best" for assessing what one's uncertainty that the hatch location? How is this related to the "pre-data/post-data" distinction in the paper?
+
+## Other activities
+
+1.  *CI width vs probability* (suggested by Mike Masson)
+    a.  Use a script (e.g., R or MATLAB) to simulate $N=10$ observations from a normal population with a mean and standard deviation of your choosing. Compute the 95% CI. Is the true population mean within the CI?
+    b.  Consider multiple replications of the hypothetical experiment by repeating step (a) 10 times. How many of the CIs contain the true value? How many would you expect to?
+    c.  Sort the 10 CIs in order of width (or, equivalently, observed standard deviation). Does the widest contain the true value? What about the narrowest?
+    d.  Repeat (b)-(c) 10,000 times, keeping track of whether the widest and narrowest CIs contain the true value. Out of the 10,000 times, how many of the widest contain the true value? How many of narrowest? How many would you expect for each, based on the fact that they all have the nominal 95% confidence?
+    e.  Discuss what your results in (d) in the context of the Fundamental Confidence Fallacy and the precision fallacy. 
+  
+
+2. *Computing a Bayesian interval*. 
+Use the code in the supplement to compute a posterior distribution for $\omega^2$ in a four-group design with 20 participants in each group when $F(3, 76)=3$. Report a 95% credible interval for $\omega^2$.
+
+
+## Ideas for further reading
+
+* Hoekstra, R., Morey, R. D., Rouder, J. N. and Wagenmakers, E.-J. (2014). Robust Misinterpretation of Confidence Intervals, Psychonomic Bulletin & Review, 21, 5, 1157-1164. [(PDF)](http://www.ejwagenmakers.com/inpress/HoekstraEtAlPBR.pdf).<br/> "In this study, 120 researchers and 442 students &mdash; all in the field of psychology &mdash; were asked to assess the truth value of six particular statements involving different interpretations of a CI. Although all six statements were false, both researchers and students endorsed, on average, more than three statements, indicating a gross misunderstanding of CIs."
+
+### Bayesian
+
+* Jaynes, E. T. (1976).  Confidence intervals vs Bayesian intervals. In Foundations of probability theory, statistical inference, and statistical theories of science, Harper and Hooker, editors. 175-257, D. Reidel, Dordrecht. [(PDF)](http://bayes.wustl.edu/etj/articles/confidence.pdf) <br/> "Galileo's telescope was able to reveal the truth, in a way that transcended all theology, because it could *magnify* what was too small to be perceived by our unaided senses, up into the range where it could be seen directly by all. And that, I suggest, is exactly what we need in statistics if [the Bayesian-frequentist] conflict is ever to be resolved. Statistics cannot take its dispute to the Supreme Court of the physicist [ie, an experiment]; but there is another. It was recognized by Laplace in that famous remark, 'Probability theory is nothing but common sense reduced to calculation'."
+
+* Edwards, W., Lindman, H., Savage, L. J. (1963). Bayesian statistical inference in psychological research. Psychological Review, 70, 193-242. [(APA)](http://psycnet.apa.org/psycinfo/1964-00040-001). <br/>
+A classic introduction to Bayesian inference.
+
+
+### Fisherian
+
+* Fisher, R.A, (1959). Mathematical probability in the natural sciences. Metrika, 2, 1, pp. 1-10. [(PDF)](http://drsmorey.org/bibtex/upload/Fisher:1959a.pdf). <br/> Fisher introduces the idea of the "relevant subset" and says: "It is sometimes asserted that the fiducial method generally leads to the same results as the method of Confidence Intervals. It is difficult to understand how this can be so, since it has been firmly laid down that the method of confidence intervals does not lead to probability statements about the parameters of the real world, whereas the fiducial argument exists for this purpose. Moreover, the arguments of Neyman and Pearson are deliberately not restricted to cases where exhaustive estimation is possible, and this is a definite condition for an
+accurate fiducial argument."
+
+### Frequentist
+
+* Wasserman, L. (2008). Comment on article by Gelman. Bayesian Analysis, 3, 463–466. [(PDF)](http://ba.stat.cmu.edu/journal/2008/vol03/issue03/wasserman.pdf) <br/>
+In this short article, Wasserman defends the importance of frequentist coverage. He says: "In science, coverage matters." Gelman responds: [(PDF)](http://www.stat.columbia.edu/~gelman/research/published/badbayesresponsemain.pdf)
+
+* Mayo, D. G. (1982). On after-trial criticisms of Neyman-Pearson theory of statistics. PSA: Proceedings of the Biennial Meeting of the Philosophy of Science Association, 1982, 145–158. [(PDF)](http://www.phil.vt.edu/dmayo/personal_website/(1982)%20On%20After%20Trial%20Criticisms%20of%20Neyman%20Pearson%20Theory%20of%20Statistics.pdf)<br/> Mayo defends Neyman's pre-data view against post-data critiques: "unless [Neyman-Pearson-Testing] criteria are either misunderstood or rejected, the criticisms cannot be taken as grounds for thinking that it is necessary for NPT to satisfy these (after-trial) [evidential-relationship] criteria. In effect, the criticisms merely show the difference between [Neyman-Pearson-Testing] criteria and the (after-trial) criteria based on [evidential-relationship] measures."
+
+
+

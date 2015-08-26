@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>The Fallacy of Placing Confidence in Confidence Intervals</title>
+
+   <!-- Markdown CSS -->
+   <link href="css/markdown.css" rel="stylesheet">
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/sticky-footer-navbar.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- hypothes.is -->
+    <script async defer src="//hypothes.is/embed.js"></script>
+
+  
+    <!-- lightbox style -->
+    <link href="css/slimbox2.css" rel="stylesheet">
+
+    <!-- my article style -->
+    <link href="css/article.css" rel="stylesheet">
+
+    <script type="text/javascript"
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        showProcessingMessages: false,
+        messageStyle: 'none',
+        // show equation numbers
+        TeX: {
+          equationNumbers: {
+            autoNumber: "AMS"
+          }
+        },
+        'HTML-CSS': {
+          imageFont: null
+        }
+      });
+    </script>
+
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">The Fallacy of Placing Confidence in Confidence Intervals</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown active">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Main paper<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class=""><a href="introduction.html">Introduction</a></li>
+                <li><a href="folktheory.html">The folk theory of confidence intervals</a></li>
+                <li><a href="CItheory.html">The theory of confidence intervals</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="lostsub.html">Example 1: The Lost Submarine</a></li>
+                <li><a href="subCIs.html">Five confidence procedures</a></li>
+                <li><a href="subCIproperties.html">Properties of the procedures</a></li>                
+                <li><a href="subCIevaluation.html">Evaluating the procedures</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="omegasqCI.html">Example 2: A confidence interval in the wild</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="discussion.html">Discussion</a></li>
+                <li><a href="guidelines.html">Guidelines for interpreting and reporting intervals</a></li>
+                <li class="active"><a href="confvscred.html">Confidence intervals versus credible intervals</a></li>
+                <li><a href="conclusion.html">Conclusion</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="references.html">References</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Supplements<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="supplement.html">Details and code</a></li>
+                <li><a href="discussion_guide.html">Discussion guide</a></li>
+              </ul>
+            </li>            
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <!-- Begin page content -->
+    <div class="container">
+      <button onclick="TogetherJS(this); return false;">Start collaboration with TogetherJS</button>
+      <p><a href="https://twitter.com/share" class="twitter-share-button" data-via="richarddmorey" data-hashtags="statistics">Tweet</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+          </script>
+        </p>
+
+      <div class="page-header">
+        <h2>Confidence intervals versus credible intervals</h2>
+      </div>
+      
+      <p>One of the misconceptions regarding the relationship between Bayesian inference and frequentist inference is that they will lead to the same inferences, and hence all confidence intervals can simply be interpreted in a Bayesian way. In the case where data are normally distributed, for instance, there is a particular prior that will lead to a confidence interval that is numerically identical to Bayesian credible intervals computed using the Bayesian posterior <span class="citation">(Jeffreys, 1961; Lindley, 1965)</span>. This might lead one to suspect that it does not matter whether one uses confidence procedures or Bayesian procedures. We showed, however, that confidence intervals and credible intervals can disagree markedly. The only way to know that a confidence interval is numerically identical to some credible interval is to <em>prove</em> it. The correspondence cannot — and should not — be assumed.</p>
+      <p>More broadly, the defense of confidence procedures by noting that, in some restricted cases, they numerically correspond to Bayesian procedures is actually no defense at all. One must first choose which confidence procedure, of many, to use; if one is committed to the procedure that allows a Bayesian interpretation, then one’s time is much better spent simply applying Bayesian theory. If the benefits of Bayesian theory are desired — and they clearly are, by proponents of confidence intervals — then there is no reason why Bayesian inference should not be applied in its full generality, rather than using the occasional correspondence with credible intervals as a hand-waving defense of confidence intervals.</p>
+      <p>It is important to emphasize, however, that for many of the confidence procedures presented in the applied statistical literature, no effort has been made to show that the intervals have the properties that proponents of confidence intervals desire. We should expect, as a matter of course, that developers of new confidence intervals show that their intervals have the desired inferential properties, instead of just nominal coverage of the true value and “short” width. Because developers of confidence intervals have not done this, the push for confidence intervals rests on uncertain ground. Adopting Bayesian inference, where all inferences arise within a logical, unified framework, would render the problems of assessing the properties of these confidence procedures moot. If desired, coverage of a Bayesian procedure can also be assessed; but if one is interested primarily in reasonable post-data inference, then Bayesian properties should be the priority, not frequentist coverage <span class="citation">(cf. Gelman, 2008; Wasserman, 2008)</span>.</p>
+      <p>For advocates of reasoning by intervals, adopting Bayesian inference would have other benefits. The end-points of a confidence interval are always set by the data. Suppose, however, we are interested in determining the plausibility that a parameter is in a particular range; for instance, in the United States, it is against the law to execute criminals who are intellectually disabled. The criterion used for intellectual disability in the US state of Florida is having a true IQ less than 70. Since IQ is measured with error, one might ask what confidence we have that a particular criminal’s true IQ is less than 70 <span class="citation">(see Anastasi &amp; Urbina, 1997 or <span class="citation">Cronbach (1990)</span> for an overview of confidence intervals for IQ)</span>. In this case, the interval we would like to assess for plausibility is no longer a function of the sample. The long-run probability that the true value is inside a fixed interval is unknown and is either 0 or 1, and hence no confidence procedure can be constructed, even though such information may be critically important to a researcher, policy maker, or criminal defendant <span class="citation">(Pratt, Raiffa, &amp; Schlaifer, 1995)</span>.</p>
+      <p>Even in seemingly simple cases where a fixed interval is nested inside a CI, or <em>vice versa</em>, one cannot draw conclusions about the plausibility of a fixed interval. One might assume that an interval nested within a CI must have lower confidence than the CI, given that it is shorter; however, as shown in <a href="lostsub.html#bubbles1">Figure 1</a>B, a 100% confidence interval (the likelihood) is nested within some of the 50% confidence intervals. Likewise, one might believe that if a CI is nested within a fixed interval, then the fixed interval must have greater probability than the interval. But in <a href="lostsub.html#bubbles1">Figure 1</a>A, one can imagine a fixed interval just larger than the 50% UMP interval; this will have much lower than 50% probability of containing the true value, due to the fact that it occupies a small proportion of the likelihood. Knowledge that the FCF is a fallacy prohibits one from using confidence intervals to assess the probability of fixed intervals. Bayesian procedures, on the other hand, offer the ability to compute the plausibility of any given range of values. Because all such inferences must be made from the posterior distribution, inferences must remain mutually consistent <span class="citation">(Lindley, 1985; see also <span class="citation">Fisher (1935)</span> for a similar argument)</span>.</p>
+      <p>Moving to credible intervals from confidence intervals would necessitate a shift in thinking, however, away from a test-centric view with respect to intervals (e.g., “is 0 in the interval?”). Although every confidence interval can be interpreted as a test, credible intervals cannot be so interpreted. Assessing the Bayesian credibility of a specific parameter value by checking whether it is included in a credible interval is, as <span class="citation">J. O. Berger (2006)</span> puts it, “simply wrong.” When testing a specific value is of interest (such as a null hypothesis), that specific value must be assigned non-zero probability <em>a priori</em>. While not conceptually difficult, it is beyond the scope of this paper; see <span class="citation">Rouder, Speckman, Sun, Morey, &amp; Iverson (2009)</span>, <span class="citation">E.-J. Wagenmakers, Lee, Lodewyckx, &amp; Iverson (2008)</span>, or <span class="citation">Dienes (2011)</span> for accessible accounts.</p>
+      <p>Finally, we believe that in science, the meaning of our inferences are important. Bayesian credible intervals support an interpretation of probability in terms of plausibility, thanks to the explicit use of a prior. Confidence intervals, on the other hand, are based on a philosophy that does not allow inferences about plausibility, and does not utilize prior information. Using confidence intervals as if they were credible intervals is an attempt to smuggle Bayesian meaning into frequentist statistics, without proper consideration of a prior. As they say, there is no such thing as a free lunch; one must choose. We suspect that researchers, given the choice, would rather specify priors and get the benefits that come from Bayesian theory. We should not pretend, however, that the choice need not be made. Confidence interval theory and Bayesian theory are not interchangeable, and should not be treated as so.</p>
+
+
+
+      <ul class="pager">
+        <li class="previous"><a href="guidelines.html">Previous</a></li>
+        <li class="next"><a href="conclusion.html">Next</a></li>
+      </ul>
+    
+    </div>
+
+
+      <footer class="footer">
+        <div class="container">
+        <p class="text-muted">Please cite as Morey, Hoekstra, Rouder, Lee and Wagenmakers (in press). Psychonomic Bulletin &amp; Review.</p>
+        </div>
+      </footer>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <script type="text/javascript" src="js/slimbox2.js"></script>
+    <script type="text/javascript" src="js/article.js"></script>
+    <script src="https://togetherjs.com/togetherjs-min.js"></script>
+
+    <script>make_figures();</script>
+  </body>
+</html>

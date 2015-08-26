@@ -1,0 +1,95 @@
+---
+title: "The Fallacy of Placing Confidence in Confidence Intervals"
+author:
+- name: Richard D. Morey
+  affiliation: Cardiff University
+- name: Rink Hoekstra
+  affiliation: University of Groningen
+- name: Jeffrey N. Rouder
+  affiliation: University of Missouri
+- name: Michael D. Lee
+  affiliation: University of California-Irvine
+- name: Eric-Jan Wagenmakers
+  affiliation: University of Amsterdam
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output: 
+  html_document:
+    fig_caption: yes 
+    dev: CairoSVG
+    keep_md: yes
+bibliography: bibfile.bib
+csl: apa.csl
+---
+
+```{r results='hide',echo=FALSE,message=FALSE,warning=FALSE}
+source('figureCode/prelims.R', chdir = TRUE)
+
+opts_knit$set(self.contained = FALSE)
+```
+
+
+```{r child="sectionTexts/introduction.Rmd"}
+```
+
+## The Folk Theory of Confidence Intervals
+
+```{r child="sectionTexts/folkTheory.Rmd"}
+```
+
+## The Theory of Confidence Intervals
+
+```{r child="sectionTexts/neymanTheory.Rmd"}
+```
+
+### Early skepticism
+
+```{r child="sectionTexts/earlySkepticism.Rmd"}
+```
+
+## Example 1: The Lost Submarine
+
+```{r child="sectionTexts/lostSubIntro.Rmd"}
+```
+
+### Five confidence procedures
+
+```{r child="sectionTexts/subProcedures.Rmd"}
+```
+
+### Properties of the procedures
+
+```{r child="sectionTexts/subCIproperties.Rmd"}
+```
+
+### Evaluating the confidence procedures
+
+```{r child="sectionTexts/subCIevaluating.Rmd"}
+```
+
+## Example 2: A confidence interval in the wild
+
+```{r child="sectionTexts/omega2.Rmd"}
+```
+
+## Discussion
+
+```{r child="sectionTexts/discussionIntro.Rmd"}
+```
+
+### Guidelines for interpreting and reporting intervals
+
+```{r child="sectionTexts/guidelines.Rmd"}
+```
+
+### Confidence intervals versus credible intervals
+
+```{r child="sectionTexts/confVcred.Rmd"}
+```
+
+### Conclusion
+
+```{r child="sectionTexts/conclusion.Rmd"}
+```
+
+
+# References

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>The Fallacy of Placing Confidence in Confidence Intervals</title>
+
+   <!-- Markdown CSS -->
+   <link href="css/markdown.css" rel="stylesheet">
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/sticky-footer-navbar.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- hypothes.is -->
+    <script async defer src="//hypothes.is/embed.js"></script>
+
+    <!-- lightbox style -->
+    <link href="css/slimbox2.css" rel="stylesheet">
+
+    <!-- my article style -->
+    <link href="css/article.css" rel="stylesheet">
+
+    <script type="text/javascript"
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        showProcessingMessages: false,
+        messageStyle: 'none',
+        // show equation numbers
+        TeX: {
+          equationNumbers: {
+            autoNumber: "AMS"
+          }
+        },
+        'HTML-CSS': {
+          imageFont: null
+        }
+      });
+    </script>
+
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">The Fallacy of Placing Confidence in Confidence Intervals</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Main paper<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="introduction.html">Introduction</a></li>
+                <li><a href="folktheory.html">The folk theory of confidence intervals</a></li>
+                <li><a href="CItheory.html">The theory of confidence intervals</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="lostsub.html">Example 1: The Lost Submarine</a></li>
+                <li><a href="subCIs.html">Five confidence procedures</a></li>
+                <li><a href="subCIproperties.html">Properties of the procedures</a></li>                
+                <li><a href="subCIevaluation.html">Evaluating the procedures</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="omegasqCI.html">Example 2: A confidence interval in the wild</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="discussion.html">Discussion</a></li>
+                <li><a href="guidelines.html">Guidelines for interpreting and reporting intervals</a></li>
+                <li><a href="confvscred.html">Confidence intervals versus credible intervals</a></li>
+                <li><a href="conclusion.html">Conclusion</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="references.html">References</a></li>
+              </ul>
+            </li>
+            <li class="dropdown active">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Supplements<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="supplement.html">Details and code</a></li>
+                <li class="active"><a href="discussion_guide.html">Discussion guide</a></li>
+              </ul>
+            </li>            
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <!-- Begin page content -->
+    <div class="container">
+      <button onclick="TogetherJS(this); return false;">Start collaboration with TogetherJS</button>
+      <p><a href="https://twitter.com/share" class="twitter-share-button" data-via="richarddmorey" data-hashtags="statistics">Tweet</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+          </script>
+        </p>
+
+      <div class="page-header">
+        <h2>Discussion guide for “The Fallacy of Placing Confidence in Confidence Intervals”</h2>
+        <h4 class="author"><em>Richard D. Morey</em></h4>
+        <address class="author_afil">Cardiff University</address>
+      </div>
+
+<div id="TOC">
+<ul>
+<li><a href="#questions-for-discussion-by-section">Questions for discussion, by section</a><ul>
+<li><a href="#introduction-the-theory-of-confidence-intervals">Introduction — The Theory of Confidence Intervals</a></li>
+<li><a href="#example-1-the-lost-submarine">Example 1: The Lost Submarine</a></li>
+<li><a href="#example-2-a-confidence-interval-in-the-wild">Example 2: A Confidence Interval in the Wild</a></li>
+<li><a href="#discussion-conclusion">Discussion — Conclusion</a></li>
+</ul></li>
+<li><a href="#using-the-interactive-applet">Using the interactive applet</a><ul>
+<li><a href="#demonstration-of-confidence-procedure-coverage">Demonstration of confidence procedure coverage</a></li>
+<li><a href="#demonstration-of-confidence-procedure-power">Demonstration of confidence procedure “power”</a></li>
+<li><a href="#demonstration-of-relevant-subsets">Demonstration of relevant subsets</a></li>
+</ul></li>
+<li><a href="#other-activities">Other activities</a></li>
+<li><a href="#ideas-for-further-reading">Ideas for further reading</a><ul>
+<li><a href="#bayesian">Bayesian</a></li>
+<li><a href="#fisherian">Fisherian</a></li>
+<li><a href="#frequentist">Frequentist</a></li>
+</ul></li>
+</ul>
+</div>
+
+<p>This supplement to Morey, Hoekstra, Rouder, Lee, and Wagenmaker’s “The Fallacy of Placing Confidence in Confidence Intervals” is designed for use by teachers and leaders of reading groups seeking to enhance their discussion of the issues raised in the paper.</p>
+<div id="questions-for-discussion-by-section" class="section level2">
+<h2>Questions for discussion, by section</h2>
+<div id="introduction-the-theory-of-confidence-intervals" class="section level3">
+<h3>Introduction — The Theory of Confidence Intervals</h3>
+<ol style="list-style-type: decimal">
+<li><p>Before reading the paper, if you had to define a confidence interval, how would you have defined it? Does your definition contain any of the fallacies mentioned in the paper?</p></li>
+<li><p>Neyman says that “[We] <em>decide</em> to behave as if we actually knew that the true value [is in the interval]. This is done as a result of our decision and has nothing to do with ‘reasoning’ or ‘conclusion’.” Consider this from a philosophy of science perspective. Why do you think Neyman would say this? Is it your impression that scientists would generally agree?</p></li>
+</ol>
+</div>
+<div id="example-1-the-lost-submarine" class="section level3">
+<h3>Example 1: The Lost Submarine</h3>
+<ol style="list-style-type: decimal">
+<li><p>Most of the problems we encounter in science are different and more complicated than the Lost Submarine example. Of what value is considering a simple example, like the one presented here, in exploring the implications of a particular line of reasoning?</p></li>
+<li><p>Describe the difference between pre- and post-data reasoning, how the UMP interval exemplifies “pre-data” reasoning, and how the Bayes interval exemplifies “post-data” reasoning. What are some situations in which pre- and post-data reasoning might be valuable?</p></li>
+</ol>
+</div>
+<div id="example-2-a-confidence-interval-in-the-wild" class="section level3">
+<h3>Example 2: A Confidence Interval in the Wild</h3>
+<ol style="list-style-type: decimal">
+<li><p>Consider the list of publications in which Steiger <span class="math">\(\omega^2\)</span> intervals were reported, but without a warning about their problematic interpretation. What might be the consequences of this for someone reading one of these publications? What about for people designing new research or products after reading?</p></li>
+<li><p>The paper describes a possible interpretation of a very narrow, or empty, confidence interval in terms of “model misfit”. Why might a low <span class="math">\(F\)</span> value indicate model misfit? Why is this problematic for the people who believe the Fundamental Confidence Fallacy or the precision fallacy?</p></li>
+</ol>
+</div>
+<div id="discussion-conclusion" class="section level3">
+<h3>Discussion — Conclusion</h3>
+<ol style="list-style-type: decimal">
+<li>The section “Guidelines for interpreting and reporting intervals” suggests that one should never report a confidence interval without two things:</li>
+</ol>
+<ol style="list-style-type: lower-alpha">
+<li>Describing the confidence procedure used, and</li>
+<li>Giving enough information to compute an interval from a different procedure. In light of the two examples, why are these two things important? What might be the result of reporting a confidence interval without saying how it was computed?</li>
+</ol>
+<ol start="2" style="list-style-type: decimal">
+<li>The paper describes a situation — estimating IQ — where it is desirable to assess the uncertainty associated with a fixed interval, rather than a random one. Think of two other situations where this would be useful.</li>
+</ol>
+</div>
+</div>
+<div id="using-the-interactive-applet" class="section level2">
+<h2>Using the interactive applet</h2>
+<p>The exercises below use the applet located at <a href="http://learnbayes.org/redirects/CIshiny1.html" class="uri">http://learnbayes.org/redirects/CIshiny1.html</a> to demonstrate various concepts in the paper.</p>
+<div id="demonstration-of-confidence-procedure-coverage" class="section level3">
+<h3>Demonstration of confidence procedure coverage</h3>
+<p>The property that all confidence procedures share is that in the long run, intervals generated from a confidence procedure will include the true value a fixed percentage of the time. A 50% confidence procedure will generate intervals that include the true value 50% of the time; a 95% confidence procedure, 95% of the time. This fixed proportion is called the <em>confidence coefficient</em>. The submarine example in the paper describes four 50% confidence procedures for the hatch location <span class="math">\(\theta\)</span>. We can use the interactive applet to demonstrate how these intervals all include the true value 50% of the time, in the long run.</p>
+<ol style="list-style-type: decimal">
+<li><p>Open the applet by clicking on the link above. The applet shows interactive versions of Figures 1-5 of the paper; one view the different figures by selecting different tabs at the top. Initially, the applet shows Figure 1A from the paper. Notice the red Xs along the left side of the figure. A red X means that the corresponding confidence interval does not contain the true value <span class="math">\(\theta\)</span>.</p></li>
+<li><p>Click on “Figure 1B”. Notice that the red Xs change to green circles. A green circle means that the confidence intervals includes the true value. For the bubbles in Figure 1B, all confidence intervals contain the true value.</p></li>
+<li><p>Click on “Choose your own / Sample”. Several controls open below, offering the ability to define your own bubbles, or to sample bubbles. Use the slider to change the bubble values to see how the corresponding confidence intervals change. Try the values (-3,-1), and use the formula in the paper for the Bayes interval to verify the confidence interval shown.</p></li>
+<li><p>Click “Sample”. The applet samples two new bubbles for you, at random. What values were sampled, and which confidence intervals contained the true value? The text below helps you to keep track of how many of each type of confidence interval contained the true value. Click the “Sample” button 9 more times, for a total of ten samples. How many of each interval would you expect to contain the true value, and why?</p></li>
+<li><p>Click “Sample 1000”. This samples 1000 pairs of bubbles, keeping track of how many include the true value, and shows you the last sample. What proportion of each interval would you expect to contain the true value? Are the observed percentages close to this value?</p></li>
+<li><p>Click “Sample 1000” 20 more times, each time watching the observed percentage change. Are they converging as expected to a single value?</p></li>
+</ol>
+<p>All intervals are 50% intervals; in the long run, the must contain the true value 50% of the time. This sampling experiment shows that indeed, each of these intervals contains the true value the expected proportion of the time.</p>
+</div>
+<div id="demonstration-of-confidence-procedure-power" class="section level3">
+<h3>Demonstration of confidence procedure “power”</h3>
+<p>As described in the paper, confidence procedures all contain the true value a fixed proportion of the time; from this fixed proportion, the procedure gets its confidence coefficient. Confidence procedures can differ, however, on how often the exclude false values. From the perspective of confidence interval theory, including the true value is a good thing, and including <em>false</em> values is a bad thing. Confidence interval theory prefers intervals with greater power to exclude false values.</p>
+<p>We can check the power of our four confidence procedures for a specific false value using the applet.</p>
+<ol style="list-style-type: decimal">
+<li><p>Open Figure 1, first click “Figure 1A” to reset the bubbles, and then click “Choose your own / Sample”. In the controls below, click “Other value”. Move the slider that opens below to “3”. Notice that the vertical dashed line has moved from 0 to <span class="math">\(\theta + 3\)</span>. The green Xs for each interval; an X indicates that the value <span class="math">\(\theta+3\)</span> is excluded from an interval, and the color green indicates that this is a good thing, because <span class="math">\(\theta+3\)</span> is not the true location of the hatch.</p></li>
+<li><p>Click “Sample”. Which confidence intervals contain the false value <span class="math">\(\theta+3\)</span>?</p></li>
+<li><p>Click the “Figure 4” tab from the menu at the top of the applet. Notice that there is a vertical dashed black line on the figure at <span class="math">\(\theta+3\)</span>. Follow the dashed lined up until it meets the UMP line. What proportion of the time will the UMP interval contain the false value <span class="math">\(\theta+3\)</span>? Confirm this by checking the text at the bottom of the left-hand panel, which tells you for every procedure what proportion of the time the intervals will contain the false value.</p></li>
+<li><p>Click back to Figure 1, and click “Sample” nine more times, each time checking to see which intervals contain the false value <span class="math">\(\theta+3\)</span>. How many times out of 10 would you expect the UMP procedure to contain this false value?</p></li>
+<li><p>Click “Sample 1000” 20 times, observing the proportion of times the UMP interval contains the true value. Is this converging to the value you expect? After sampling all 20,000, note all the percentages.</p></li>
+<li><p>Click “Figure 4”. Do the percentages you obtained from sampling agree with the theoretical percentages shown here? Which procedure is the “most powerful” for <span class="math">\(\theta=3\)</span> in the sense that it <em>excludes</em> this false value the greatest proportion of the time? Which is the least powerful (not counting the trivial procedure)?</p></li>
+<li><p>Looking at Figure 4, is there any false value we could choose for which the UMP procedure would <em>not</em> exclude that false value the greatest proportion of the time? What does this say about the UMP procedure?</p></li>
+</ol>
+</div>
+<div id="demonstration-of-relevant-subsets" class="section level3">
+<h3>Demonstration of relevant subsets</h3>
+<p>For some of the confidence procedures, one can tell whether the confidence interval contains the true value simply by looking at the data. Although all intervals are 50% intervals, we nonetheless have complete certainty that the true value is in the interval.</p>
+<ol style="list-style-type: decimal">
+<li><p>Open Figure 1 and click “Figure 1B”. Notice that the observed bubbles are very far apart. Notice that the likelihood — which tells us the possible locations of the hatch, taking into account the observed bubbles — is very narrow. Why?</p></li>
+<li><p>Look at the sampling distribution, nonparametric, and UMP intervals. Suppose we did not know the true values, but only the loations of the bubbles (and hence the likelihood). What would we know about the probability that these intervals contain the true value, and why?</p></li>
+<li><p>Consider that each of these intervals is a 50% interval, because they contain the true value 50% of the time. In light of your answer to (2) above, does it make sense to say that we are 50% “certain” that a 50% intervals contain the true value? Why?</p></li>
+<li><p>Click on “Figure 2” from the tab menu at the top of the applet, then click “UMP”. The left-hand panel is a plot of <span class="math">\(y_2\)</span> versus <span class="math">\(y_1\)</span>; the shaded region is where the true value will be included in the UMP interval. Notice that the bubble location is inside the shaded region, indicating that the true value is in the interval for this bubble set. What proportion of the plot is shaded? Why that proportion in particular?</p></li>
+<li><p>Now examine the right panel of the figure. This panel plots <span class="math">\(y_2 - y_1\)</span> against <span class="math">\(\bar{y}\)</span>. It is, in fact, just a 45° rotation of the left-hand panel. The values inside the large black diamond correspond to values inside the large black square in the left panel; that is, they are possible values, and values outside the black diamond are impossible. What is <span class="math">\(y_2 - y_1\)</span> for this set of bubbles? This value is indicated by a horizontal line.</p></li>
+<li><p>Given that we observe <span class="math">\(y_2 - y_1\)</span> equal to the value we observed in this bubble set, what is the probability that the UMP interval contains the true value? Look at the proportion of possible values that is under the shaded region. Does this agree with the information in text in the left panel, and with your answer in (2)?</p></li>
+<li><p>Go back to Figure 1, and click “Figure 1A”. What is <span class="math">\(y_2 - y_1\)</span> for this set of bubbles? Go back to Figure 2. Given that we observe <span class="math">\(y_2 - y_1\)</span> equal to the value we observed in this bubble set, what is the probability that the UMP interval contains the true value? Look at the proportion of possible values that is under the shaded region (that is, the proportion of the red/green horizontal line that is green), and shown in text in the left panel.</p></li>
+<li><p>If someone told you that they computed an 50% UMP interval of (-3,-1), would you want to know <span class="math">\(y_2 - y_1\)</span>? Why or why not?</p></li>
+<li><p>Repeat 1-7, this time selecting the Bayes interval. What do you find, and how is this related to the shape of the blue diamond in Figure 2? Would you trust “50%” as a measure of certainty that a given UMP interval contains the true value? What about a Bayes interval?</p></li>
+<li><p>Consider question (7) from the previous exercise, regarding the fact that the UMP interval is the “best” interval in terms of excluding false values, in the long run. In light of what you learned, would you say that the UMP interval is “best” for assessing what one’s uncertainty that the hatch location? How is this related to the “pre-data/post-data” distinction in the paper?</p></li>
+</ol>
+</div>
+</div>
+<div id="other-activities" class="section level2">
+<h2>Other activities</h2>
+<ol style="list-style-type: decimal">
+<li><em>CI width vs probability</em> (suggested by Mike Masson)
+<ol style="list-style-type: lower-alpha">
+<li>Use a script (e.g., R or MATLAB) to simulate <span class="math">\(N=10\)</span> observations from a normal population with a mean and standard deviation of your choosing. Compute the 95% CI. Is the true population mean within the CI?</li>
+<li>Consider multiple replications of the hypothetical experiment by repeating step (a) 10 times. How many of the CIs contain the true value? How many would you expect to?</li>
+<li>Sort the 10 CIs in order of width (or, equivalently, observed standard deviation). Does the widest contain the true value? What about the narrowest?</li>
+<li>Repeat (b)-(c) 10,000 times, keeping track of whether the widest and narrowest CIs contain the true value. Out of the 10,000 times, how many of the widest contain the true value? How many of narrowest? How many would you expect for each, based on the fact that they all have the nominal 95% confidence?</li>
+<li>Discuss what your results in (d) in the context of the Fundamental Confidence Fallacy and the precision fallacy.</li>
+</ol></li>
+<li><em>Computing a Bayesian interval</em>. Use the code in the supplement to compute a posterior distribution for <span class="math">\(\omega^2\)</span> in a four-group design with 20 participants in each group when <span class="math">\(F(3, 76)=3\)</span>. Report a 95% credible interval for <span class="math">\(\omega^2\)</span>.</li>
+</ol>
+</div>
+<div id="ideas-for-further-reading" class="section level2">
+<h2>Ideas for further reading</h2>
+<ul>
+<li>Hoekstra, R., Morey, R. D., Rouder, J. N. and Wagenmakers, E.-J. (2014). Robust Misinterpretation of Confidence Intervals, Psychonomic Bulletin &amp; Review, 21, 5, 1157-1164. <a href="http://www.ejwagenmakers.com/inpress/HoekstraEtAlPBR.pdf">(PDF)</a>.<br /> “In this study, 120 researchers and 442 students — all in the field of psychology — were asked to assess the truth value of six particular statements involving different interpretations of a CI. Although all six statements were false, both researchers and students endorsed, on average, more than three statements, indicating a gross misunderstanding of CIs.”</li>
+</ul>
+<div id="bayesian" class="section level3">
+<h3>Bayesian</h3>
+<ul>
+<li><p>Jaynes, E. T. (1976). Confidence intervals vs Bayesian intervals. In Foundations of probability theory, statistical inference, and statistical theories of science, Harper and Hooker, editors. 175-257, D. Reidel, Dordrecht. <a href="http://bayes.wustl.edu/etj/articles/confidence.pdf">(PDF)</a> <br /> “Galileo’s telescope was able to reveal the truth, in a way that transcended all theology, because it could <em>magnify</em> what was too small to be perceived by our unaided senses, up into the range where it could be seen directly by all. And that, I suggest, is exactly what we need in statistics if [the Bayesian-frequentist] conflict is ever to be resolved. Statistics cannot take its dispute to the Supreme Court of the physicist [ie, an experiment]; but there is another. It was recognized by Laplace in that famous remark, ‘Probability theory is nothing but common sense reduced to calculation’.”</p></li>
+<li><p>Edwards, W., Lindman, H., Savage, L. J. (1963). Bayesian statistical inference in psychological research. Psychological Review, 70, 193-242. <a href="http://psycnet.apa.org/psycinfo/1964-00040-001">(APA)</a>. <br /> A classic introduction to Bayesian inference.</p></li>
+</ul>
+</div>
+<div id="fisherian" class="section level3">
+<h3>Fisherian</h3>
+<ul>
+<li>Fisher, R.A, (1959). Mathematical probability in the natural sciences. Metrika, 2, 1, pp. 1-10. <a href="http://drsmorey.org/bibtex/upload/Fisher:1959a.pdf">(PDF)</a>. <br /> Fisher introduces the idea of the “relevant subset” and says: “It is sometimes asserted that the fiducial method generally leads to the same results as the method of Confidence Intervals. It is difficult to understand how this can be so, since it has been firmly laid down that the method of confidence intervals does not lead to probability statements about the parameters of the real world, whereas the fiducial argument exists for this purpose. Moreover, the arguments of Neyman and Pearson are deliberately not restricted to cases where exhaustive estimation is possible, and this is a definite condition for an accurate fiducial argument.”</li>
+</ul>
+</div>
+<div id="frequentist" class="section level3">
+<h3>Frequentist</h3>
+<ul>
+<li><p>Wasserman, L. (2008). Comment on article by Gelman. Bayesian Analysis, 3, 463–466. <a href="http://ba.stat.cmu.edu/journal/2008/vol03/issue03/wasserman.pdf">(PDF)</a> <br /> In this short article, Wasserman defends the importance of frequentist coverage. He says: “In science, coverage matters.” Gelman responds: <a href="http://www.stat.columbia.edu/~gelman/research/published/badbayesresponsemain.pdf">(PDF)</a></p></li>
+<li><p>Mayo, D. G. (1982). On after-trial criticisms of Neyman-Pearson theory of statistics. PSA: Proceedings of the Biennial Meeting of the Philosophy of Science Association, 1982, 145–158. <a href="http://www.phil.vt.edu/dmayo/personal_website/(1982)%20On%20After%20Trial%20Criticisms%20of%20Neyman%20Pearson%20Theory%20of%20Statistics.pdf">(PDF)</a><br /> Mayo defends Neyman’s pre-data view against post-data critiques: “unless [Neyman-Pearson-Testing] criteria are either misunderstood or rejected, the criticisms cannot be taken as grounds for thinking that it is necessary for NPT to satisfy these (after-trial) [evidential-relationship] criteria. In effect, the criticisms merely show the difference between [Neyman-Pearson-Testing] criteria and the (after-trial) criteria based on [evidential-relationship] measures.”</p></li>
+</ul>
+</div>
+</div>
+
+
+      <ul class="pager">
+        <li class="previous"><a href="supplement.html">Previous</a></li>
+        <li class="next"><a href="index.html">Next</a></li>
+      </ul>
+    </div>
+
+
+      <footer class="footer">
+        <div class="container">
+        <p class="text-muted">Please cite as Morey, Hoekstra, Rouder, Lee and Wagenmakers (in press). Psychonomic Bulletin &amp; Review.</p>
+        </div>
+      </footer>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <script type="text/javascript" src="js/slimbox2.js"></script>
+    <script type="text/javascript" src="js/article.js"></script>
+    <script src="https://togetherjs.com/togetherjs-min.js"></script>
+
+    <script>make_figures();</script>
+  </body>
+</html>

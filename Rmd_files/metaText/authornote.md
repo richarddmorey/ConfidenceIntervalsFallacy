@@ -1,0 +1,1 @@
+Address correspondence to Richard D. Morey (richarddmorey@gmail.com). We thank Mijke Rhemtulla for helpful discussion during the drafting of the manuscript. Supplementary material, all code, and the source for this document are available at https://github.com/richarddmorey/ConfidenceIntervalsFallacy. 

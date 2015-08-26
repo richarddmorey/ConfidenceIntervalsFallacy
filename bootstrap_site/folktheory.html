@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>The Fallacy of Placing Confidence in Confidence Intervals</title>
+
+   <!-- Markdown CSS -->
+   <link href="css/markdown.css" rel="stylesheet">
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/sticky-footer-navbar.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+    <!-- hypothes.is -->
+    <script async defer src="//hypothes.is/embed.js"></script>
+
+    <!-- lightbox style -->
+    <link href="css/slimbox2.css" rel="stylesheet">
+
+    <!-- my article style -->
+    <link href="css/article.css" rel="stylesheet">
+
+    <script type="text/javascript"
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        showProcessingMessages: false,
+        messageStyle: 'none',
+        // show equation numbers
+        TeX: {
+          equationNumbers: {
+            autoNumber: "AMS"
+          }
+        },
+        'HTML-CSS': {
+          imageFont: null
+        }
+      });
+    </script>
+
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">The Fallacy of Placing Confidence in Confidence Intervals</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown active">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Main paper<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class=""><a href="introduction.html">Introduction</a></li>
+                <li class="active"><a href="folktheory.html">The folk theory of confidence intervals</a></li>
+                <li><a href="CItheory.html">The theory of confidence intervals</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="lostsub.html">Example 1: The Lost Submarine</a></li>
+                <li><a href="subCIs.html">Five confidence procedures</a></li>
+                <li><a href="subCIproperties.html">Properties of the procedures</a></li>                
+                <li><a href="subCIevaluation.html">Evaluating the procedures</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="omegasqCI.html">Example 2: A confidence interval in the wild</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="discussion.html">Discussion</a></li>
+                <li><a href="guidelines.html">Guidelines for interpreting and reporting intervals</a></li>
+                <li><a href="confvscred.html">Confidence intervals versus credible intervals</a></li>
+                <li><a href="conclusion.html">Conclusion</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="references.html">References</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Supplements<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="supplement.html">Details and code</a></li>
+                <li><a href="discussion_guide.html">Discussion guide</a></li>
+              </ul>
+            </li>            
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <!-- Begin page content -->
+    <div class="container">
+      <button onclick="TogetherJS(this); return false;">Start collaboration with TogetherJS</button>
+      <p><a href="https://twitter.com/share" class="twitter-share-button" data-via="richarddmorey" data-hashtags="statistics">Tweet</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+          </script>
+        </p>
+
+      <div class="page-header">
+        <h2>The folk theory of confidence intervals</h2>
+      </div>
+      <p>In scientific practice, it is frequently desirable to estimate some quantity of interest, and to express uncertainty in this estimate. If our goal were to estimate the true mean <span class="math">\(\mu\)</span> of a normal population, we might choose the sample mean <span class="math">\(\bar{x}\)</span> as an estimate. Informally, we expect <span class="math">\(\bar{x}\)</span> to be close to <span class="math">\(\mu\)</span>, but <em>how</em> close depends on the sample size and the observed variability in the sample. To express uncertainty in the estimate, CIs are often used.</p>
+
+      <p>If there is one thing that everyone who writes about confidence intervals agrees on, it is the basic definition: A confidence interval for a parameter — which we generically call <span class="math">\(\theta\)</span> and might represent a population mean, median, variance, probability, or any other unknown quantity — is an interval generated by a procedure that, on repeated sampling, has a fixed probability of containing the parameter. If the probability that the process generates an interval including <span class="math">\(\theta\)</span> is .5, it is a 50% CI; likewise, the probability is .95 for a 95% CI.</p>
+      <blockquote>
+      <p><strong>Confidence interval</strong> <br /> An <span class="math">\(X\%\)</span> confidence interval for a parameter <span class="math">\(\theta\)</span> is an interval <span class="math">\((L,U)\)</span> generated by a procedure that in repeated sampling has an <span class="math">\(X\%\)</span> probability of containing the true value of <span class="math">\(\theta\)</span>, for all possible values of <span class="math">\(\theta\)</span> <span class="citation">(Neyman, 1937)</span>.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+      </blockquote>
+      <p>The confidence coefficient of a confidence interval derives from the procedure which generated it. It is therefore helpful to differentiate a <em>procedure</em> (CP) from a confidence <em>interval</em>: an X% confidence procedure is any procedure that generates intervals containing <span class="math">\(\theta\)</span> in X% of repeated samples, and a confidence interval is a specific interval generated by such a process. A confidence procedure is a random process; a confidence interval is observed and fixed.</p>
+      <p>It seems clear how to interpret a confidence <em>procedure</em>: it is any procedure that generates intervals that will contain the true value in a fixed proportion of samples. However, when we compute a specific interval from the data and must interpret it, we are faced with difficulty. It is not obvious how to move from our knowledge of the properties of the confidence procedure to the interpretation of some observed confidence interval.</p>
+      <p>Textbook authors and proponents of confidence intervals bridge the gap seamlessly by claiming that confidence intervals have three desirable properties: first, that the confidence coefficient can be read as a measure of the uncertainty one should have that the interval contains the parameter; second, that the CI width is a measure of estimation uncertainty; and third, that the interval contains the “likely” or “reasonable” values for the parameter. These all involve reasoning about the parameter from the observed data: that is, they are “post-data” inferences.</p>
+      <p>For instance, with respect to 95% confidence intervals, <span class="citation">Masson &amp; Loftus (2003)</span> state that “there is a 95% probability that the obtained confidence interval includes the population mean.” <span class="citation">G. Cumming (2014)</span> writes that “[w]e can be 95% confident that our interval includes [the parameter] and can think of the lower and upper limits as likely lower and upper bounds for [the parameter].”</p>
+      <p>These interpretations of confidence intervals are not correct. We call the mistake these authors have made the “Fundamental Confidence Fallacy” (FCF) because it seems to flow naturally from the definition of the confidence interval:</p>
+      <blockquote>
+        <p><strong>The Fundamental Confidence Fallacy</strong><br /> If the probability that a random interval contains the true value is <span class="math">\(X\%\)</span>, then the plausibility or probability that a particular observed interval contains the true value is also <span class="math">\(X\%\)</span>; or, alternatively, we can have <span class="math">\(X\%\)</span> confidence that the observed interval contains the true value.</p>
+      </blockquote>
+      <p>The reasoning behind the Fundamental Confidence Fallacy seems plausible: on a given sample, we could get any one of the possible confidence intervals. If 95% of the possible confidence intervals contain the true value, without any other information it seems reasonable to say that we have 95% certainty that we obtained one of the confidence intervals that contain the true value. This interpretation is suggested by the name “confidence interval” itself: the word “confident”, in lay use, is closely related to concepts of plausibility and belief. The name “confidence interval” — rather than, for instance, the more accurate “coverage procedure” — encourages the Fundamental Confidence Fallacy.</p>
+      <p>The key confusion underlying the FCF is the confusion of what is known <em>before</em> observing the data — that the CI, whatever it will be, has a fixed chance of containing the true value — with what is known <em>after</em> observing the data. Frequentist CI theory says nothing at all about the probability that a particular, observed confidence interval contains the true value; it is either 0 (if the interval does not contain the parameter) or 1 (if the interval does contain the true value).</p>
+      <p>We offer several examples in this paper to show that what is known before computing an interval and what is known after computing it can be different. For now, we give a simple example, which we call the “trivial interval.” Consider the problem of estimating the mean of a continuous population with two independent observations, <span class="math">\(y_1\)</span> and <span class="math">\(y_2\)</span>. If <span class="math">\(y_1&gt;y_2\)</span>, we construct an confidence interval that contains all real numbers <span class="math">\((-\infty, \infty)\)</span>; otherwise, we construct an empty confidence interval. The first interval is guaranteed to include the true value; the second is guaranteed not too. It is obvious that before observing the data, there is a 50% probability that any sampled interval will contain the true mean. After observing the data, however, we know definitively whether the interval contains the true value. Applying the pre-data probability of 50% to the post-data situation, where we know for certain whether the interval contains the true value, would represent a basic reasoning failure.</p>
+</p>
+      <p>Post-data assessments of probability have never been an advertised feature of CI theory. Neyman, for instance, said “Consider now the case when a sample…is already drawn and the [confidence interval] given…Can we say that in this particular case the probability of the true value of [the parameter] falling between [the limits] is equal to [<span class="math">\(X\%\)</span>]? The answer is obviously in the negative” <span class="citation">(Neyman, 1937, p. 349)</span>. According to frequentist philosopher <span class="citation">Mayo (1981)</span> “[the misunderstanding] seems rooted in a (not uncommon) desire for [...] confidence intervals to provide something which they cannot legitimately provide; namely, a measure of the degree of probability, belief, or support that an unknown parameter value lies in a specific interval.” Recent work has shown that this misunderstanding is pervasive among researchers, who likely learned it from textbooks, instructors, and confidence interval proponents <span class="citation">(Hoekstra, Morey, Rouder, &amp; Wagenmakers, 2014)</span>.</p>
+      <p>If confidence intervals cannot be used to assess the certainty with which a parameter is in a particular range, what can they be used for? Proponents of confidence intervals often claim that confidence intervals are useful for assessing the precision with which a parameter can be estimated. This is cited as one of the primary reasons confidence procedures should be used over null hypothesis significance tests <span class="citation">(G. Cumming, 2014; e.g., G. Cumming &amp; Finch, 2005; Fidler &amp; Loftus, 2009; Loftus, 1993, 1996)</span>. For instance, <span class="citation">G. Cumming (2014)</span> writes that “[l]ong confidence intervals (CIs) will soon let us know if our experiment is weak and can give only imprecise estimates” (p. 10). <span class="citation">Young &amp; Lewis (1997)</span> state that “[i]t is important to know how precisely the point estimate represents the true difference between the groups. The width of the CI gives us information on the precision of the point estimate” (p. 309). This is the second fallacy of confidence intervals, the “precision fallacy”:</p>
+      <blockquote>
+        <p><strong>The Precision fallacy</strong> <br /> The width of a confidence interval indicates the precision of our knowledge about the parameter. Narrow confidence intervals show precise knowledge, while wide confidence errors show imprecise knowledge.</p>
+      </blockquote>
+      <p>There is no necessary connection between the precision of an estimate and the size of a confidence interval. One way to see this is to imagine two researchers --- a senior researcher and a PhD student --- are analyzing data of 50 participants from an experiment. As an exercise for the PhD student's benefit, the senior researcher decides to randomly divide the participants into two sets of 25 so that they can each separately analyze half the data set. In a subsequent meeting, the two share with one another their Student's $t$ confidence intervals for the mean. The PhD student's 95% CI is $52\pm2$, and the senior researcher's 95% is $53\pm4$. The senior researcher notes that their results are broadly consistent, and that they could use the equally-weighted mean of their two respective point estimates, $52.5$,  as an overall estimate of the true mean. </p>
+
+      <p>The PhD student, however, argues that their two means should not be evenly weighted: she notes that her CI is half as wide and argues that her estimate is more precise and should thus be weighted more heavily. Her advisor notes that this cannot be correct, because the estimate from unevenly weighting the two means would be different from the estimate from analyzing the complete data set, which must be 52.5. The PhD student's mistake is assuming that CIs directly indicate post-data precision. Later, we will provide several examples where the width of a CI and the uncertainty with which a parameter is estimated are in one case inversely related, and in another not related at all.</p>
+      
+      <p>We cannot interpret observed confidence intervals as containing the true value with some probability; we also cannot interpret confidence intervals as indicating the precision of our estimate. There is a third common interpretation of confidence intervals: <span class="citation">Loftus (1996)</span>, for instance, says that the CI gives an “indication of how seriously the observed pattern of means should be taken as a reflection of the underlying pattern of population means.” This logic is used when confidence intervals are used to test theory <span class="citation">(Velicer et al., 2008)</span> or to argue for the null (or practically null) hypothesis <span class="citation">(Loftus, 1996)</span>. This is another fallacy of confidence interval that we call the “likelihood fallacy”.</p>
+      <blockquote>
+        <p><strong>The Likelihood fallacy</strong> <br /> A confidence interval contains the likely values for the parameter. Values inside the confidence interval are more likely than those outside. This fallacy exists in several varieties, sometimes involving plausibility, credibility, or reasonableness of beliefs about the parameter.</p>
+      </blockquote>
+      <p>A confidence procedure may have a fixed <em>average</em> probability of including the true value, but whether on any given sample it includes the “reasonable” values is a different question. As we will show, confidence intervals — even “good” confidence intervals, from a CI-theory perspective — can exclude almost all reasonable values, and can be empty or infinitesimally narrow, excluding all possible values <span class="citation">(Blaker &amp; Spj<span>ø</span>tvoll, 2000; Dufour, 1997; Steiger, 2004; Steiger &amp; Fouladi, 1997; Stock &amp; Wright, 2000)</span>. But <span class="citation">Neyman (1941)</span> writes,</p> 
+      <blockquote>
+        <p>“it is not suggested that we can ‘conclude’ that [the interval contains <span class="math">\(\theta\)</span>], nor that we should ‘believe’ that [the interval contains <span class="math">\(\theta\)</span>]…[we] <em>decide</em> to behave as if we actually knew that the true value [is in the interval]. This is done as a result of our decision and has nothing to do with ‘reasoning’ or ‘conclusion’. The reasoning ended when the [confidence procedure was derived]. The above process [of using CIs] is also devoid of any ‘belief’ concerning the value [...] of [<span class="math">\(\theta\)</span>].” <span class="citation">(Neyman, 1941, pp. 133–134)</span></p>
+      </blockquote>
+      <p>It may seem strange to the modern user of CIs, but Neyman is quite clear that CIs do not support any sort of reasonable belief about the parameter. Even from a frequentist testing perspective where one accepts and rejects specific parameter values, <span class="citation">Mayo &amp; Spanos (2006)</span> note that just because a specific value is in an interval does not mean it is warranted to accept it; they call this the “fallacy of acceptance.” This fallacy is analogous to accepting the null hypothesis in a classical significance test merely because it has not been rejected.</p>
+      <p>If confidence procedures do not allow an assessment of the probability that an interval contains the true value, if they do not yield measures of precision, and if they do not yield assessments of the likelihood or plausibility of parameter values, then what are they?</p>
+
+      <div class="footnotes">
+        <hr />
+        <ol>
+          <li id="fn1"><p>The modern definition of a confidence interval allows the probability to be <em>at least</em> <span class="math">\(X\%\)</span>, rather than exactly <span class="math">\(X\%\)</span>. This detail does not affect any of the points we will make; we mention it for completeness.<a href="#fnref1">↩</a></p></li>
+        </ol>
+      </div>
+      
+      <ul class="pager">
+        <li class="previous"><a href="introduction.html">Previous</a></li>
+        <li class="next"><a href="CItheory.html">Next</a></li>
+      </ul>
+    
+    </div>
+
+
+      <footer class="footer">
+        <div class="container">
+        <p class="text-muted">Please cite as Morey, Hoekstra, Rouder, Lee and Wagenmakers (in press). Psychonomic Bulletin &amp; Review.</p>
+        </div>
+      </footer>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <script type="text/javascript" src="js/slimbox2.js"></script>
+    <script type="text/javascript" src="js/article.js"></script>
+    <script src="https://togetherjs.com/togetherjs-min.js"></script>
+
+    <script>make_figures();</script>
+  </body>
+</html>

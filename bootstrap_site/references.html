@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>The Fallacy of Placing Confidence in Confidence Intervals</title>
+
+   <!-- Markdown CSS -->
+   <link href="css/markdown.css" rel="stylesheet">
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/sticky-footer-navbar.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- hypothes.is -->
+    <script async defer src="//hypothes.is/embed.js"></script>
+  
+    <!-- lightbox style -->
+    <link href="css/slimbox2.css" rel="stylesheet">
+
+    <!-- my article style -->
+    <link href="css/article.css" rel="stylesheet">
+
+    <script type="text/javascript"
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        showProcessingMessages: false,
+        messageStyle: 'none',
+        // show equation numbers
+        TeX: {
+          equationNumbers: {
+            autoNumber: "AMS"
+          }
+        },
+        'HTML-CSS': {
+          imageFont: null
+        }
+      });
+    </script>
+
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">The Fallacy of Placing Confidence in Confidence Intervals</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown active">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Main paper<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li class=""><a href="introduction.html">Introduction</a></li>
+                <li><a href="folktheory.html">The folk theory of confidence intervals</a></li>
+                <li><a href="CItheory.html">The theory of confidence intervals</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="lostsub.html">Example 1: The Lost Submarine</a></li>
+                <li><a href="subCIs.html">Five confidence procedures</a></li>
+                <li><a href="subCIproperties.html">Properties of the procedures</a></li>                
+                <li><a href="subCIevaluation.html">Evaluating the procedures</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="omegasqCI.html">Example 2: A confidence interval in the wild</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="discussion.html">Discussion</a></li>
+                <li><a href="guidelines.html">Guidelines for interpreting and reporting intervals</a></li>
+                <li><a href="confvscred.html">Confidence intervals versus credible intervals</a></li>
+                <li><a href="conclusion.html">Conclusion</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="active"><a href="references.html">References</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Supplements<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="supplement.html">Details and code</a></li>
+                <li><a href="discussion_guide.html">Discussion guide</a></li>
+              </ul>
+            </li>            
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <!-- Begin page content -->
+    <div class="container">
+      <button onclick="TogetherJS(this); return false;">Start collaboration with TogetherJS</button>
+      <p><a href="https://twitter.com/share" class="twitter-share-button" data-via="richarddmorey" data-hashtags="statistics">Tweet</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+          </script>
+        </p>
+
+      <div class="page-header">
+        <h2>References</h2>
+      </div>
+      
+<div class="references">
+<p>Anastasi, A., &amp; Urbina, S. (1997). <em>Psychological testing</em> (7th ed.). London: Prentice-Hall International.</p>
+<p>Basu, D. (1981). On ancillary statistics, pivotal quantities, and confidence statements. In Y. P. Chaubey &amp; T. D. Dwivedi (Eds.), <em>Topics in applied statistics</em> (pp. 1–29). Montreal: Concordia University.</p>
+<p>Berger, J. O. (2006). Bayes factors. In S. Kotz, N. Balakrishnan, C. Read, B. Vidakovic, &amp; N. L. Johnson (Eds.), <em>Encyclopedia of statistical sciences</em> (Second edition., Vol. 1, pp. 378–386). Hoboken, New Jersey: John Wiley &amp; Sons.</p>
+<p>Berger, J. O., &amp; Wolpert, R. L. (1988). <em>The likelihood principle (2nd ed.)</em>. Hayward, CA: Institute of Mathematical Statistics.</p>
+<p>Blaker, H., &amp; Spj<span>ø</span>tvoll, E. (2000). Paradoxes and improvements in interval estimation. <em>The American Statistician</em>, <em>54</em>(4), 242–247.</p>
+<p>Bolstad, W. (2007). <em>Introduction to Bayesian statistics</em>. Hoboken, NJ: Wiley.</p>
+<p>Bonett, D. G., &amp; Price, R. M. (2002). Statistical inference for a linear function of medians: Confidence intervals, hypothesis testing, and sample size requirements. <em>Psychological Methods</em>, <em>7</em>, 370–383.</p>
+<p>Brown, L. (1967). The conditional level of Student’s <span class="math">\(t\)</span> test. <em>The Annals of Mathematical Statistics</em>, <em>38</em>(4), 1068–1071.</p>
+<p>Buehler, R. J. (1959). Some validity criteria for statistical inferences. <em>The Annals of Mathematical Statistics</em>, <em>30</em>(4), 845–863.</p>
+<p>Buehler, R. J., &amp; Feddersen, A. P. (1963). Note on a conditional property of Student’s <span class="math">\(t^1\)</span>. <em>The Annals of Mathematical Statistics</em>, <em>34</em>(3), 1098–1100.</p>
+<p>Casella, G. (1992). Conditional inference from confidence sets. <em>Lecture Notes-Monograph Series</em>, <em>17</em>, 1–12.</p>
+<p>Casella, G., &amp; Berger, R. L. (2002). <em>Statistical inference</em>. Pacific Grove, CA: Duxbury.</p>
+<p>Cronbach, L. J. (1990). <em>Essentials of psychological testing</em> (5th ed.). New York: Harper &amp; Row.</p>
+<p>Cumming, G. (2014). The new statistics: Why and how. <em>Psychological Science</em>, <em>25</em>, 7–29.</p>
+<p>Cumming, G., &amp; Fidler, F. (2009). Confidence intervals: Better answers to better questions. <em>Zeitschrift für Psychologie</em>, <em>217</em>, 15–26.</p>
+<p>Cumming, G., &amp; Finch, S. (2001). A primer on the understanding, use, and calculation of confidence intervals that are based on central and noncentral distributions. <em>Educational and Psychological Measurement</em>, <em>61</em>, 532–574.</p>
+<p>Cumming, G., &amp; Finch, S. (2005). Inference by eye: Confidence intervals and how to read pictures of data. <em>American Psychologist</em>, <em>60</em>(2), 170–180.</p>
+<p>Cumming, S. P., Sherar, L. B., Gammon, C., Standage, M., &amp; Malina, R. M. (2012). Physical Activity and Physical Self-Concept in Adolescence: A Comparison of Girls at the Extremes of the Biological Maturation Continuum. <em>Journal of Research on Adolescence</em>, <em>22</em>(4), 746–757.</p>
+<p>Dienes, Z. (2011). Bayesian versus orthodox statistics: Which side are you on? <em>Perspectives on Psychological Science</em>, <em>6</em>, 274–290.</p>
+<p>Dufour, J.-M. (1997). Some impossibility theorems in econometrics with applications to structural and dynamic models. <em>Econometrica</em>, <em>65</em>(6), 1365–1387.</p>
+<p>Fidler, F., &amp; Loftus, G. R. (2009). Why figures with error bars should replace <span class="math">\(p\)</span> values: Some conceptual arguments and empirical demonstrations. <em>Zeitschrift fūr Psychologie</em>, <em>217</em>(1), 27–37.</p>
+<p>Fidler, F., &amp; Thompson, B. (2001). Computing correct confidence intervals for ANOVA fixed- and random-effects effect sizes. <em>Educational and Psychological Measurement</em>, <em>61</em>, 575–604.</p>
+<p>Finch, W. H., &amp; French, B. F. (2012). A Comparison of Methods for Estimating Confidence Intervals for Omega-Squared Effect Size. <em>Educational and Psychological Measurement</em>, <em>72</em>(1), 68–77.</p>
+<p>Fisher, R. A. (1935). The fiducial argument in statistical inference. <em>Annals of eugenics</em>, <em>6</em>, 391–398.</p>
+<p>Fisher, R. A. (1955). Statistical methods and scientific induction. <em>Journal of the Royal Statistical Society. Series B (Methodological)</em>, <em>17</em>, 69–78.</p>
+<p>Fisher, R. A. (1959). <em>Statistical Methods and Scientific Inference</em> (Second.). Edinburgh, UK: Oliver; Boyd.</p>
+<p>Gelman, A. (2008). Rejoinder. <em>Bayesian analysis</em>, <em>3</em>, 467–478.</p>
+<p>Gelman, A. (2011, August). Why it doesn’t make sense in general to form confidence intervals by inverting hypothesis tests. [blog post]. Retrieved from <a href="http://andrewgelman.com/2011/08/25/why_it_doesnt_m/" class="uri">http://andrewgelman.com/2011/08/25/why_it_doesnt_m/</a></p>
+<p>Gelman, A., Carlin, J. B., Stern, H. S., &amp; Rubin, D. B. (2004). <em>Bayesian data analysis (2nd edition)</em>. London: Chapman; Hall.</p>
+<p>Gilroy, K. E., &amp; Pearce, J. M. (2014). The Role of Local, Distal, and Global Information in Latent Spatial Learning. <em>Journal of Experimental Psychology</em>, <em>40</em>(2), 212–224.</p>
+<p>Hamerman, E. J., &amp; Morewedge, C. K. (2015). Reliance on Luck: Identifying Which Achievement Goals Elicit Superstitious Behavior. <em>Personality and Social Psychology Bulletin</em>, <em>41</em>(3), 323–335.</p>
+<p>Hoekstra, R., Finch, S., Kiers, H. A. L., &amp; Johnson, A. (2006). Probability as certainty: Dichotomous thinking and the misuse of <span class="math">\(p\)</span> values. <em>Psychonomic Bulletin &amp; Review</em>, <em>13</em>, 1033–1037.</p>
+<p>Hoekstra, R., Morey, R. D., Rouder, J. N., &amp; Wagenmakers, E.-J. (2014). Robust misinterpretation of confidence intervals. <em>Psychonomic Bulletin &amp; Review</em>, <em>21</em>(5), 1157–1164.</p>
+<p>Hollingdale, J., &amp; Greitemeyer, T. (2014). The Effect of Online Violent Video Games on Levels of Aggression. <em>PLoS ONE</em>, <em>9</em>(11), e111790. Retrieved from <a href="http://dx.doi.org/10.1371/journal.pone.0111790" class="uri">http://dx.doi.org/10.1371/journal.pone.0111790</a></p>
+<p>Howson, C., &amp; Urbach, P. (2006). <em>Scientific reasoning: The Bayesian approach</em>. La Salle, Illinois: Open Court.</p>
+<p>Jackman, S. (2009). <em>Bayesian analysis for the social sciences</em>. Chichester, United Kingdom: John Wiley &amp; Sons.</p>
+<p>Jaynes, E. (2003). <em>Probability theory: The logic of science</em>. Cambridge, UK: Cambridge University Press.</p>
+<p>Jeffreys, H. (1961). <em>Theory of probability (3rd edition)</em>. New York: Oxford University Press.</p>
+<p>Kelley, K. (2007a). Confidence intervals for standardized effect sizes: Theory, application, and implementation. <em>Journal of Statistical Software</em>, <em>20</em>(8).</p>
+<p>Kelley, K. (2007b). Methods for the behavioral, educational, and social sciences: An R package. <em>Behavioral Research Methods</em>, <em>39</em>(4), 979–984.</p>
+<p>Kruschke, J. K. (2010). What to believe: Bayesian methods for data analysis. <em>Trends in Cognitive Sciences</em>, <em>14</em>(7), 293–300.</p>
+<p>Lahiri, D. K., Maloney, B., Rogers, J. T., &amp; Ge, Y.-W. (2013). PuF, an antimetastatic and developmental signaling protein, interacts with the Alzheimer’s amyloid-beta precursor protein via a tissue-specific proximal regulatory element (PRE). <em>Bmc Genomics</em>, <em>14</em>, 68.</p>
+<p>Lee, M. D., &amp; Wagenmakers, E.-J. (2013). <em>Bayesian modeling for cognitive science: A practical course</em>. Cambridge University Press.</p>
+<p>Lehmann, E. H. (1959). <em>Testing statistical hypotheses</em>. New York: John Wiley &amp; Sons.</p>
+<p>Lindley, D. V. (1965). <em>Introduction to probability and statistics from a Bayesian point of view, part 2: Inference</em>. Cambridge, England: Cambridge University Press.</p>
+<p>Lindley, D. V. (1985). <em>Making decisions</em> (2nd ed.). London: Wiley.</p>
+<p>Loftus, G. R. (1993). A picture is worth a thousand <span class="math">\(p\)</span>-values: On the irrelevance of hypothesis testing in the computer age. <em>Behavior Research Methods, Instrumentation and Computers</em>, <em>25</em>, 250–256.</p>
+<p>Loftus, G. R. (1996). Psychology will be a much better science when we change the way we analyze data. <em>Current directions in psychological science</em>, <em>5</em>, 161–171.</p>
+<p>Lynch, S. M. (2007). <em>Introduction to applied Bayesian statistics and estimation for social scientists</em>. New York: Springer.</p>
+<p>Masson, M. E. J., &amp; Loftus, G. R. (2003). Using confidence intervals for graphically based data interpretation. <em>Canadian Journal of Experimental Psychology</em>, <em>57</em>, 203–220.</p>
+<p>Mayo, D. G. (1981). In defense of the Neyman-Pearson theory of confidence intervals. <em>Philosophy of Science</em>, <em>48</em>(2), 269–280.</p>
+<p>Mayo, D. G. (1982). On after-trial criticisms of Neyman-Pearson theory of statistics. <em>PSA: Proceedings of the Biennial Meeting of the Philosophy of Science Association</em>, <em>1982</em>, 145–158.</p>
+<p>Mayo, D. G., &amp; Cox, D. R. (2006). Frequentist statistics as a theory of inductive inference. <em>Institute of Mathematical Statistics Lecture Notes - Monograph Series</em>, <em>49</em>, 77–97.</p>
+<p>Mayo, D. G., &amp; Spanos, A. (2006). Severe testing as a basic concept in a Neyman-Pearson philosophy of induction. <em>British Journal for the philosophy of science</em>, <em>57</em>, 323–357.</p>
+<p>McGrayne, S. B. (2011). <em>The theory that would not die</em>. New Haven: Yale University Press.</p>
+<p>Morey, R. D., Rouder, J. N., Verhagen, J., &amp; Wagenmakers, E.-J. (2014). Why hypothesis tests are essential for psychological science: A comment on Cumming. <em>Psychological Science</em>, 1289–1290.</p>
+<p>Neyman, J. (1934). On the two different aspects of the representative method: The method of stratified sampling and the method of purposive selection. <em>Journal of the Royal Statistical Society</em>, <em>97</em>(4), 558–625.</p>
+<p>Neyman, J. (1937). Outline of a theory of statistical estimation based on the classical theory of probability. <em>Philosophical Transactions of the Royal Society of London. Series A, Mathematical and Physical Sciences</em>, <em>236</em>, 333–380.</p>
+<p>Neyman, J. (1941). Fiducial argument and the theory of confidence intervals. <em>Biometrika</em>, <em>32</em>(2), 128–150.</p>
+<p>Neyman, J. (1952). <em>Lectures and conferences on mathematical statistics and probability</em>. Washington, D.C.: Graduate School, U.S. Department of Agriculture.</p>
+<p>Neyman, J. (1977). Frequentist probability and frequentist statistics. <em>Synthese</em>, <em>36</em>(1), 97–131.</p>
+<p>Ntzoufras, I. (2009). <em>Bayesian Modeling Using WinBUGS</em>. Hoboken, New Jersey: Wiley.</p>
+<p>Olive, D. J. (2008). <em>Applied robust statistics</em>. online electronic book. Retrieved from <a href="http://lagrange.math.siu.edu/Olive/ol-bookp.htm" class="uri">http://lagrange.math.siu.edu/Olive/ol-bookp.htm</a></p>
+<p>Pratt, J. W. (1961). Book review: Testing Statistical Hypotheses, by E. L. Lehmann. <em>Journal of the American Statistical Association</em>, <em>56</em>(293), pp. 163–167.</p>
+<p>Pratt, J. W., Raiffa, H., &amp; Schlaifer, R. (1995). <em>Introduction to statistical decision theory</em>. Cambridge, MA: MIT Press.</p>
+<p>Psychonomics Society. (2012). <em>Psychonomic Society guidelines on statistical issues.</em> Retrieved from <a href="http://www.springer.com/psychology?SGWID=0-10126-6-1390050-0" class="uri">http://www.springer.com/psychology?SGWID=0-10126-6-1390050-0</a></p>
+<p>Reichenbach, H. (1949). <em>The theory of probability</em>. Berkeley, University of California Press.</p>
+<p>Robinson, G. K. (1979). Conditional properties of statistical procedures. <em>The Annals of Statistics</em>, <em>7</em>(4), 742–755. Retrieved from <a href="http://www.jstor.org/stable/2958922" class="uri">http://www.jstor.org/stable/2958922</a></p>
+<p>Rouder, J. N., Morey, R. D., Speckman, P. L., &amp; Province, J. M. (2012). Default Bayes factors for ANOVA designs. <em>Journal of Mathematical Psychology</em>, <em>56</em>, 356–374. Retrieved from <a href="http://dx.doi.org/10.1016/j.jmp.2012.08.001" class="uri">http://dx.doi.org/10.1016/j.jmp.2012.08.001</a></p>
+<p>Rouder, J. N., Speckman, P. L., Sun, D., Morey, R. D., &amp; Iverson, G. (2009). Bayesian <span class="math">\(t\)</span>-tests for accepting and rejecting the null hypothesis. <em>Psychonomic Bulletin and Review</em>, <em>16</em>, 225–237. Retrieved from <a href="http://dx.doi.org/10.3758/PBR.16.2.225" class="uri">http://dx.doi.org/10.3758/PBR.16.2.225</a></p>
+<p>Rusu, F., &amp; Dobra, A. (2008). Sketches for size of join estimation. <em>ACM Transactions on Database Systems</em>, <em>33</em>, 15:1–15:46.</p>
+<p>Spanos, A. (2011). Revisiting the Welch uniform model: A case for conditional inference? <em>Advances and Applications in Statistical Science</em>, <em>5</em>, 33–52.</p>
+<p>Steiger, J. H. (2004). Beyond the <span class="math">\(F\)</span> test: Effect size confidence intervals and tests of close fit in the analysis of variance and contrast analysis. <em>Psychological Methods</em>, <em>9</em>(2), 164–182.</p>
+<p>Steiger, J. H., &amp; Fouladi, R. T. (1997). Noncentrality interval estimation and the evaluation of statistical models. In L. Harlow, S. Mulaik, &amp; J. Steiger (Eds.), <em>What if there were no significance tests?</em> (pp. 221–257). Mahwah, New Jersey: Erlbaum.</p>
+<p>Stock, J. H., &amp; Wright, J. H. (2000). GMM with weak identification. <em>Econometrica</em>, <em>68</em>(5), 1055–1096.</p>
+<p>Todd, T. P., Vurbic, D., &amp; Bouton, M. E. (2014). Mechanisms of Renewal After the Extinction of Discriminated Operant Behavior. <em>Journal of Experimental Psychology</em>, <em>40</em>(3), 355–368.</p>
+<p>Velicer, W. F., Cumming, G., Fava, J. L., Rossi, J. S., Prochaska, J. O., &amp; Johnson, J. (2008). Theory testing using quantitative predictions of effect size. <em>Applied Psychology</em>, <em>57</em>(4), 589–608. Retrieved from <a href="http://dx.doi.org/10.1111/j.1464-0597.2008.00348.x" class="uri">http://dx.doi.org/10.1111/j.1464-0597.2008.00348.x</a></p>
+<p>Venn, J. (1888). <em>The logic of chance</em> (third edition.). London: Macmillan. Retrieved from <a href="https://archive.org/details/logicofchance029416mbp" class="uri">https://archive.org/details/logicofchance029416mbp</a></p>
+<p>Wagenmakers, E.-J., Lee, M. D., Lodewyckx, T., &amp; Iverson, G. (2008). Bayesian versus frequentist inference. In H. Hoijtink, I. Klugkist, &amp; P. Boelen (Eds.), <em>Practical Bayesian approaches to testing behavioral and social science hypotheses</em> (pp. 181–207). New York: Springer.</p>
+<p>Wagenmakers, E.-J., Verhagen, J., Ly, A., Bakker, M., Lee, D., M. D. Matzke, Rouder, J. N., &amp; Morey, R. D. (2014). A power fallacy. <em>Behavioral Research Methods</em>.</p>
+<p>Wasserman, L. (2008). Comment on article by Gelman. <em>Bayesian Analysis</em>, <em>3</em>, 463–466.</p>
+<p>Welch, B. L. (1939). On confidence limits and sufficiency, with particular reference to parameters of location. <em>The Annals of Mathematical Statistics</em>, <em>10</em>(1), 58–69.</p>
+<p>Wetzels, R., Grasman, R. P., &amp; Wagenmakers, E.-J. (2012). A default Bayesian hypothesis test for ANOVA designs. <em>American Statistician</em>, <em>66</em>, 104–111.</p>
+<p>Wilkinson, L., &amp; Task Force on Statistical Inference. (1999). Statistical methods in psychology journals: Guidelines and explanations. <em>American Psychologist</em>, <em>54</em>, 594–604.</p>
+<p>Winter, C., Van Acker, F., Bonduelle, M., Desmyttere, S., De Schrijver, F., &amp; Nekkebroeck, J. (2014). Cognitive and psychomotor development of 5-to 6-year-old singletons born after PGD: A prospective case-controlled matched study. <em>Human Reproduction</em>, <em>29</em>(9), 1968–1977.</p>
+<p>Woods, C. M. (2007). Confidence intervals for gamma-family measures of ordinal association. <em>Psychological Methods</em>, <em>12</em>(2), 185–204.</p>
+<p>Young, K. D., &amp; Lewis, R. J. (1997). What is confidence? Part 1: The use and interpretation of confidence intervals. <em>Annals of Emergency Medicine</em>, <em>30</em>(3), 307–310.</p>
+<p>Zou, G. Y. (2007). Toward using confidence intervals to compare correlations. <em>Psychological Methods</em>, <em>12</em>(4), 399–413.</p>
+</div>
+
+
+      <ul class="pager">
+        <li class="previous"><a href="conclusion.html">Previous</a></li>
+        <li class="next"><a href="supplement.html">Next</a></li>
+      </ul>
+    
+    </div>
+
+
+      <footer class="footer">
+        <div class="container">
+        <p class="text-muted">Please cite as Morey, Hoekstra, Rouder, Lee and Wagenmakers (in press). Psychonomic Bulletin &amp; Review.</p>
+        </div>
+      </footer>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <script type="text/javascript" src="js/slimbox2.js"></script>
+    <script type="text/javascript" src="js/article.js"></script>
+    <script src="https://togetherjs.com/togetherjs-min.js"></script>
+
+    <script>make_figures();</script>
+  </body>
+</html>
