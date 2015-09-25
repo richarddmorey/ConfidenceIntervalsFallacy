@@ -4,7 +4,7 @@ A group of four statisticians [^3] happen to be on board, and the rescuers decid
 
 #### 0. A trivial procedure
 
-A trivial 50\% confidence procedure can be constructed by using the ordering of the bubbles. If $y_1>y_2$, we construct an interval that contains the whole ocean, $(-\infty,\infty)$. If $y_2>y_1$, we construct an interval that contains only the single, *exact* point directly under the middle of the rescue boat. This procedure is obviously a 50% confidence procedure; exactly half of the time &mdash; when $y_1>y_2$ &mdash; the rescue hatch will be within the interval. We describe this interval merely to show that *by itself*, a procedure including the true value $X\%$ of the time means nothing [see also @Basu:1981]. We must obviously consider something more than the confidence property, which we discuss subsequently. We call this procedure the "trivial" procedure.
+A trivial 50\% confidence procedure can be constructed by using the ordering of the bubbles. If $y_1>y_2$, we construct an interval that contains the whole ocean, $(-\infty,\infty)$. If $y_2>y_1$, we construct an interval that contains only the single, *exact* point directly under the middle of the rescue boat. This procedure is obviously a 50% confidence procedure; exactly half of the time &mdash; when $y_1>y_2$ &mdash; the rescue hatch will be within the interval. We describe this interval merely to show that *by itself*, a procedure including the true value $X\%$ of the time means nothing [see also @Basu:1981]. We must obviously consider something more than the confidence property, which we discuss subsequently.
 
 #### 1. A procedure based on the sampling distribution of the mean
 
@@ -16,11 +16,11 @@ which we call the "sampling distribution" procedure. This procedure also has the
 
 #### 2. A nonparametric procedure
 
-The second statistician notes that $\theta$ is both the mean and median bubble location. @Olive:2008 and @Rusu:Dobra:2008 suggest a confidence procedure for the median that in this case is simply the interval between the two observations:
+The second statistician notes that $\theta$ is both the mean and median bubble location. @Olive:2008 and @Rusu:Dobra:2008 suggest a nonparametric confidence procedure for the median that in this case is simply the interval between the two observations:
 \[
 \bar{x} \pm d/2.
 \]
-It is easy to see that this must be a 50% confidence procedure; the probability that both observations fall below $\theta$ is $.5\times .5=.25$, and likewise for both falling above. There is thus a 50% chance that the two observations encompass $\theta$. Coincidentally, this is the same as the 50% Student's $t$ procedure for $n=2$. We call this the "nonparametric" procedure.
+It is easy to see that this must be a 50% confidence procedure; the probability that both observations fall below $\theta$ is $.5\times .5=.25$, and likewise for both falling above. There is thus a 50% chance that the two observations encompass $\theta$. Coincidentally, this is the same as the 50% Student's $t$ procedure for $n=2$. 
 
 #### 3. The uniformly most-powerful procedure
 
@@ -31,7 +31,7 @@ The third statistician, citing @Welch:1939, describes a procedure that can be th
 5 - \frac{d}{2} &\mbox{if} & d \geq 5 & \mbox{(likelihood)}
 \end{array} \right.
 \]
-This will not change the probability that the interval contains the hatch, because it is simply replacing one interval that is sure to contain it with another. @Pratt:1961 noted that this interval can be justified as an inversion of the uniformly most-powerful (UMP) test. We thus call this the "UMP procedure".
+This will not change the probability that the interval contains the hatch, because it is simply replacing one interval that is sure to contain it with another. @Pratt:1961 noted that this interval can be justified as an inversion of the uniformly most-powerful (UMP) test. 
 
 #### 4. An objective Bayesian procedure
 

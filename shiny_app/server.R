@@ -294,14 +294,14 @@ shinyServer(function(input,output,session) {
                                        theta + 10
       ))
       points(x.a,0*x.a,pch=21,col="black",bg="lightblue",cex=1)
-      rect(0,-1,1,5,col=rgb(0,0,0,.1),lty=0)
+      rect(0,-1,1,5,col=rgb(0,0,0,.05),lty=0)
       
       
       abline(v=testVal,lty=2)
 
       # Likelihood
       post.height=.2
-      rect(x.a[2]-.5-.005,1 - post.height/2,x.a[1]+.5+.005,1 + post.height/2, col=rgb(0,0,1,.2),lty=0)
+      rect(x.a[2]-.5-.005,1 - post.height/2,x.a[1]+.5+.005,1 + post.height/2, col=rgb(0,0,1,.4),lty=0)
       
       # Sampling distribution
       arrows(mean(x.a)-ci2.width,2,mean(x.a)+ci2.width,2,code=3,ang=90,len=.1,lwd=2,col="red")

@@ -166,21 +166,22 @@
 <div id="example-2-a-confidence-interval-in-the-wild" class="section level3">
 <h3>Example 2: A Confidence Interval in the Wild</h3>
 <ol style="list-style-type: decimal">
-<li><p>Consider the list of publications in which Steiger <span class="math">\(\omega^2\)</span> intervals were reported, but without a warning about their problematic interpretation. What might be the consequences of this for someone reading one of these publications? What about for people designing new research or products after reading?</p></li>
+<li><p>Consider the list of publications in which Steiger <span class="math">\(\omega^2\)</span> intervals were reported, but without a warning about their problematic interpretation. What might be the consequences of this for someone reading one of these publications? What about for people designing new research or products after reading these articles?</p></li>
 <li><p>The paper describes a possible interpretation of a very narrow, or empty, confidence interval in terms of “model misfit”. Why might a low <span class="math">\(F\)</span> value indicate model misfit? Why is this problematic for the people who believe the Fundamental Confidence Fallacy or the precision fallacy?</p></li>
 </ol>
 </div>
 <div id="discussion-conclusion" class="section level3">
 <h3>Discussion — Conclusion</h3>
 <ol style="list-style-type: decimal">
-<li>The section “Guidelines for interpreting and reporting intervals” suggests that one should never report a confidence interval without two things:</li>
-</ol>
+<li>The section “Guidelines for interpreting and reporting intervals” suggests that one should never report a confidence interval without doing several things:
+
 <ol style="list-style-type: lower-alpha">
-<li>Describing the confidence procedure used, and</li>
-<li>Giving enough information to compute an interval from a different procedure. In light of the two examples, why are these two things important? What might be the result of reporting a confidence interval without saying how it was computed?</li>
+<li>describing the confidence procedure used, and</li>
+<li>giving enough information to compute an interval from a different procedure.</li>
 </ol>
-<ol start="2" style="list-style-type: decimal">
-<li>The paper describes a situation — estimating IQ — where it is desirable to assess the uncertainty associated with a fixed interval, rather than a random one. Think of two other situations where this would be useful.</li>
+In light of the two examples, why are these two things important? What might be the result of reporting a confidence interval without saying how it was computed?</li>
+
+<li>The paper describes a situation — estimating IQ — where it is desirable to assess the uncertainty associated with a fixed interval, rather than a random one. Think of two other situations where this would be useful. Why is this a problem for a confidence interval? </li>
 </ol>
 </div>
 </div>
@@ -191,10 +192,10 @@
 <h3>Demonstration of confidence procedure coverage</h3>
 <p>The property that all confidence procedures share is that in the long run, intervals generated from a confidence procedure will include the true value a fixed percentage of the time. A 50% confidence procedure will generate intervals that include the true value 50% of the time; a 95% confidence procedure, 95% of the time. This fixed proportion is called the <em>confidence coefficient</em>. The submarine example in the paper describes four 50% confidence procedures for the hatch location <span class="math">\(\theta\)</span>. We can use the interactive applet to demonstrate how these intervals all include the true value 50% of the time, in the long run.</p>
 <ol style="list-style-type: decimal">
-<li><p>Open the applet by clicking on the link above. The applet shows interactive versions of Figures 1-5 of the paper; one view the different figures by selecting different tabs at the top. Initially, the applet shows Figure 1A from the paper. Notice the red Xs along the left side of the figure. A red X means that the corresponding confidence interval does not contain the true value <span class="math">\(\theta\)</span>.</p></li>
-<li><p>Click on “Figure 1B”. Notice that the red Xs change to green circles. A green circle means that the confidence intervals includes the true value. For the bubbles in Figure 1B, all confidence intervals contain the true value.</p></li>
+<li><p>Open the applet by clicking on the link above. The applet shows interactive versions of Figures 1-5 of the paper; one can view the different figures by selecting different tabs at the top. Initially, the applet shows Figure 1A from the paper. Notice the red Xs along the left side of the figure. A red X means that the corresponding confidence interval does not contain the true value <span class="math">\(\theta\)</span>.</p></li>
+<li><p>Click on “Figure 1B”. Notice that the red Xs change to green circles. A green circle means that the confidence interval includes the true value. For the bubbles in Figure 1B, all confidence intervals contain the true value.</p></li>
 <li><p>Click on “Choose your own / Sample”. Several controls open below, offering the ability to define your own bubbles, or to sample bubbles. Use the slider to change the bubble values to see how the corresponding confidence intervals change. Try the values (-3,-1), and use the formula in the paper for the Bayes interval to verify the confidence interval shown.</p></li>
-<li><p>Click “Sample”. The applet samples two new bubbles for you, at random. What values were sampled, and which confidence intervals contained the true value? The text below helps you to keep track of how many of each type of confidence interval contained the true value. Click the “Sample” button 9 more times, for a total of ten samples. How many of each interval would you expect to contain the true value, and why?</p></li>
+<li><p>Click “Sample”. The applet samples two new bubbles for you, at random. What values were sampled, and which confidence intervals contained the true value? The text in the applet below the sampling controls helps you to keep track of how many of each type of confidence interval contained the true value. Click the “Sample” button 9 more times, for a total of ten samples. How many of each interval would you expect to contain the true value, and why?</p></li>
 <li><p>Click “Sample 1000”. This samples 1000 pairs of bubbles, keeping track of how many include the true value, and shows you the last sample. What proportion of each interval would you expect to contain the true value? Are the observed percentages close to this value?</p></li>
 <li><p>Click “Sample 1000” 20 more times, each time watching the observed percentage change. Are they converging as expected to a single value?</p></li>
 </ol>
@@ -205,9 +206,9 @@
 <p>As described in the paper, confidence procedures all contain the true value a fixed proportion of the time; from this fixed proportion, the procedure gets its confidence coefficient. Confidence procedures can differ, however, on how often the exclude false values. From the perspective of confidence interval theory, including the true value is a good thing, and including <em>false</em> values is a bad thing. Confidence interval theory prefers intervals with greater power to exclude false values.</p>
 <p>We can check the power of our four confidence procedures for a specific false value using the applet.</p>
 <ol style="list-style-type: decimal">
-<li><p>Open Figure 1, first click “Figure 1A” to reset the bubbles, and then click “Choose your own / Sample”. In the controls below, click “Other value”. Move the slider that opens below to “3”. Notice that the vertical dashed line has moved from 0 to <span class="math">\(\theta + 3\)</span>. The green Xs for each interval; an X indicates that the value <span class="math">\(\theta+3\)</span> is excluded from an interval, and the color green indicates that this is a good thing, because <span class="math">\(\theta+3\)</span> is not the true location of the hatch.</p></li>
+<li><p>Open Figure 1; first click “Figure 1A” to reset the bubbles, and then click “Choose your own / Sample”. In the controls below, click “Other value”. Move the slider that opens below to “3”. Notice that the vertical dashed line has moved from 0 to <span class="math">\(\theta + 3\)</span>. The green Xs for each interval; an X indicates that the value <span class="math">\(\theta+3\)</span> is excluded from an interval, and the color green indicates that this is a good thing, because <span class="math">\(\theta+3\)</span> is not the true location of the hatch.</p></li>
 <li><p>Click “Sample”. Which confidence intervals contain the false value <span class="math">\(\theta+3\)</span>?</p></li>
-<li><p>Click the “Figure 4” tab from the menu at the top of the applet. Notice that there is a vertical dashed black line on the figure at <span class="math">\(\theta+3\)</span>. Follow the dashed lined up until it meets the UMP line. What proportion of the time will the UMP interval contain the false value <span class="math">\(\theta+3\)</span>? Confirm this by checking the text at the bottom of the left-hand panel, which tells you for every procedure what proportion of the time the intervals will contain the false value.</p></li>
+<li><p>Click the “Figure 4” tab from the menu at the top of the applet. Notice that there is a vertical dashed black line on the figure at <span class="math">\(\theta+3\)</span>. Follow the dashed line up until it meets the UMP line. What proportion of the time will the UMP interval contain the false value <span class="math">\(\theta+3\)</span>? Confirm this by checking the text at the bottom of the left-hand panel, which tells you for every procedure what proportion of the time the intervals will contain the false value.</p></li>
 <li><p>Click back to Figure 1, and click “Sample” nine more times, each time checking to see which intervals contain the false value <span class="math">\(\theta+3\)</span>. How many times out of 10 would you expect the UMP procedure to contain this false value?</p></li>
 <li><p>Click “Sample 1000” 20 times, observing the proportion of times the UMP interval contains the true value. Is this converging to the value you expect? After sampling all 20,000, note all the percentages.</p></li>
 <li><p>Click “Figure 4”. Do the percentages you obtained from sampling agree with the theoretical percentages shown here? Which procedure is the “most powerful” for <span class="math">\(\theta=3\)</span> in the sense that it <em>excludes</em> this false value the greatest proportion of the time? Which is the least powerful (not counting the trivial procedure)?</p></li>
@@ -216,10 +217,10 @@
 </div>
 <div id="demonstration-of-relevant-subsets" class="section level3">
 <h3>Demonstration of relevant subsets</h3>
-<p>For some of the confidence procedures, one can tell whether the confidence interval contains the true value simply by looking at the data. Although all intervals are 50% intervals, we nonetheless have complete certainty that the true value is in the interval.</p>
+<p>For some of the confidence procedures, one can tell whether the confidence interval contains the true value simply by looking at the data. Although all intervals are 50% intervals, we can nonetheless have complete certainty that the true value is in the interval.</p>
 <ol style="list-style-type: decimal">
 <li><p>Open Figure 1 and click “Figure 1B”. Notice that the observed bubbles are very far apart. Notice that the likelihood — which tells us the possible locations of the hatch, taking into account the observed bubbles — is very narrow. Why?</p></li>
-<li><p>Look at the sampling distribution, nonparametric, and UMP intervals. Suppose we did not know the true values, but only the loations of the bubbles (and hence the likelihood). What would we know about the probability that these intervals contain the true value, and why?</p></li>
+<li><p>Look at the sampling distribution, nonparametric, and UMP intervals. Suppose we did not know the true values, but only the locations of the bubbles (and hence the likelihood). What would we know about the probability that these intervals contain the true value, and why?</p></li>
 <li><p>Consider that each of these intervals is a 50% interval, because they contain the true value 50% of the time. In light of your answer to (2) above, does it make sense to say that we are 50% “certain” that a 50% intervals contain the true value? Why?</p></li>
 <li><p>Click on “Figure 2” from the tab menu at the top of the applet, then click “UMP”. The left-hand panel is a plot of <span class="math">\(y_2\)</span> versus <span class="math">\(y_1\)</span>; the shaded region is where the true value will be included in the UMP interval. Notice that the bubble location is inside the shaded region, indicating that the true value is in the interval for this bubble set. What proportion of the plot is shaded? Why that proportion in particular?</p></li>
 <li><p>Now examine the right panel of the figure. This panel plots <span class="math">\(y_2 - y_1\)</span> against <span class="math">\(\bar{y}\)</span>. It is, in fact, just a 45° rotation of the left-hand panel. The values inside the large black diamond correspond to values inside the large black square in the left panel; that is, they are possible values, and values outside the black diamond are impossible. What is <span class="math">\(y_2 - y_1\)</span> for this set of bubbles? This value is indicated by a horizontal line.</p></li>

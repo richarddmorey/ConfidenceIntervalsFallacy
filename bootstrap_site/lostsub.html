@@ -121,7 +121,7 @@
       <div class="page-header">
         <h2>Example 1: The Lost Submarine</h2>
       </div>
-      <p>In this section, we present an example taken from the confidence interval literature <span class="citation">(J. O. Berger &amp; Wolpert, 1988; Lehmann, 1959; Pratt, 1961; Welch, 1939)</span> designed to bring into focus the how CI theory works. This example is intentionally simple; unlike many demonstrations of CIs, no simulations are needed, and almost all results can be derived by readers with some training in probability and geometry. We have also created interactive versions of our figures to aid readers in understanding the example; see the figure captions for details.</p>
+      <p>In this section, we present an example taken from the confidence interval literature <span class="citation">(J. O. Berger &amp; Wolpert, 1988; Lehmann, 1959; Pratt, 1961; Welch, 1939)</span> designed to bring into focus how CI theory works. This example is intentionally simple; unlike many demonstrations of CIs, no simulations are needed, and almost all results can be derived by readers with some training in probability and geometry. We have also created interactive versions of our figures to aid readers in understanding the example; see the figure captions for details.</p>
       <p>A 10-meter-long research submersible with several people on board has lost contact with its surface support vessel. The submersible has a rescue hatch exactly halfway along its length, to which the support vessel will drop a rescue line. Because the rescuers only get one rescue attempt, it is crucial that when the line is dropped to the craft in the deep water that the line be as close as possible to this hatch. The researchers on the support vessel do not know where the submersible is, but they do know that it forms two distinctive bubbles. These bubbles could form anywhere along the craft’s length, independently, with equal probability, and float to the surface where they can be seen by the support vessel.</p>
 
       <div class="article_figure">
@@ -130,13 +130,13 @@
 
 
       <p>The situation is shown in <a href="#bubbles1">Figure 1A</a>. The rescue hatch is the unknown location <span class="math">\(\theta\)</span>, and the bubbles can rise from anywhere with uniform probability between <span class="math">\(\theta-5\)</span> meters (the bow of the submersible) to <span class="math">\(\theta+5\)</span> meters (the stern of the submersible). The rescuers want to use these bubbles to infer where the hatch is located. We will denote the first and second bubble observed by <span class="math">\(y_1\)</span> and <span class="math">\(y_2\)</span>, respectively; for convenience, we will often use <span class="math">\(x_1\)</span> and <span class="math">\(x_2\)</span> to denote the bubbles ordered by location, with <span class="math">\(x_1\)</span> always denoting the smaller location of the two. Note that <span class="math">\(\bar{y}=\bar{x}\)</span>, because order is irrelevant when computing means, and that the distance between the two bubbles is <span class="math">\(|y_1-y_2| = x_2 - x_1\)</span>. We denote this difference as <span class="math">\(d\)</span>.</p>
-      <p>The rescuers first note that from observing two bubbles, it is easy to rule out all values except those within five meters of both bubbles because no bubble can occur further than 5 meters from the hatch. If the two bubble locations were <span class="math">\(y_1=4\)</span> and <span class="math">\(y_2=6\)</span>, then the possible locations of the hatch are between 1 and 9, because only these locations are within 5 meters of both bubbles. This constraints are formally captured in the <em>likelihood</em>, which is the joint probability density of the observed data for all possible values of <span class="math">\(\theta\)</span>. In this case, because the observations are independent, <span class="math">\[
+      <p>The rescuers first note that from observing two bubbles, it is easy to rule out all values except those within five meters of both bubbles because no bubble can occur further than 5 meters from the hatch. If the two bubble locations were <span class="math">\(y_1=4\)</span> and <span class="math">\(y_2=6\)</span>, then the possible locations of the hatch are between 1 and 9, because only these locations are within 5 meters of both bubbles. This constraint is formally captured in the <em>likelihood</em>, which is the joint probability density of the observed data for all possible values of <span class="math">\(\theta\)</span>. In this case, because the observations are independent, the joint probability density is: <span class="math">\[
       \begin{eqnarray*}
-        p(y_1, y_2; \theta) &amp;=&amp; p_y(y_1;\theta)\times p_y(y_2;\theta)
+        p(y_1, y_2; \theta) &amp;=&amp; p_y(y_1;\theta)\times p_y(y_2;\theta).
       \end{eqnarray*}
-      \]</span> The density for each bubble <span class="math">\(p_y\)</span> is uniform across the submersible’s 10 meter length, which means the joint density must be <span class="math">\(1/10\times1/10 = 1/100\)</span>. If the lesser of <span class="math">\(y_1\)</span> and <span class="math">\(y_2\)</span> (which we denote <span class="math">\(x_1\)</span>) is greater than <span class="math">\(\theta-5\)</span>, then obviously both <span class="math">\(y_1\)</span> and <span class="math">\(y_2\)</span> must be. This means that the density, written in terms of <span class="math">\(x_1\)</span> and <span class="math">\(x_2\)</span> is: <span class="math">\[
+      \]</span> The density for each bubble <span class="math">\(p_y\)</span> is uniform across the submersible’s 10 meter length, which means the joint density must be <span class="math">\(1/10\times1/10 = 1/100\)</span>. If the lesser of <span class="math">\(y_1\)</span> and <span class="math">\(y_2\)</span> (which we denote <span class="math">\(x_1\)</span>) is greater than <span class="math">\(\theta-5\)</span>, then obviously both <span class="math">\(y_1\)</span> and <span class="math">\(y_2\)</span> must be greater than <span class="math">\(\theta-5\)</span>. This means that the density, written in terms of <span class="math">\(x_1\)</span> and <span class="math">\(x_2\)</span>, is: <span class="math">\[
       \begin{eqnarray}
-        p(x_1, x_2; \theta) &amp;=&amp; \left\{\begin{array}{ll}
+        p(y_1, y_2; \theta) &amp;=&amp; \left\{\begin{array}{ll}
         1/100, &amp;\mbox{if}~x_1&gt;\theta-5~\mbox{and}~x_2&lt;\theta+5,\\
         0&amp; \mbox{otherwise}.
         \end{array}
@@ -144,7 +144,7 @@
       \end{eqnarray}
       \]</span> If we write Eq. \eqref{eq:unifdens} as a function of the unknown parameter <span class="math">\(\theta\)</span> for fixed, observed data, we get the likelihood, which indexes the information provided by the data about the parameter. In this case, it is positive only when a value <span class="math">\(\theta\)</span> is possible given the observed bubbles (see also Figures <a href="#bubbles1">1</a> and <a href="subCIevaluation.html#bubblesBayes">5</a>): <span class="math">\[
       \begin{eqnarray*}
-        p(\theta ; x_1, x_2) &amp;=&amp; 
+        p(\theta ; y_1, y_2) &amp;=&amp; 
         \left\{\begin{array}{cl}
         1,&amp;\theta&gt;x_2 - 5~\mbox{and}~\theta\leq x_1+5,\\
         0&amp; \mbox{otherwise}.
@@ -152,12 +152,12 @@
       \end{eqnarray*}
       \]</span> We replaced 1/100 with 1 because the particular values of the likelihood do not matter, only their relative values. Writing the likelihood in terms of <span class="math">\(\bar{x}\)</span> and the difference between the bubbles <span class="math">\(d=x_2-x_1\)</span>, we get an interval: <span class="math">\[
       \begin{eqnarray}
-        p(\theta ; x_1, x_2) &amp;=&amp;\left\{\begin{array}{cl}
+        p(\theta ; y_1, y_2) &amp;=&amp;\left\{\begin{array}{cl}
         1,&amp; \bar{x} - (5 - d/2) &lt; \theta \leq \bar{x} + (5 - d/2),\\
         0&amp; \mbox{otherwise}.
         \end{array}\right.\label{eq:uniflike}\tag{2}
       \end{eqnarray}
-      \]</span> If the likelihood is positive, the value <span class="math">\(\theta\)</span> is possible; if it is 0, that value of <span class="math">\(\theta\)</span> is impossible. Expressing the likelihood as in Eq. \eqref{eq:uniflike} allows us to see see several important things. First, the likelihood is centered around a reasonable point estimate for <span class="math">\(\theta\)</span>, <span class="math">\(\bar{x}\)</span>. Second, the width of the likelihood <span class="math">\(10 - d\)</span>, which here is an index of the uncertainty of the estimate, is larger when the difference between the bubbles <span class="math">\(d\)</span> is smaller. When the bubbles are close together, we get have little information about <span class="math">\(\theta\)</span> compared to when the bubbles are far apart. With the likelihood as the information in the data in mind, we can define our confidence procedures.</p>
+      \]</span> If the likelihood is positive, the value <span class="math">\(\theta\)</span> is possible; if it is 0, that value of <span class="math">\(\theta\)</span> is impossible. Expressing the likelihood as in Eq. \eqref{eq:uniflike} allows us to see several important things. First, the likelihood is centered around a reasonable point estimate for <span class="math">\(\theta\)</span>, <span class="math">\(\bar{x}\)</span>. Second, the width of the likelihood <span class="math">\(10 - d\)</span>, which here is an index of the uncertainty of the estimate, is larger when the difference between the bubbles <span class="math">\(d\)</span> is smaller. When the bubbles are close together, we have little information about <span class="math">\(\theta\)</span> compared to when the bubbles are far apart. Keeping in mind the likelihood as the information in the data, we can define our confidence procedures.</p>
 
 
       <ul class="pager">

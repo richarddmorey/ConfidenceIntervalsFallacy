@@ -172,5 +172,5 @@ points(mean(x.a),x.a[2]-x.a[1],pch='a')
 points(mean(x.b),x.b[2]-x.b[1],pch='b')
 #abline(h = x.b[2]-x.b[1],col="gray",lty=1)
 
-mtext("Fid./Bayes", 4, -.5, padj=.5,cex=1.5)
+mtext("Bayes", 4, -.5, padj=.5,cex=1.5)
 
